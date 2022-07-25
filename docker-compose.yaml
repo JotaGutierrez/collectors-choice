@@ -1,0 +1,23 @@
+version: "3"
+services:
+  mongo:
+    build:
+      context: .
+      dockerfile: ./etc/docker/mongo/Dockerfile
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: lotion
+    ports:
+      - 27017:27017
+
+  node:
+    build:
+      context: .
+      dockerfile: ./etc/docker/node/Dockerfile
+    container_name: node-docker
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/home/node
+    depends_on:
+      - mongo
