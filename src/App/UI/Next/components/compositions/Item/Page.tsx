@@ -1,5 +1,5 @@
-import { Autosave } from 'react-autosave'
 import { useState } from 'react'
+import { Autosave } from 'react-autosave'
 
 const Page = ({ item }) => {
   const [itemNotes, setItemNotes] = useState(item.notes)
@@ -18,9 +18,9 @@ const Page = ({ item }) => {
   }
 
   return <>
-        <textarea defaultValue={item.notes} onChange={(e) => setItemNotes(e.target.value)}></textarea>
-        <Autosave data={itemNotes} onSave={saveDescription}></Autosave>
-    </>
+    <textarea defaultValue={item.notes} onChange={(e) => setItemNotes(e.target.value)}></textarea>
+    <Autosave data={itemNotes} onSave={saveDescription}></Autosave>
+  </>
 }
 
 export default Page

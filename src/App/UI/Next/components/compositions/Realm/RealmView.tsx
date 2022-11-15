@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { IconButton } from '@mui/material'
+import { CalendarViewWeek, GridView as GridViewIcon, List } from '@mui/icons-material'
 import InputButton from '../../components/inputButton'
 import BoardView from '../Item/BoardView'
 import GridView from '../Item/GridView'
 import ListView from '../Item/ListView'
 import InlineTags from '../Tag/InlineTags'
-import { IconButton } from '@mui/material'
-import { List, GridView as GridViewIcon, CalendarViewWeek } from '@mui/icons-material'
 
 /** @TODO: refactor */
 const ItemForm = () => {
@@ -51,35 +51,35 @@ const RealmView = ({ realm, tags }) => {
     <InlineTags tags={tags} />
     <div>
       <div>
-          <div>
-            <IconButton onClick={() => setView('list')}>
-              <List />
+        <div>
+          <IconButton onClick={() => setView('list')}>
+            <List />
+          </IconButton>
+        </div>
+        <div>
+          <IconButton onClick={() => setView('grid')}>
+            <GridViewIcon />
+          </IconButton>
+        </div>
+        {[...Array.from(properties)].map((_property, key) =>
+          <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
+            <IconButton>
+              <CalendarViewWeek />
             </IconButton>
-          </div>
-          <div>
-            <IconButton onClick={() => setView('grid')}>
-              <GridViewIcon />
-            </IconButton>
-          </div>
-          {[...Array.from(properties)].map((_property, key) =>
-            <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
-              <IconButton>
-                <CalendarViewWeek />
-              </IconButton>
-              <div>
-                {_property}
-              </div>
+            <div>
+              {_property}
             </div>
-          )}
+          </div>
+        )}
       </div>
       <div>
-          <ItemForm />
+        <ItemForm />
       </div>
     </div>
     <div>
-      { tags && view == 'list' && <ListView tags={tags} /> }
-      { tags && view == 'grid' && <GridView tags={tags} /> }
-      { tags && view == 'board' && <BoardView tags={tags} property={property} /> }
+      {tags && view == 'list' && <ListView tags={tags} />}
+      {tags && view == 'grid' && <GridView tags={tags} />}
+      {tags && view == 'board' && <BoardView tags={tags} property={property} />}
     </div>
   </>
 }

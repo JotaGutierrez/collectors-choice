@@ -1,9 +1,9 @@
-import Modal from '../../layout/modal'
-import Page from './Page'
+import { Edit } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { IconButton } from '@mui/material'
-import { Edit } from '@mui/icons-material'
+import Page from './Page'
+import Modal from '../../layout/modal'
 
 const ShortCard = ({ rowKey, item, tags, properties }) => {
   const [showItemConfig, setItemConfig] = useState(false)
@@ -12,32 +12,32 @@ const ShortCard = ({ rowKey, item, tags, properties }) => {
 
   return <Draggable draggableId={item._id} index={rowKey}>
     {provided => <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-        >
-            <div>
-                &nbsp;
-            </div>
-            <div>
-            <div>
-                <h1>
-                {item.name}
-                </h1>
-                <div>
-                    <IconButton onClick={toggleItemConfig}>
-                        <Edit />
-                    </IconButton>
-                </div>
-            </div>
-            <div>
-                <div>
-                    {item.notes}
-                </div>
-            </div>
-            {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
-            </div>
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
+      <div>
+        &nbsp;
+      </div>
+      <div>
+        <div>
+          <h1>
+            {item.name}
+          </h1>
+          <div>
+            <IconButton onClick={toggleItemConfig}>
+              <Edit />
+            </IconButton>
+          </div>
         </div>
+        <div>
+          <div>
+            {item.notes}
+          </div>
+        </div>
+        {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
+      </div>
+    </div>
     }
 
   </Draggable>

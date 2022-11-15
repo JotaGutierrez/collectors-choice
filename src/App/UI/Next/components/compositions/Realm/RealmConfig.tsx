@@ -1,10 +1,10 @@
+import { ChevronLeft, Delete } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
+import { useState } from 'react'
+import { Autosave } from 'react-autosave'
+import useSWR from 'swr'
 import Select from '../../atoms/Select'
 import InputButton from '../../components/inputButton'
-import { useState } from 'react'
-import useSWR from 'swr'
-import { Autosave } from 'react-autosave'
-import { IconButton } from '@mui/material'
-import { Delete, ChevronLeft } from '@mui/icons-material'
 
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
@@ -126,17 +126,17 @@ const RealmConfig = ({ realm, tags }) => {
             <IconButton onClick={() => setShowTagGroups(!showTagGroups)}>
               <ChevronLeft />
             </IconButton>
-        </div>
-        {showTagGroups && <>
-          <div>
-            <div>{data.map((data, groupKey) =>
-              <>
-                <div key={groupKey}>{data.name}</div>
+          </div>
+          {showTagGroups && <>
+            <div>
+              <div>{data.map((data, groupKey) =>
+                <>
+                  <div key={groupKey}>{data.name}</div>
                   <IconButton onClick={() => deleteTagGroup(data._id)}>
                     <Delete />
                   </IconButton>
-              </>
-            )}</div>
+                </>
+              )}</div>
             </div>
             <form onSubmit={saveTagGroup}>
               <div>
@@ -148,51 +148,51 @@ const RealmConfig = ({ realm, tags }) => {
               </div>
             </form>
           </>
-        }
-      </div>
-      <div>
-        <div>
-          <div>Realm tags</div>
-          <div>
-            <IconButton onClick={() => setShowAddTag(!showAddTag)} >
-              <ChevronLeft />
-            </IconButton>
-          </div>
+          }
         </div>
-        {showAddTag &&
-          <>
-            {/**
+        <div>
+          <div>
+            <div>Realm tags</div>
+            <div>
+              <IconButton onClick={() => setShowAddTag(!showAddTag)} >
+                <ChevronLeft />
+              </IconButton>
+            </div>
+          </div>
+          {showAddTag &&
+            <>
+              {/**
             * @TODO: Refactor tag inline component
             */}
-            <div>
               <div>
-                { Array.isArray(tags) && tags.map(function (tag, key) {
-                  return <>
-                    <button key={key}>{tag.name}</button>
+                <div>
+                  {Array.isArray(tags) && tags.map(function (tag, key) {
+                    return <>
+                      <button key={key}>{tag.name}</button>
                       <IconButton onClick={() => deleteTag(tag._id)}>
                         <Delete />
                       </IconButton>
-                  </>
-                }) }
-              </div>
-            </div>
-            <div>
-              <form onSubmit={saveTag}>
-                <div>
-                  <input type="hidden" name="realm" id="realm" value={realm.name}></input>
-                  <div>
-                    <Select name="group" onChange={null} selected={null}>
-                      <option value="">(optional) property...</option>{Array.isArray(data) && data.map((group, key) => <option key={key}>{group.name}</option>)}
-                    </Select>
-                  </div>
-                  <InputButton name="name" placeholder="Add tag..." />
+                    </>
+                  })}
                 </div>
-              </form>
-            </div>
-          </>
-        }
+              </div>
+              <div>
+                <form onSubmit={saveTag}>
+                  <div>
+                    <input type="hidden" name="realm" id="realm" value={realm.name}></input>
+                    <div>
+                      <Select name="group" onChange={null} selected={null}>
+                        <option value="">(optional) property...</option>{Array.isArray(data) && data.map((group, key) => <option key={key}>{group.name}</option>)}
+                      </Select>
+                    </div>
+                    <InputButton name="name" placeholder="Add tag..." />
+                  </div>
+                </form>
+              </div>
+            </>
+          }
+        </div>
       </div>
-    </div>
     </div>
   </div>
 }

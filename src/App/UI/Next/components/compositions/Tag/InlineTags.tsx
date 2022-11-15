@@ -46,18 +46,18 @@ const InlineTags = ({ tags }) => {
   if (query.realm == '') return <div>Select any realm</div>
 
   return <div>
-      <div>
-        <IconButton>
-          <FilterList />
-        </IconButton>
-      </div>
-      <div>
-        { Array.isArray(tags) && tags.map(function (tag, key) {
-          const active = filter.indexOf(tag.name) > -1
-          return <button onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }} key={key}>{tag.name}</button>
-        }) }
-      </div>
+    <div>
+      <IconButton>
+        <FilterList />
+      </IconButton>
     </div>
+    <div>
+      {Array.isArray(tags) && tags.map(function (tag, key) {
+        const active = filter.indexOf(tag.name) > -1
+        return <button onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }} key={key}>{tag.name}</button>
+      })}
+    </div>
+  </div>
 }
 
 export default InlineTags

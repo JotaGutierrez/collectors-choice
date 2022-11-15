@@ -1,13 +1,16 @@
 import { NextPage } from 'next'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
+
+import Head from 'next/head'
+import useSWR from 'swr'
+
 import Aside from '../components/layout/aside'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
 
-interface Props{
+import styles from '../styles/Home.module.css'
+
+interface Props {
   items?
 }
 
@@ -42,8 +45,8 @@ const Home: NextPage<Props> = () => {
             {realm && realm.name}
           </h1>
 
-          { query.page === 'config' && <RealmConfig realm={realm} tags={tags} /> }
-          { query.page === '' && <RealmView realm={realm} tags={tags} /> }
+          {query.page === 'config' && <RealmConfig realm={realm} tags={tags} />}
+          {query.page === '' && <RealmView realm={realm} tags={tags} />}
 
         </main>
       </div>
