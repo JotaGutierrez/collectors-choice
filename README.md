@@ -1,4 +1,4 @@
-# Lotion, the dumb cousin
+# Collectors Choice
 Example of a TypeScript application following Domain-Driven Design (DDD) principles.
 
 ## Getting Started
@@ -7,7 +7,7 @@ Example of a TypeScript application following Domain-Driven Design (DDD) princip
 The app is ready to run in docker containers:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
