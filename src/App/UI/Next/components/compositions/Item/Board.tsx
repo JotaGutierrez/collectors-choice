@@ -1,6 +1,6 @@
 
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useState, useEffect, useMemo } from 'react';
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { useState, useEffect, useMemo } from "react";
 
 const Board = ({ properties, params, children, items, ItemRenderer, tags}) => {
 

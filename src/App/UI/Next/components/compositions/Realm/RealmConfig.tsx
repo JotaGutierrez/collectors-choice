@@ -1,10 +1,10 @@
-import { ChevronLeftIcon, TrashIcon } from "@heroicons/react/solid";
-import { Transition } from '@tailwindui/react';
 import Select from '../../atoms/Select';
 import InputButton from "../../components/inputButton";
-import { useState } from 'react';
-import useSWR from 'swr';
-import { Autosave } from 'react-autosave';
+import { useState } from "react";
+import useSWR from "swr";
+import { Autosave } from "react-autosave";
+import { IconButton } from "@mui/material";
+import { Delete, ChevronLeft } from "@mui/icons-material";
 
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json());
 
@@ -94,122 +94,109 @@ const RealmConfig = ({realm, tags}) => {
 
   const { data, error } = useSWR(['/api/tag_group/fetch', '?realm=' + realm.name], fetcher);
 
-  if (error) return <div>Failed to load</div>
-  if (data === undefined) return <div>Loading...</div>
+  if (error) return <div>Failed to load</div>;
+  if (data === undefined) return <div>Loading...</div>;
 
-  return <div className="space-x-2 flex text-sm">
-    <div className="flex flex-col grow">
-      <div className=" mt-4 mb-6 pb-6 border-b border-slate-200">
-        <div className="flex items-center">
-          <div className="grow text-sm font-bold text-gray-400 px-6 py-2 text-left">Realm description</div>
-          <div className={showDescription ? "-rotate-90" : ""}>
-            <ChevronLeftIcon className="h-5 w-5 text-black" onClick={() => setShowDescription(!showDescription)} />
+  return <div>
+    <div>
+      <div>
+        <div>
+          <div>Realm description</div>
+          <div>
+            <IconButton onClick={() => setShowDescription(!showDescription)}>
+              <ChevronLeft />
+            </IconButton>
           </div>
         </div>
-        <Transition
-          show={showDescription}
-          enter="transition-opacity duration-750"
-          enterFrom="opacity-0"
-          enterTo="opacity-auto"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="flex mt-4 mb-6 px-6 pb-6">
-            <div className="grow">
-              <textarea className="inline-block focus:ring-1 focus:ring-slate-200 rounded
-                        focus:outline-none appearance-none w-full h-20 text-sm
-                        text-slate-900 placeholder-slate-400 p-4 ring-1
-                        ring-slate-200 shadow-sm"
-                        name="notes"
-                        id="notes"
-                        placeholder="Add realm notes..."
-                        defaultValue={realm.notes}
-                        onChange={e => setRealmNotes(e.target.value)}
+        {showDescription && 
+          <div>
+            <div>
+              <textarea 
+                name="notes"
+                id="notes"
+                placeholder="Add realm notes..."
+                defaultValue={realm.notes}
+                onChange={e => setRealmNotes(e.target.value)}
               />
               <Autosave data={realmNotes} onSave={saveRealmNotes} />
             </div>
           </div>
-        </Transition>
+        }
       </div>
-
-      <div className=" mt-4 mb-6 pb-6 border-b border-slate-200">
-        <div className="flex items-center">
-          <div className="grow text-sm font-bold text-gray-400 px-6 py-2 text-left">Realm properties</div>
-          <div className={showTagGroups ? "-rotate-90" : ""}><ChevronLeftIcon className="h-5 w-5 text-black" onClick={() => setShowTagGroups(!showTagGroups)} /></div>
+      <div>
+        <div>
+          <div>Realm properties</div>
+          <div>
+            <IconButton onClick={() => setShowTagGroups(!showTagGroups)}>
+              <ChevronLeft />
+            </IconButton>
         </div>
-        <Transition
-          show={showTagGroups}
-          enter="transition-opacity duration-750"
-          enterFrom="opacity-0"
-          enterTo="opacity-auto"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="flex mt-4 mb-6 pb-6 border-b border-slate-200">
-            <div className="space-x-2 flex text-sm items-center">{data.map(((data, groupKey) =>
+        {showTagGroups && <> 
+          <div>
+            <div>{data.map(((data, groupKey) =>
               <>
-                <div className="font-bold py-1 pl-6 rounded-full" key={groupKey}>{data.name}</div>
-                <TrashIcon className="h-5 w-5 text-black mr-6" onClick={() => deleteTagGroup(data._id)} />
+                <div key={groupKey}>{data.name}</div>
+                  <IconButton onClick={() => deleteTagGroup(data._id)}>
+                    <Delete />
+                  </IconButton>
               </>
-          ))}</div>
-          </div>
-          <form onSubmit={saveTagGroup} className="grow">
-            <div className="grow">
-              <div className="flex">
-                <div className="w-full text-right">
-                  <InputButton name="name" placeholder="Add realm property..." />
-                </div>
-              </div>
+            ))}</div>
             </div>
-          </form>
-        </Transition>
-      </div>
-
-      <div className=" mt-4 mb-6 pb-6 ">
-        <div className="flex items-center">
-          <div className="grow text-sm font-bold text-gray-400 px-6 py-2 text-left">Realm tags</div>
-          <div className={showAddTag ? "-rotate-90" : ""}><ChevronLeftIcon onClick={() => setShowAddTag(!showAddTag)} className="h-5 w-5 text-black" /></div>
-        </div>
-
-        <Transition
-          show={showAddTag}
-          enter="transition-opacity duration-750"
-          enterFrom="opacity-0"
-          enterTo="opacity-auto"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-            {/**
-             * @TODO: Refactor tag inline component
-             */}
-            <div className="flex mt-4 mb-6 pb-6 border-b border-slate-200">
-                <div className="space-x-2 flex text-sm items-center">
-                    { Array.isArray(tags) && tags.map((function(tag, key) {
-                        return <>
-                          <button className="font-bold py-1 pl-6 rounded-full" key={key}>{tag.name}</button>
-                          <TrashIcon className="h-5 w-5 text-black mr-6" onClick={() => deleteTag(tag._id)} />
-                        </>;
-                    })) }
+            <form onSubmit={saveTagGroup}>
+              <div>
+                <div>
+                  <div>
+                    <InputButton name="name" placeholder="Add realm property..." />
+                  </div>
                 </div>
-            </div>
-          <div className="space-x-2 flex text-sm justify-end">
-            <form onSubmit={saveTag}>
-              <div className="flex items-baseline">
-                <input type="hidden" name="realm" id="realm" value={realm.name}></input>
-                <div className="inline-flex pr-2">
-                  <Select name="group" onChange={null} selected={null}>
-                    <option value="">(optional) property...</option>{Array.isArray(data) && data.map((group, key) => <option key={key}>{group.name}</option>)}
-                  </Select>
-                </div>
-                <InputButton name="name" placeholder="Add tag..." />
               </div>
             </form>
-          </div>
-        </Transition>
+          </>
+        }
       </div>
+      <div>
+        <div>
+          <div>Realm tags</div>
+          <div>
+            <IconButton onClick={() => setShowAddTag(!showAddTag)} >
+              <ChevronLeft />
+            </IconButton>
+          </div>
+        </div>
+        {showAddTag &&
+          <> 
+            {/**
+            * @TODO: Refactor tag inline component
+            */}
+            <div>
+              <div>
+                { Array.isArray(tags) && tags.map((function(tag, key) {
+                  return <>
+                    <button key={key}>{tag.name}</button>
+                      <IconButton onClick={() => deleteTag(tag._id)}>
+                        <Delete />
+                      </IconButton>
+                  </>;
+                })) }
+              </div>
+            </div>
+            <div>
+              <form onSubmit={saveTag}>
+                <div>
+                  <input type="hidden" name="realm" id="realm" value={realm.name}></input>
+                  <div>
+                    <Select name="group" onChange={null} selected={null}>
+                      <option value="">(optional) property...</option>{Array.isArray(data) && data.map((group, key) => <option key={key}>{group.name}</option>)}
+                    </Select>
+                  </div>
+                  <InputButton name="name" placeholder="Add tag..." />
+                </div>
+              </form>
+            </div>
+          </>
+        }
+      </div>
+    </div>
     </div>
   </div>
 }

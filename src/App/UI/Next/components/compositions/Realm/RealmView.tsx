@@ -1,16 +1,16 @@
-
-import { useState } from 'react';
-import { ViewListIcon, ViewGridIcon, ViewBoardsIcon } from '@heroicons/react/solid';
-import { useRouter } from 'next/router';
-import InputButton from '../../components/inputButton';
-import ListView from '../Item/ListView';
-import GridView from '../Item/GridView';
-import BoardView from '../Item/BoardView';
-import InlineTags from '../Tag/InlineTags';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import InputButton from "../../components/inputButton";
+import BoardView from "../Item/BoardView";
+import GridView from "../Item/GridView";
+import ListView from "../Item/ListView";
+import InlineTags from "../Tag/InlineTags";
+import { IconButton } from "@mui/material";
+import { List, GridView as GridViewIcon, CalendarViewWeek } from "@mui/icons-material";
 
 
 /** @TODO: refactor */
-function ItemForm() {
+const ItemForm = () => {
   const registerItem = async event => {
     event.preventDefault();
 
@@ -52,34 +52,38 @@ const RealmView = ({realm, tags}) => {
 
   return <>
     <InlineTags tags={tags} />
-      <div className="flex mt-10 mb-10">
-        <div className="grow flex flex-row">
-            <div className={"p-2 mr-2 " + (view === 'list' ? ' border-b-4 border-bg-slate-500' : '') }>
-              <ViewListIcon onClick={() => setView('list')} className="h-5 w-5 text-black" />
-            </div>
-            <div className={"p-2 ml-2 mr-2 " + (view === 'grid' ? ' border-b-4 border-bg-slate-500' : '') }>
-              <ViewGridIcon onClick={() => setView('grid')} className="h-5 w-5 text-black"/>
-            </div>
-            {[...Array.from(properties)].map((_property, key) =>
-              <div key={key} className={"flex flex-row p-2 leading-5 align-middle ml-2 mr-2 " + (view === 'board' && property === _property ? ' border-b-4 border-bg-slate-500 ' : '')} onClick={() => {setView('board'); setProperty(_property)}}>
-                <div>
-                  <ViewBoardsIcon className="h-5 w-5 text-black mr-2" />
-                </div>
-                <div>
-                  {_property}
-                </div>
+    <div>
+      <div>
+          <div>
+            <IconButton onClick={() => setView('list')}>
+              <List />
+            </IconButton>
+          </div>
+          <div>
+            <IconButton onClick={() => setView('grid')}>
+              <GridViewIcon />
+            </IconButton>
+          </div>
+          {[...Array.from(properties)].map((_property, key) =>
+            <div key={key} onClick={() => {setView('board'); setProperty(_property)}}>
+              <IconButton>
+                <CalendarViewWeek />
+              </IconButton>
+              <div>
+                {_property}
               </div>
-            )}
-        </div>
-        <div className="">
-            <ItemForm />
-        </div>
+            </div>
+          )}
       </div>
       <div>
-        { tags && view == 'list' && <ListView tags={tags} /> }
-        { tags && view == 'grid' && <GridView tags={tags} /> }
-        { tags && view == 'board' && <BoardView tags={tags} property={property} /> }
+          <ItemForm />
       </div>
+    </div>
+    <div>
+      { tags && view == 'list' && <ListView tags={tags} /> }
+      { tags && view == 'grid' && <GridView tags={tags} /> }
+      { tags && view == 'board' && <BoardView tags={tags} property={property} /> }
+    </div>
   </>
 }
 

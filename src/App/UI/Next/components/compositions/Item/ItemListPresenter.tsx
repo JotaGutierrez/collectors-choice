@@ -1,6 +1,6 @@
 
-import { useRouter } from 'next/router';
-import useSWR from 'swr';
+import { useRouter } from "next/router";
+import useSWR from "swr";
 import Item from '../../../../../../Core/Item/domain/Item';
 
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json());

@@ -1,8 +1,8 @@
-import { NextPage } from 'next';
-import Head from 'next/head';
+import { NextPage } from "next";
+import Head from "next/head";
 import styles from '../styles/Home.module.css';
-import useSWR from 'swr';
-import { useRouter } from 'next/router';
+import useSWR from "swr";
+import { useRouter } from "next/router";
 import Aside from '../components/layout/aside';
 import RealmConfig from '../components/compositions/Realm/RealmConfig';
 import RealmView from '../components/compositions/Realm/RealmView';

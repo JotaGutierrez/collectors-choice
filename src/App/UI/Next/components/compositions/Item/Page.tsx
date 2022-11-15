@@ -1,5 +1,5 @@
-import { Autosave } from 'react-autosave';
-import { useState } from 'react';
+import { Autosave } from "react-autosave";
+import { useState } from "react";
 
 const Page = ({item}) => {
 

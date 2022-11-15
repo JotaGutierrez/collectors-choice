@@ -1,5 +1,5 @@
-
-import { FilterIcon } from '@heroicons/react/solid';
+import { IconButton } from '@mui/material';
+import { FilterList } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -48,7 +48,9 @@ const InlineTags = ({tags}) => {
 
     return <div className="flex mt-16 mb-8 pb-6 border-b border-slate-200">
       <div className="space-x-2 flex py-1">
-        <FilterIcon className='h-5 w-5 text-gray-300'></FilterIcon>
+        <IconButton>
+          <FilterList />
+        </IconButton>
       </div>
       <div className="space-x-2 flex text-sm">
         { Array.isArray(tags) && tags.map((function(tag, key) {
