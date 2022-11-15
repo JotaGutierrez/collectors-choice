@@ -1,52 +1,51 @@
-import Select from '../../atoms/Select';
-import TagSelect from '../../atoms/TagsSelect';
-import { useState } from "react";
-import Page from './Page';
-import Modal from '../../layout/modal';
-import { IconButton } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import Select from '../../atoms/Select'
+import TagSelect from '../../atoms/TagsSelect'
+import { useState } from 'react'
+import Page from './Page'
+import Modal from '../../layout/modal'
+import { IconButton } from '@mui/material'
+import { Edit, Delete } from '@mui/icons-material'
 
-const ItemRow = ({rowKey, item, tags, properties}) => {
+const ItemRow = ({ rowKey, item, tags, properties }) => {
+  const [showItemConfig, setItemConfig] = useState(false)
 
-    const [showItemConfig, setItemConfig] = useState(false);
+  const toggleItemConfig = () => setItemConfig(!showItemConfig)
 
-    const toggleItemConfig = () => setItemConfig(!showItemConfig);
+  const deleteItem = async (event, id) => {
+    event.preventDefault()
 
-    const deleteItem = async (event, id) => {
-        event.preventDefault();
+    const res = await fetch('/api/item/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id })
+    })
+  }
 
-        const res = await fetch('/api/item/delete', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({id: id}),
-        });
-      }
+  const saveProperty = async (item, value, property) =>
+    await fetch('/api/item/setProperty', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: item._id,
+        property,
+        value: tags.find(tag => tag.name == value)
+      })
+    }
+    )
 
-    const saveProperty = async (item, value, property) =>
-        await fetch('/api/item/setProperty', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: item._id,
-                property: property,
-                value: tags.find(tag => tag.name == value)
-            }),
-            }
-        );
-
-    return <tr key={rowKey}>
+  return <tr key={rowKey}>
         <td>
             {item.name}
             <br />
             <TagSelect tags={tags} item={item} />
         </td>
         {properties.map((property, key) => {
-            const selectedTag = (item.tags ?? [{"name": "", "group": property}]).find(tag => tag.group == property);
-            return <td key={key}>
+          const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group == property)
+          return <td key={key}>
             <Select name="" onChange={event => saveProperty(item, event.target.value, property)} selected={selectedTag && selectedTag.name}>
                 <option value=""></option>
                 {tags.filter(tag => tag.group == property).map((tag, key) => <option key={key} value={tag.name}>{tag.name}</option>)}
@@ -59,11 +58,11 @@ const ItemRow = ({rowKey, item, tags, properties}) => {
                 <Edit />
             </IconButton>
             <IconButton onClick={(event) => deleteItem(event, item._id)}>
-                <Delete />   
+                <Delete />
             </IconButton>
             {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
         </td>
     </tr>
 }
 
-export default ItemRow;
+export default ItemRow

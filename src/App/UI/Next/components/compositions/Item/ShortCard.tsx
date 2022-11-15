@@ -1,17 +1,16 @@
-import Modal from '../../layout/modal';
-import Page from './Page';
-import { useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
-import { IconButton } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import Modal from '../../layout/modal'
+import Page from './Page'
+import { useState } from 'react'
+import { Draggable } from 'react-beautiful-dnd'
+import { IconButton } from '@mui/material'
+import { Edit } from '@mui/icons-material'
 
-const ShortCard = ({rowKey, item, tags, properties}) => {
+const ShortCard = ({ rowKey, item, tags, properties }) => {
+  const [showItemConfig, setItemConfig] = useState(false)
 
-    const [showItemConfig, setItemConfig] = useState(false);
+  const toggleItemConfig = () => setItemConfig(!showItemConfig)
 
-    const toggleItemConfig = () => setItemConfig(!showItemConfig);
-
-    return <Draggable draggableId={item._id} index={rowKey}>
+  return <Draggable draggableId={item._id} index={rowKey}>
     {provided => <div
             ref={provided.innerRef}
             {...provided.draggableProps}
@@ -44,4 +43,4 @@ const ShortCard = ({rowKey, item, tags, properties}) => {
   </Draggable>
 }
 
-export default ShortCard;
+export default ShortCard

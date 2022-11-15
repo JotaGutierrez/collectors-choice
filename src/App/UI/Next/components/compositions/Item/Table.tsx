@@ -1,6 +1,5 @@
 
 const Table = ({ properties, children }) => {
-
   return (<table>
     <thead>
       <tr>
@@ -16,4 +15,4 @@ const Table = ({ properties, children }) => {
   </table>)
 }
 
-export default Table;
+export default Table

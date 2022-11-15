@@ -1,32 +1,31 @@
 
-import Modal from '../../layout/modal';
-import Page from './Page';
-import { useState } from "react";
-import TagSelect from '../../atoms/TagsSelect';
-import { IconButton } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import Modal from '../../layout/modal'
+import Page from './Page'
+import { useState } from 'react'
+import TagSelect from '../../atoms/TagsSelect'
+import { IconButton } from '@mui/material'
+import { Edit } from '@mui/icons-material'
 
-const Card = ({rowKey, item, tags, properties}) => {
+const Card = ({ rowKey, item, tags, properties }) => {
+  const [showItemConfig, setItemConfig] = useState(false)
 
-    const [showItemConfig, setItemConfig] = useState(false);
+  const toggleItemConfig = () => setItemConfig(!showItemConfig)
 
-    const toggleItemConfig = () => setItemConfig(!showItemConfig);
+  const saveProperty = async (item, value, property) =>
+    await fetch('/api/item/setProperty', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: item._id,
+        property,
+        value: tags.find(tag => tag.name == value)
+      })
+    }
+    )
 
-    const saveProperty = async (item, value, property) =>
-        await fetch('/api/item/setProperty', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: item._id,
-                property: property,
-                value: tags.find(tag => tag.name == value)
-            }),
-        }
-    );
-
-    return <div key={rowKey}>
+  return <div key={rowKey}>
     <div>
         &nbsp;
     </div>
@@ -52,8 +51,8 @@ const Card = ({rowKey, item, tags, properties}) => {
         </div>
       </div>
         {properties.map((property, key) => {
-            const selectedTag = (item.tags ?? [{"name": "", "group": property}]).find(tag => tag.group == property);
-            return <div key={key}>
+          const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group == property)
+          return <div key={key}>
             <div>
                 {tags.filter(tag => tag.group == property).map((tag, optionKey) => <label key={optionKey}>
                     <input name={property} type="radio" value={tag.name} checked={selectedTag && selectedTag.name == tag.name} onChange={event => saveProperty(item, event.target.value, property)} />
@@ -69,4 +68,4 @@ const Card = ({rowKey, item, tags, properties}) => {
   </div>
 }
 
-export default Card;
+export default Card

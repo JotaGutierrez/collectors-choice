@@ -1,13 +1,13 @@
-import { Button, IconButton, TextField } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Button, IconButton, TextField } from '@mui/material'
+import { Add } from '@mui/icons-material'
 
 interface props {
-    name: string;
-    placeholder: string;
+    name: string
+    placeholder: string
 }
 
-const InputButton = ({name, placeholder}: props) =>
-    <div>
+const InputButton = ({ name, placeholder }: props) =>
+  <div>
         <TextField
             id={name}
             name={name}
@@ -22,4 +22,4 @@ const InputButton = ({name, placeholder}: props) =>
         </Button>
     </div>
 
-export default InputButton;
+export default InputButton
