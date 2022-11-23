@@ -1,5 +1,5 @@
-import { IconButton } from '@mui/material'
 import { FilterList } from '@mui/icons-material'
+import { Button, Grid, IconButton } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -39,25 +39,21 @@ const InlineTags = ({ tags }) => {
   const { query } = useRouter()
 
   /** @TODO: Use groups to visually group properties */
-  const { data: groups, error } = useSWR(['/api/tag_group/fetch', '?realm=' + query.realm], fetcher)
+  const { data: groups, error } = useSWR(['/api/tag_group/fetch', '?realm=' + query.realm], fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
   if (tags === undefined) return <div>Loading...</div>
-  if (query.realm == '') return <div>Select any realm</div>
+  if (query.realm === '') return <div>Select any realm</div>
 
-  return <div>
-    <div>
-      <IconButton>
-        <FilterList />
-      </IconButton>
-    </div>
-    <div>
-      {Array.isArray(tags) && tags.map(function (tag, key) {
-        const active = filter.indexOf(tag.name) > -1
-        return <button onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }} key={key}>{tag.name}</button>
-      })}
-    </div>
-  </div>
+  return <Grid>
+    <IconButton>
+      <FilterList />
+    </IconButton>
+    {Array.isArray(tags) && tags.map(function (tag, key) {
+      const active = filter.indexOf(tag.name) > -1
+      return <Button variant={active ? 'contained' : ''} onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }} key={key}>{tag.name}</Button>
+    })}
+  </Grid>
 }
 
 export default InlineTags

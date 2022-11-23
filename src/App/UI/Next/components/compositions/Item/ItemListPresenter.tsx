@@ -10,12 +10,12 @@ const ItemListPresenter = ({ tags, GroupRenderer, ItemRenderer, groupParams }) =
 
   const { query } = useRouter()
 
-  const { data, error } = useSWR(['/api/item/fetch', '?filter=' + query.filter + '&realm=' + query.realm], fetcher)
+  const { data, error } = useSWR(['/api/item/fetch', '?filter=' + query.filter + '&realm=' + query.realm], fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>
 
-  return <GroupRenderer properties={properties} params={groupParams}>{ data.map(function (item: Item, key: number) {
+  return <GroupRenderer properties={properties} params={groupParams}>{data.map(function (item: Item, key: number) {
     return <ItemRenderer key={key} rowKey={key} item={item} tags={tags} properties={properties} />
   })}</GroupRenderer>
 }

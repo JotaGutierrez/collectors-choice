@@ -1,9 +1,8 @@
 import { ChevronLeft, Delete } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
-import Select from '../../atoms/Select'
 import InputButton from '../../components/inputButton'
 
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
@@ -88,7 +87,7 @@ const RealmConfig = ({ realm, tags }) => {
     const result = await res.json()
   }
 
-  const { data, error } = useSWR(['/api/tag_group/fetch', '?realm=' + realm.name], fetcher)
+  const { data, error } = useSWR(['/api/tag_group/fetch', '?realm=' + realm.name], fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>
@@ -107,7 +106,8 @@ const RealmConfig = ({ realm, tags }) => {
         {showDescription &&
           <div>
             <div>
-              <textarea
+              <TextField
+                multiline
                 name="notes"
                 id="notes"
                 placeholder="Add realm notes..."
@@ -168,7 +168,7 @@ const RealmConfig = ({ realm, tags }) => {
                 <div>
                   {Array.isArray(tags) && tags.map(function (tag, key) {
                     return <>
-                      <button key={key}>{tag.name}</button>
+                      <Button key={key}>{tag.name}</Button>
                       <IconButton onClick={() => deleteTag(tag._id)}>
                         <Delete />
                       </IconButton>
@@ -182,7 +182,8 @@ const RealmConfig = ({ realm, tags }) => {
                     <input type="hidden" name="realm" id="realm" value={realm.name}></input>
                     <div>
                       <Select name="group" onChange={null} selected={null}>
-                        <option value="">(optional) property...</option>{Array.isArray(data) && data.map((group, key) => <option key={key}>{group.name}</option>)}
+                        <MenuItem value="">(optional) property...</MenuItem>
+                        {Array.isArray(data) && data.map((group, key) => <MenuItem key={key}>{group.name}</MenuItem>)}
                       </Select>
                     </div>
                     <InputButton name="name" placeholder="Add tag..." />

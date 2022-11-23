@@ -1,5 +1,5 @@
 import { Edit } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { IconButton, ListItemText, MenuItem } from '@mui/material'
 
 interface Props {
   active,
@@ -10,19 +10,13 @@ interface Props {
 }
 
 const RealmSelector = ({ active, realm, activateRealm, activateRealmConfig, realmKey }: Props) =>
-  <div key={realmKey}>
-    <div>
-      <div>
-        <a onClick={event => { event.preventDefault(); activateRealm(realm.name) }}>{realm.name}</a>
-      </div>
-      <div>
-        <a onClick={event => { event.preventDefault(); activateRealmConfig(realm.name) }}>
-          <IconButton>
-            <Edit />
-          </IconButton>
-        </a>
-      </div>
-    </div>
-  </div>
+  <MenuItem key={realmKey}>
+    <ListItemText>
+      <a onClick={event => { event.preventDefault(); activateRealm(realm.name) }}>{realm.name}</a>
+    </ListItemText>
+    <IconButton onClick={event => { event.preventDefault(); activateRealmConfig(realm.name) }}>
+      <Edit />
+    </IconButton>
+  </MenuItem>
 
 export default RealmSelector

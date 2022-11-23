@@ -3,11 +3,11 @@ import { Multiselect } from 'multiselect-react-dropdown'
 import Item from '../../../../../Core/Item/domain/Item'
 
 interface TagSelectProps {
-    item: Item,
-    tags?
+  item: Item,
+  tags?
 }
 
-const TagSelect = ({ item, tags } : TagSelectProps) => {
+const TagSelect = ({ item, tags }: TagSelectProps) => {
   const saveTags = async tags => await fetch('/api/item/setTags', {
     method: 'PATCH',
     headers: {
@@ -30,13 +30,13 @@ const TagSelect = ({ item, tags } : TagSelectProps) => {
   }
 
   return <Multiselect
-      style={{ border: 0 }}
-      options={tags.filter((tag: { group: string; }) => tag.group == '')}
-      selectedValues={item.tags ?? []}
-      onSelect={onSelect}
-      onRemove={onRemove}
-      displayValue="name"
-    />
+    style={{ border: 0 }}
+    options={tags.filter((tag: { group: string; }) => tag.group === '')}
+    selectedValues={item.tags ?? []}
+    onSelect={onSelect}
+    onRemove={onRemove}
+    displayValue="name"
+  />
 }
 
 export default TagSelect

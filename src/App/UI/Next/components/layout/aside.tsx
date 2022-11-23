@@ -1,10 +1,12 @@
 
+import { ChevronLeft } from '@mui/icons-material'
+import { Divider, Grid, IconButton, ListItemText, MenuItem, MenuList } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import RealmSelector from '../compositions/Realm/RealmSelector'
 import InputButton from '../components/inputButton'
 import Logo from '../components/Logo'
+import RealmSelector from '../compositions/Realm/RealmSelector'
 
 /**
  * @TODO Refactor
@@ -30,7 +32,7 @@ const Aside = () => {
   useEffect(() => {
     if (!router.isReady) return
     if (router.query.realm === encodeURIComponent(activeRealm) &&
-          router.query.page === realmPage
+      router.query.page === realmPage
     ) return
 
     router.query = {
@@ -60,34 +62,31 @@ const Aside = () => {
     const result = await res.json()
   }
 
-  const { data, error } = useSWR(['/api/realm/fetch'], fetcher)
+  const { data, error } = useSWR(['/api/realm/fetch'], fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>
 
   return (
-    <>
-      <Logo />
-      <div>
-          {
-              data.map((realm, key) =>
-                <RealmSelector
-                  key={key}
-                  realm={realm}
-                  realmKey={key}
-                  activateRealm={activateRealm}
-                  activateRealmConfig={activateRealmConfig}
-                  active={activeRealm == realm.name}
-                />
-              )
-          }
-      </div>
-      <div>
+    <MenuList>
+      <Grid style={{ padding: '1rem' }}>
         <form onSubmit={saveRealm}>
           <InputButton name="name" placeholder="Add realm..." />
         </form>
-      </div>
-    </>
+      </Grid>
+      {
+        data.map((realm, key) =>
+          <RealmSelector
+            key={key}
+            realm={realm}
+            realmKey={key}
+            activateRealm={activateRealm}
+            activateRealmConfig={activateRealmConfig}
+            active={activeRealm === realm.name}
+          />
+        )
+      }
+    </MenuList>
   )
 }
 

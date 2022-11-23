@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { IconButton } from '@mui/material'
 import { Delete, Edit } from '@mui/icons-material'
+import { IconButton, Typography } from '@mui/material'
+import { useState } from 'react'
 import Page from './Page'
 import Select from '../../atoms/Select'
 import TagSelect from '../../atoms/TagsSelect'
@@ -37,32 +37,33 @@ const ItemRow = ({ rowKey, item, tags, properties }) => {
     }
     )
 
-  return <tr key={rowKey}>
-    <td>
-      {item.name}
-      <br />
-      <TagSelect tags={tags} item={item} />
-    </td>
+  return <div key={rowKey} style={{ borderBottom: '1px solid #000', padding: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+      <div style={{ flexGrow: '1' }}>
+        <Typography>{item.name}</Typography>
+      </div>
+      <div>
+        <IconButton onClick={toggleItemConfig}>
+          <Edit />
+        </IconButton>
+        <IconButton onClick={(event) => deleteItem(event, item._id)}>
+          <Delete />
+        </IconButton>
+        {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
+      </div>
+    </div>
+    <div><TagSelect tags={tags} item={item} /></div>
+    <div><Typography>{item.notes}</Typography></div>
     {properties.map((property, key) => {
       const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group == property)
-      return <td key={key}>
+      return <div key={key}>
         <Select name="" onChange={event => saveProperty(item, event.target.value, property)} selected={selectedTag && selectedTag.name}>
           <option value=""></option>
-          {tags.filter(tag => tag.group == property).map((tag, key) => <option key={key} value={tag.name}>{tag.name}</option>)}
+          {tags.filter(tag => tag.group === property).map((tag, key) => <option key={key} value={tag.name}>{tag.name}</option>)}
         </Select>
-      </td>
+      </div>
     })}
-    <td>{item.notes}</td>
-    <td>
-      <IconButton onClick={toggleItemConfig}>
-        <Edit />
-      </IconButton>
-      <IconButton onClick={(event) => deleteItem(event, item._id)}>
-        <Delete />
-      </IconButton>
-      {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
-    </td>
-  </tr>
+  </div>
 }
 
 export default ItemRow

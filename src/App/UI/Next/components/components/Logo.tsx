@@ -1,7 +1,5 @@
 
 const Logo = () =>
-  <div>
-    <div>Collectors Choice</div>
-  </div>
+  <div>Collectors Choice</div>
 
 export default Logo

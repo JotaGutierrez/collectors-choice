@@ -1,5 +1,5 @@
 import { Edit } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import Page from './Page'
@@ -21,9 +21,9 @@ const ShortCard = ({ rowKey, item, tags, properties }) => {
       </div>
       <div>
         <div>
-          <h1>
+          <Typography variant='h3'>
             {item.name}
-          </h1>
+          </Typography>
           <div>
             <IconButton onClick={toggleItemConfig}>
               <Edit />
@@ -31,9 +31,9 @@ const ShortCard = ({ rowKey, item, tags, properties }) => {
           </div>
         </div>
         <div>
-          <div>
+          <Typography>
             {item.notes}
-          </div>
+          </Typography>
         </div>
         {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
       </div>
