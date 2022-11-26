@@ -1,5 +1,5 @@
 import { ChevronLeft, Menu } from '@mui/icons-material'
-import { AppBar, Box, Container, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
 import { NextPage } from 'next'
 
 import Head from 'next/head'
@@ -20,8 +20,6 @@ import '@fontsource/roboto/700.css'
 interface Props {
   items?
 }
-
-const drawerWidth = 240
 
 /** @TODO: Refactor */
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())

@@ -1,8 +1,14 @@
 import Board from './Board'
 import ShortCard from './ShortCard'
 import UnboundDelegatedItemListPresenter from './UnboundDelegatedItemListPresenter'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 
-const BoardView = ({ tags, property }) => {
+interface props {
+  tags: Array<Tag>;
+  property: string;
+}
+
+const BoardView = ({ tags, property }: props) => {
   return <UnboundDelegatedItemListPresenter tags={tags} GroupRenderer={Board} ItemRowRenderer={ShortCard} groupParams={
     {
       property,

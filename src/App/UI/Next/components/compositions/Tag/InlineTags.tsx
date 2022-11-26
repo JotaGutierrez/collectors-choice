@@ -1,13 +1,18 @@
 import { FilterList } from '@mui/icons-material'
-import { Button, Grid, IconButton } from '@mui/material'
+import { Chip, Grid, IconButton } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 
 /** @TODO: Refactor */
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
-const InlineTags = ({ tags }) => {
+interface props {
+  tags: Array<Tag>
+}
+
+const InlineTags = ({ tags }: props) => {
   const router = useRouter()
   const [filter, setFilter] = useState([])
 
@@ -39,6 +44,7 @@ const InlineTags = ({ tags }) => {
   const { query } = useRouter()
 
   /** @TODO: Use groups to visually group properties */
+  // eslint-disable-next-line no-unused-vars
   const { data: groups, error } = useSWR(['/api/tag_group/fetch', '?realm=' + query.realm], fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
@@ -49,10 +55,13 @@ const InlineTags = ({ tags }) => {
     <IconButton>
       <FilterList />
     </IconButton>
-    {Array.isArray(tags) && tags.map(function (tag, key) {
-      const active = filter.indexOf(tag.name) > -1
-      return <Button variant={active ? 'contained' : ''} onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }} key={key}>{tag.name}</Button>
-    })}
+    {Array.isArray(tags) && tags.map((tag, key) => <Chip
+      variant={filter.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
+      onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }}
+      key={key}
+      label={tag.name}
+    />
+    )}
   </Grid>
 }
 

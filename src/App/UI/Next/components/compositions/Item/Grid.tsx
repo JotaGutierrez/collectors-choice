@@ -1,4 +1,7 @@
+interface props {
+  children: any;
+}
 
-const Grid = ({ properties, children }) => <div>{children}</div>
+const Grid = ({ children }: props) => <div>{children}</div>
 
 export default Grid

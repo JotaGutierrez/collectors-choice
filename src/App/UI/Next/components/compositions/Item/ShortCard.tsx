@@ -3,9 +3,15 @@ import { IconButton, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import Page from './Page'
+import Item from '../../../../../../Core/Item/domain/Item'
 import Modal from '../../layout/modal'
 
-const ShortCard = ({ rowKey, item, tags, properties }) => {
+interface props {
+  rowKey: number;
+  item: Item;
+}
+
+const ShortCard = ({ rowKey, item }: props) => {
   const [showItemConfig, setItemConfig] = useState(false)
 
   const toggleItemConfig = () => setItemConfig(!showItemConfig)

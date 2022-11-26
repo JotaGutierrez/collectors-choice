@@ -1,19 +1,13 @@
 import { Delete, Edit } from '@mui/icons-material'
 import { IconButton, Typography } from '@mui/material'
-import { useState } from 'react'
-import Page from './Page'
+import Item from '../../../../../../Core/Item/domain/Item'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
 import Select from '../../atoms/Select'
 import TagSelect from '../../atoms/TagsSelect'
 
 interface props {
   rowKey: string;
-  item: {
-    _id: string,
-    name: string,
-    notes: string,
-    tags: Array<Tag>
-  };
+  item: Item;
   tags: Array<Tag>;
   properties: Array<string>;
   setActiveItem: Function;
@@ -23,7 +17,7 @@ const ItemRow = ({ rowKey, item, tags, properties, setActiveItem }: props) => {
   const deleteItem = async (event, id) => {
     event.preventDefault()
 
-    const res = await fetch('/api/item/delete', {
+    await fetch('/api/item/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'

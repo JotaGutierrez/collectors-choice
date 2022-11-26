@@ -10,7 +10,7 @@ interface Props {
 }
 
 const RealmSelector = ({ active, realm, activateRealm, activateRealmConfig, realmKey }: Props) =>
-  <MenuItem key={realmKey}>
+  <MenuItem key={realmKey} selected={active}>
     <ListItemText>
       <a onClick={event => { event.preventDefault(); activateRealm(realm.name) }}>{realm.name}</a>
     </ListItemText>

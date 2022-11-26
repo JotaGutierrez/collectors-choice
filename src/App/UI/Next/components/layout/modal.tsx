@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 
+// eslint-disable-next-line react/prop-types
 const Modal = ({ children, onClose, title }) =>
     <div>
         <div>

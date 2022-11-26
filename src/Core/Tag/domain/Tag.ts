@@ -1,5 +1,6 @@
 
 class Tag {
+    _id: any;
     name: string;
     realm: string;
     group: string;
@@ -10,7 +11,11 @@ class Tag {
         this.group = group;
     }
 
-    isProperty() : boolean {
+    getId(): string {
+        return this._id;
+    }
+
+    isProperty(): boolean {
         return this.group !== '';
     }
 }

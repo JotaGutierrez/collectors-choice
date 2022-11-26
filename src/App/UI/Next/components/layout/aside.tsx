@@ -57,7 +57,7 @@ const Aside = () => {
       body: JSON.stringify({ name: event.target.name.value })
     })
 
-    const result = await res.json()
+    await res.json()
   }
 
   const { data, error } = useSWR(['/api/realm/fetch'], fetcher, { refreshInterval: 1000 })

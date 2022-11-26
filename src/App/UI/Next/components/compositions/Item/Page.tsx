@@ -6,8 +6,8 @@ import Item from '../../../../../../Core/Item/domain/Item'
 const Page = ({ item }: { item: Item }) => {
   const [itemNotes, setItemNotes] = useState(item.notes)
 
-  const saveDescription = async event => {
-    const res = await fetch('/api/item/patch', {
+  const saveDescription = async event =>
+    await fetch('/api/item/patch', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -17,7 +17,6 @@ const Page = ({ item }: { item: Item }) => {
         notes: event
       })
     })
-  }
 
   return <div style={{ padding: '1rem' }}>
     <Typography variant='h6'>{item.name}</Typography>

@@ -1,12 +1,21 @@
 
 import { Edit } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
-import { useState } from 'react'
+import { Key, useState } from 'react'
 import Page from './Page'
+import Item from '../../../../../../Core/Item/domain/Item'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 import TagSelect from '../../atoms/TagsSelect'
 import Modal from '../../layout/modal'
 
-const Card = ({ rowKey, item, tags, properties }) => {
+interface props {
+  rowKey: Key;
+  item: Item;
+  tags: Array<Tag>;
+  properties: Array<string>;
+}
+
+const Card = ({ rowKey, item, tags, properties }: props) => {
   const [showItemConfig, setItemConfig] = useState(false)
 
   const toggleItemConfig = () => setItemConfig(!showItemConfig)
@@ -20,7 +29,7 @@ const Card = ({ rowKey, item, tags, properties }) => {
       body: JSON.stringify({
         id: item._id,
         property,
-        value: tags.find(tag => tag.name == value)
+        value: tags.find(tag => tag.name === value)
       })
     }
     )
@@ -55,7 +64,7 @@ const Card = ({ rowKey, item, tags, properties }) => {
         return <div key={key}>
           <div>
             {tags.filter(tag => tag.group === property).map((tag, optionKey) => <label key={optionKey}>
-              <input name={property} type="radio" value={tag.name} checked={selectedTag && selectedTag.name == tag.name} onChange={event => saveProperty(item, event.target.value, property)} />
+              <input name={property} type="radio" value={tag.name} checked={selectedTag && selectedTag.name === tag.name} onChange={event => saveProperty(item, event.target.value, property)} />
               <div>
                 {tag.name}
               </div>

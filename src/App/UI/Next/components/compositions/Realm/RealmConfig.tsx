@@ -3,12 +3,19 @@ import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
+import Realm from '../../../../../../Core/Realm/domain/Realm'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 import InputButton from '../../components/inputButton'
 
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
+interface props {
+  realm: Realm;
+  tags: Array<Tag>;
+}
+
 /** @TODO: Refactor. Split modules */
-const RealmConfig = ({ realm, tags }) => {
+const RealmConfig = ({ realm, tags }: props) => {
   const [showDescription, setShowDescription] = useState(false)
   const [showTagGroups, setShowTagGroups] = useState(false)
   const [showAddTag, setShowAddTag] = useState(false)
@@ -26,7 +33,7 @@ const RealmConfig = ({ realm, tags }) => {
       body: JSON.stringify({ name: event.target.name.value, realm: realm.name })
     })
 
-    const result = await res.json()
+    await res.json()
   }
 
   const saveRealmNotes = async notes => {
@@ -38,7 +45,7 @@ const RealmConfig = ({ realm, tags }) => {
       body: JSON.stringify({ description: notes, realm })
     })
 
-    const result = await res.json()
+    await res.json()
   }
 
   const saveTag = async (event) => {
@@ -56,7 +63,7 @@ const RealmConfig = ({ realm, tags }) => {
       })
     })
 
-    const result = await res.json()
+    await res.json()
   }
 
   const deleteTag = async (id: string) => {
@@ -70,7 +77,7 @@ const RealmConfig = ({ realm, tags }) => {
       })
     })
 
-    const result = await res.json()
+    await res.json()
   }
 
   const deleteTagGroup = async (id: string) => {
@@ -84,7 +91,7 @@ const RealmConfig = ({ realm, tags }) => {
       })
     })
 
-    const result = await res.json()
+    await res.json()
   }
 
   const { data, error } = useSWR(['/api/tag_group/fetch', '?realm=' + realm.name], fetcher, { refreshInterval: 1000 })
@@ -181,7 +188,7 @@ const RealmConfig = ({ realm, tags }) => {
                   <div>
                     <input type="hidden" name="realm" id="realm" value={realm.name}></input>
                     <div>
-                      <Select name="group" onChange={null} selected={null}>
+                      <Select name="group" onChange={null}>
                         <MenuItem value="">(optional) property...</MenuItem>
                         {Array.isArray(data) && data.map((group, key) => <MenuItem key={key}>{group.name}</MenuItem>)}
                       </Select>

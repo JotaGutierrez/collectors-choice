@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import styles from './ItemListPresenter.module.css'
 import Item from '../../../../../../Core/Item/domain/Item'
+import Realm from '../../../../../../Core/Realm/domain/Realm'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 import InputButton from '../../components/inputButton'
 import BoardView from '../Item/BoardView'
 import GridView from '../Item/GridView'
@@ -33,7 +35,7 @@ const ItemForm = () => {
       })
     })
 
-    const result = await res.json()
+    await res.json()
     event.target.name.value = ''
   }
 
@@ -45,22 +47,27 @@ const ItemForm = () => {
 
   return <form onSubmit={registerItem}>
     <input type="hidden" name="realm" id="realm" value={decodeURIComponent(String(query.realm))}></input>
-    <InputButton name="name" placeholder="add item..." extraClassses='' />
+    <InputButton name="name" placeholder="add item..." />
   </form>
 }
 
-const RealmView = ({ realm, tags }) => {
+interface props {
+  realm: Realm;
+  tags: Array<Tag>;
+}
+
+const RealmView = ({ realm, tags }: props) => {
   /** @TODO: Use query params instead of state, ie.: ?...&view=board&property=state */
   const [view, setView] = useState('list')
   const [property, setProperty] = useState('')
   const [showItemAdd, setShowItemAdd] = useState(false)
 
-  const properties = new Set([...tags.filter(tag => tag.group != '').map(tag => tag.group)])
+  const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
   const [activeItem, setActiveItem] = useState(null)
 
   return <>
-    <div style={{ width: '100vw' }}>
+    <div className={styles.listContainer}>
       <div className={`${styles.list} ${activeItem ? styles.closed : styles.open}`}>
         <div style={{ padding: '1rem' }}>
           <InlineTags tags={tags} />

@@ -1,8 +1,16 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 
-const UnboundDelegatedItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams }) => {
-  const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group != '').map(tag => tag.group)))] : []
+interface props {
+  tags: Array<Tag>;
+  GroupRenderer: any;
+  ItemRowRenderer: any;
+  groupParams: any;
+}
+
+const UnboundDelegatedItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams }: props) => {
+  const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group !== '').map(tag => tag.group)))] : []
 
   const { query } = useRouter()
 

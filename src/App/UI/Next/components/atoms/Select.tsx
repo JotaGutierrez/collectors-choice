@@ -1,5 +1,13 @@
+import { ChangeEventHandler } from 'react'
 
-const Select = ({ children, name, onChange, selected }) =>
+interface props {
+    children: any;
+    name: string;
+    onChange: ChangeEventHandler<HTMLSelectElement>;
+    selected: string;
+}
+
+const Select = ({ children, name, onChange, selected }: props) =>
     <select
         name={name}
         onChange={onChange}

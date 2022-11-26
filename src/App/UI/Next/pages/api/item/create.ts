@@ -1,16 +1,16 @@
-import { MongoClient } from 'mongodb';
-import MongoItemRepository from '../../../../../../Core/Item/infrastructure/MongoItemRepository';
-import CreateItem from '../../../../../../Core/Item/application/CreateItem';
+import { MongoClient } from 'mongodb'
+import CreateItem from '../../../../../../Core/Item/application/CreateItem'
+import MongoItemRepository from '../../../../../../Core/Item/infrastructure/MongoItemRepository'
 
-export default async function handler(req, res) {
-    const client = await MongoClient.connect('mongodb://mongo:27017/lotion');
+export default async function handler (req, res) {
+  const client = await MongoClient.connect('mongodb://mongo:27017/lotion')
 
-    const itemRepository = new MongoItemRepository(client);
+  const itemRepository = new MongoItemRepository(client)
 
-    /** @TODO: Use DI from yaml files */
-    const itemCreator = CreateItem(itemRepository);
+  /** @TODO: Use DI from yaml files */
+  const itemCreator = CreateItem(itemRepository)
 
-    itemCreator(req.body.name, req.body.realm);
+  itemCreator(req.body.name, req.body.realm)
 
-    res.status(200).json(await itemRepository.findAll());
+  res.status(200).json(await itemRepository.findAll())
 }

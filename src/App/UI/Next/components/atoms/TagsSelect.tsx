@@ -1,10 +1,11 @@
-
 import { Multiselect } from 'multiselect-react-dropdown'
+import * as React from 'react'
 import Item from '../../../../../Core/Item/domain/Item'
+import Tag from '../../../../../Core/Tag/domain/Tag'
 
 interface TagSelectProps {
-  item: Item,
-  tags?
+  item: Item;
+  tags?: Array<Tag>;
 }
 
 const TagSelect = ({ item, tags }: TagSelectProps) => {
@@ -19,20 +20,14 @@ const TagSelect = ({ item, tags }: TagSelectProps) => {
     })
   })
 
-  const onSelect = async event => {
-    event.preventDefault()
-    saveTags(event)
-  }
+  const onSelect = async event => saveTags(event)
 
-  const onRemove = async event => {
-    event.preventDefault()
-    saveTags(event)
-  }
+  const onRemove = async event => saveTags(event)
 
   return <Multiselect
     style={{ border: 0 }}
     options={tags.filter((tag: { group: string; }) => tag.group === '')}
-    selectedValues={item.tags ?? []}
+    selectedValues={item.tags ? item.tags.filter(tag => tag !== null) : []}
     onSelect={onSelect}
     onRemove={onRemove}
     displayValue="name"

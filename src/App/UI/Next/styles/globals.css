@@ -1,6 +1,7 @@
 :root {
   --aside-width: 100vw;
   --header-height: 64px;
+  --footer-height: 64px;
 }
 
 body {
