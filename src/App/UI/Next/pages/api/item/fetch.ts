@@ -6,7 +6,7 @@ import QueryParamsCriteriaConstraintsBuilder from '../../../../../../Core/Item/i
 
 export default async function handler (req, res) {
   /** @TODO: use middleware to avoid connecting from each controller */
-  const client = await MongoClient.connect('mongodb://mongo:27017/lotion')
+  const client = await MongoClient.connect(process.env.DB_URI)
 
   const itemRepository = new MongoItemRepository(client)
 

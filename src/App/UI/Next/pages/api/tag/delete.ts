@@ -3,7 +3,7 @@ import DeleteTag from '../../../../../../Core/Tag/application/DeleteTag'
 import MongoTagRepository from '../../../../../../Core/Tag/infrastructure/MongoTagRepository'
 
 export default async function handler (req, res) {
-  const client = await MongoClient.connect('mongodb://mongo:27017/lotion')
+  const client = await MongoClient.connect(process.env.DB_URI)
 
   const tagRepository = new MongoTagRepository(client)
 
