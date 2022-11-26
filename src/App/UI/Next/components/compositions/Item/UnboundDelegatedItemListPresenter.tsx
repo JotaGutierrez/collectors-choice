@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const UnboundDelegatedItemListPresenter = ({ tags, GroupRenderer, ItemRenderer, groupParams }) => {
+const UnboundDelegatedItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams }) => {
   const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group != '').map(tag => tag.group)))] : []
 
   const { query } = useRouter()
@@ -17,7 +17,7 @@ const UnboundDelegatedItemListPresenter = ({ tags, GroupRenderer, ItemRenderer, 
   }, [query])
 
   return items
-    ? <GroupRenderer properties={properties} params={groupParams} items={items} ItemRenderer={ItemRenderer} tags={tags} />
+    ? <GroupRenderer properties={properties} params={groupParams} items={items} ItemRowRenderer={ItemRowRenderer} tags={tags} />
     : <>Loading...</>
 }
 

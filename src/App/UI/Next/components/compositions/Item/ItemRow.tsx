@@ -2,15 +2,24 @@ import { Delete, Edit } from '@mui/icons-material'
 import { IconButton, Typography } from '@mui/material'
 import { useState } from 'react'
 import Page from './Page'
+import Tag from '../../../../../../Core/Tag/domain/Tag'
 import Select from '../../atoms/Select'
 import TagSelect from '../../atoms/TagsSelect'
-import Modal from '../../layout/modal'
 
-const ItemRow = ({ rowKey, item, tags, properties }) => {
-  const [showItemConfig, setItemConfig] = useState(false)
+interface props {
+  rowKey: string;
+  item: {
+    _id: string,
+    name: string,
+    notes: string,
+    tags: Array<Tag>
+  };
+  tags: Array<Tag>;
+  properties: Array<string>;
+  setActiveItem: Function;
+}
 
-  const toggleItemConfig = () => setItemConfig(!showItemConfig)
-
+const ItemRow = ({ rowKey, item, tags, properties, setActiveItem }: props) => {
   const deleteItem = async (event, id) => {
     event.preventDefault()
 
@@ -32,7 +41,7 @@ const ItemRow = ({ rowKey, item, tags, properties }) => {
       body: JSON.stringify({
         id: item._id,
         property,
-        value: tags.find(tag => tag.name == value)
+        value: tags.find(tag => tag.name === value)
       })
     }
     )
@@ -43,27 +52,28 @@ const ItemRow = ({ rowKey, item, tags, properties }) => {
         <Typography>{item.name}</Typography>
       </div>
       <div>
-        <IconButton onClick={toggleItemConfig}>
+        <IconButton onClick={() => setActiveItem(item)}>
           <Edit />
         </IconButton>
-        <IconButton onClick={(event) => deleteItem(event, item._id)}>
+        <IconButton onClick={event => deleteItem(event, item._id)}>
           <Delete />
         </IconButton>
-        {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
       </div>
     </div>
     <div><TagSelect tags={tags} item={item} /></div>
     <div><Typography>{item.notes}</Typography></div>
-    {properties.map((property, key) => {
-      const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group == property)
-      return <div key={key}>
-        <Select name="" onChange={event => saveProperty(item, event.target.value, property)} selected={selectedTag && selectedTag.name}>
-          <option value=""></option>
-          {tags.filter(tag => tag.group === property).map((tag, key) => <option key={key} value={tag.name}>{tag.name}</option>)}
-        </Select>
-      </div>
-    })}
-  </div>
+    {
+      properties.map((property, key) => {
+        const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group === property)
+        return <div key={key}>
+          <Select name="" onChange={event => saveProperty(item, event.target.value, property)} selected={selectedTag && selectedTag.name}>
+            <option value=""></option>
+            {tags.filter(tag => tag.group === property).map((tag, key) => <option key={key} value={tag.name}>{tag.name}</option>)}
+          </Select>
+        </div>
+      })
+    }
+  </div >
 }
 
 export default ItemRow

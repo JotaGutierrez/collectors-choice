@@ -9,6 +9,8 @@ services:
       MONGO_INITDB_DATABASE: lotion
     ports:
       - 27017:27017
+    volumes:
+      - ./docker/mongodb/data:/data/db
 
   node:
     build:
