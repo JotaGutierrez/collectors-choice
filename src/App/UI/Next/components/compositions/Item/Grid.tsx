@@ -1,4 +1,7 @@
+interface props {
+  children: any;
+}
 
-const Grid = ({ properties, children }) => <div className="w-full border-b border-slate-200 grid grid-cols-4 gap-4">{children}</div>
+const Grid = ({ children }: props) => <div>{children}</div>
 
-export default Grid;
+export default Grid

@@ -1,0 +1,44 @@
+.list {
+  width: 100%;
+  left: 0;
+  position: absolute;
+  transition: all ease-in-out 125ms;
+}
+
+.item {
+  width: 100%;
+  left: 0;
+  position: absolute;
+  transition: all ease-in-out 125ms;
+}
+
+.closed {
+  left: -100%;
+}
+
+@media (min-width: 1200px) {
+  .listContainer {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    width: calc(100vw - var(--aside-width));
+    min-height: 100vh;
+  }
+
+  .list {
+    border-right: 1px solid rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    left: 0;
+    position: relative;
+    width: calc(50vw - var(--aside-width));
+  }
+
+  .item {
+    left: 0;
+    position: relative;
+  }
+
+  .closed {
+    left: 0;
+  }
+}

@@ -34,3 +34,4 @@ yarn-error.log*
 
 
 node_modules
+docker/mongodb/data

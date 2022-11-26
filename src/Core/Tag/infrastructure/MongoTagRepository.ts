@@ -1,7 +1,7 @@
 
 import Tag from '../domain/Tag';
 import TagRepository from '../domain/TagRepository';
-import { ObjectId } from 'mongodb';
+import { ObjectId } from '../../../App/UI/Next/node_modules/mongodb';
 import create from '../application/CreateTag';
 
 class MongoTagRepository implements TagRepository

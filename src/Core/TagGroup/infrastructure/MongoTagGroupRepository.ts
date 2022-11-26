@@ -1,7 +1,7 @@
 
 import TagGroup from '../domain/TagGroup';
 import TagGroupRepository from '../domain/TagGroupRepository';
-import { ObjectId } from 'mongodb';
+import { ObjectId } from '../../../App/UI/Next/node_modules/mongodb';
 
 class MongoTagGroupRepository implements TagGroupRepository
 {
