@@ -4,7 +4,7 @@ import Table from './Table'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
 
 interface props {
-  tags: Array<Tag>;
+  tags?: Array<Tag>;
   setActiveItem: Function;
 }
 

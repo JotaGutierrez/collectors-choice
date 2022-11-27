@@ -1,5 +1,5 @@
 import { Add, CalendarViewWeek, Close, FilterList, GridView as GridViewIcon, List } from '@mui/icons-material'
-import { Fab, Grid, IconButton } from '@mui/material'
+import { Fab, Grid, IconButton, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import styles from './ItemListPresenter.module.css'
@@ -61,7 +61,7 @@ const RealmView = ({ realm, tags }: props) => {
   const [view, setView] = useState('list')
   const [property, setProperty] = useState('')
   const [showItemAdd, setShowItemAdd] = useState(false)
-  const [showTagsFilter, setShowTagsFilter] = useState(false)
+  const [showTagsFilter, setShowTagsFilter] = useState(true)
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
@@ -71,11 +71,14 @@ const RealmView = ({ realm, tags }: props) => {
     <div className={styles.listContainer}>
       <div className={`${styles.list} ${activeItem ? styles.closed : styles.open}`}>
         <div style={{ padding: '1rem' }}>
-          <Grid style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ flexGrow: 1 }}>
+          <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <div>
               <IconButton onClick={() => setShowTagsFilter(!showTagsFilter)}>
                 <FilterList />
               </IconButton>
+            </div>
+            <div style={{ flexGrow: 1, paddingLeft: '1rem' }}>
+              <Typography variant='h6'>{realm.name}</Typography>
             </div>
             <IconButton onClick={() => setView('list')}>
               <List />
@@ -97,11 +100,23 @@ const RealmView = ({ realm, tags }: props) => {
         </div>
         <div style={{ padding: '0 1rem' }}>{showTagsFilter && <InlineTags tags={tags} />}</div>
         <div>
-          {tags && view === 'list' && <ListView tags={tags} setActiveItem={setActiveItem} />}
-          {tags && view === 'grid' && <GridView tags={tags} />}
-          {tags && view === 'board' && <BoardView tags={tags} property={property} />}
+          {view === 'list' && <ListView tags={tags} setActiveItem={setActiveItem} />}
+          {view === 'grid' && <GridView tags={tags} />}
+          {view === 'board' && <BoardView tags={tags} property={property} />}
         </div>
-        <div style={{ boxSizing: 'border-box', position: 'fixed', bottom: 0, width: '100vw', left: `${showItemAdd ? 0 : '100vw'}`, padding: '1rem', backgroundColor: '#fff', height: '154px', transition: 'all ease-in-out 250ms' }}>
+        <div style={{
+          zIndex: 1,
+          boxSizing: 'border-box',
+          position: 'fixed',
+          bottom: 0,
+          width: '100vw',
+          left: `${showItemAdd ? 0 : '100vw'}`,
+          padding: '1rem',
+          backgroundColor: '#fff',
+          height: '154px',
+          transition: 'all ease-in-out 250ms',
+          textAlign: 'right'
+        }}>
           <ItemForm />
         </div>
       </div>
@@ -109,13 +124,13 @@ const RealmView = ({ realm, tags }: props) => {
         {activeItem && <ItemRenderer item={activeItem} />}
       </div>
 
-      {activeItem && <div style={{ position: 'fixed', bottom: '1rem', right: '1rem' }}>
+      {activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
         <Fab color="primary" aria-label="add" onClick={() => setActiveItem(null)}>
           <Close />
         </Fab>
       </div>}
 
-      {!activeItem && <div style={{ position: 'fixed', bottom: '1rem', right: '1rem' }}>
+      {!activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
         <Fab color="primary" aria-label="add" onClick={() => setShowItemAdd(!showItemAdd)}>
           {showItemAdd ? <Close /> : <Add />}
         </Fab>

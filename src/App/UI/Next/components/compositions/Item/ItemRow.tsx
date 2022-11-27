@@ -8,7 +8,7 @@ import TagSelect from '../../atoms/TagsSelect'
 interface props {
   rowKey: string;
   item: Item;
-  tags: Array<Tag>;
+  tags?: Array<Tag>;
   properties: Array<string>;
   setActiveItem: Function;
 }
