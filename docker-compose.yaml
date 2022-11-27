@@ -10,7 +10,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./docker/mongodb/data:/data/db
+      - ./etc/docker/mongo/data:/data/db
 
   node:
     build:
