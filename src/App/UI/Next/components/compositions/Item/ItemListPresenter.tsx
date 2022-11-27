@@ -6,7 +6,7 @@ import Tag from '../../../../../../Core/Tag/domain/Tag'
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
 interface itemListPresenterProps {
-  tags: Array<Tag>;
+  tags?: Array<Tag>;
   GroupRenderer: any;
   ItemRowRenderer: any;
   groupParams: Array<string>;

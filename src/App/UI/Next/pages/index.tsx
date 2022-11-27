@@ -66,14 +66,9 @@ const Home: NextPage<Props> = () => {
             style={{ zIndex: 1 }}
             className={`${styles.aside} ${isOpened ? '' : styles.closed}`}
           >
-            <Aside />
+            <Aside closeMenu={() => setIsOpened(false)} />
           </Drawer>
           <Box className={`${styles.main} ${isOpened ? '' : styles.closed}`} component="main">
-            <div style={{ padding: '1rem' }}>
-              <Typography variant='h4'>
-                {realm && realm.name}
-              </Typography>
-            </div>
             {query.page === 'config' && <RealmConfig realm={realm} tags={tags} />}
             {query.page === '' && <RealmView realm={realm} tags={tags} />}
           </Box>
