@@ -1,5 +1,4 @@
-import { FilterList } from '@mui/icons-material'
-import { Chip, Grid, IconButton } from '@mui/material'
+import { Chip, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
