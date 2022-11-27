@@ -1,0 +1,57 @@
+---
+  - hosts: webserver
+    tasks:
+    - name: Clone github repository
+      git:
+        repo: "{{ repository }}"
+        dest: /tmp/cc
+        clone: yes
+        update: yes
+      delegate_to: localhost
+    
+    - name: install node modules
+      shell:
+        cmd: yarn install
+        chdir: /tmp/cc/src/App/UI/Next
+      delegate_to: localhost 
+    
+    - name: Build production app
+      shell:
+        cmd: yarn build
+        chdir: /tmp/cc/src/App/UI/Next
+      delegate_to: localhost
+    
+    - name: Remove git dir
+      shell:
+        cmd: rm -rf .git
+        chdir: /tmp/cc
+      delegate_to: localhost
+      
+    - name: Packing application
+      archive:
+        path: /tmp/cc
+        dest: /tmp/cc.tar.gz
+        format: gz
+        remove: yes
+      delegate_to: localhost
+      
+    - name: Copying file
+      copy:
+        src: /tmp/cc.tar.gz
+        dest: /tmp
+
+    - name: Unarchive package
+      unarchive:
+        src: /tmp/cc.tar.gz
+        dest: "{{ target_dir }}"
+
+    - name: restart pm2
+      shell:
+        cmd: pm2 restart "Collectors Choice"
+
+    - name: Remove local files
+      shell:
+        cmd: rm -rf cc*
+        chdir: /tmp
+      delegate_to: localhost
+    

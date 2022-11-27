@@ -34,4 +34,5 @@ yarn-error.log*
 
 
 node_modules
-docker/mongodb/data
+etc/docker/mongo/data
+etc/deploy/prod
