@@ -51,16 +51,14 @@ const InlineTags = ({ tags }: props) => {
   if (tags === undefined) return <div>Loading...</div>
   if (query.realm === '') return <div>Select any realm</div>
 
-  return <Grid>
-    <IconButton>
-      <FilterList />
-    </IconButton>
-    {Array.isArray(tags) && tags.map((tag, key) => <Chip
-      variant={filter.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
-      onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }}
-      key={key}
-      label={tag.name}
-    />
+  return <Grid container columnSpacing={1}>
+    {Array.isArray(tags) && tags.map((tag, key) => <Grid key={key} item>
+      <Chip
+        variant={filter.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
+        onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }}
+        label={tag.name}
+      />
+    </Grid>
     )}
   </Grid>
 }

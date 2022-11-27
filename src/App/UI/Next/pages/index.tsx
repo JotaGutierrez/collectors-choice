@@ -66,7 +66,7 @@ const Home: NextPage<Props> = () => {
             style={{ zIndex: 1 }}
             className={`${styles.aside} ${isOpened ? '' : styles.closed}`}
           >
-            <Aside />
+            <Aside closeMenu={() => setIsOpened(false)} />
           </Drawer>
           <Box className={`${styles.main} ${isOpened ? '' : styles.closed}`} component="main">
             <div style={{ padding: '1rem' }}>

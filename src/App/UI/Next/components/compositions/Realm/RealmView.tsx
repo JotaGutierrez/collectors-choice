@@ -1,4 +1,4 @@
-import { Add, CalendarViewWeek, Close, GridView as GridViewIcon, List } from '@mui/icons-material'
+import { Add, CalendarViewWeek, Close, FilterList, GridView as GridViewIcon, List } from '@mui/icons-material'
 import { Fab, Grid, IconButton } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -61,6 +61,7 @@ const RealmView = ({ realm, tags }: props) => {
   const [view, setView] = useState('list')
   const [property, setProperty] = useState('')
   const [showItemAdd, setShowItemAdd] = useState(false)
+  const [showTagsFilter, setShowTagsFilter] = useState(false)
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
@@ -70,8 +71,12 @@ const RealmView = ({ realm, tags }: props) => {
     <div className={styles.listContainer}>
       <div className={`${styles.list} ${activeItem ? styles.closed : styles.open}`}>
         <div style={{ padding: '1rem' }}>
-          <InlineTags tags={tags} />
-          <Grid>
+          <Grid style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ flexGrow: 1 }}>
+              <IconButton onClick={() => setShowTagsFilter(!showTagsFilter)}>
+                <FilterList />
+              </IconButton>
+            </div>
             <IconButton onClick={() => setView('list')}>
               <List />
             </IconButton>
@@ -90,6 +95,7 @@ const RealmView = ({ realm, tags }: props) => {
             )}
           </Grid>
         </div>
+        <div style={{ padding: '0 1rem' }}>{showTagsFilter && <InlineTags tags={tags} />}</div>
         <div>
           {tags && view === 'list' && <ListView tags={tags} setActiveItem={setActiveItem} />}
           {tags && view === 'grid' && <GridView tags={tags} />}

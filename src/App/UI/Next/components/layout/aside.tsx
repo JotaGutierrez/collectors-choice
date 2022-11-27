@@ -11,7 +11,11 @@ import RealmSelector from '../compositions/Realm/RealmSelector'
  */
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
-const Aside = () => {
+interface props {
+  closeMenu: Function
+}
+
+const Aside = ({ closeMenu }: props) => {
   const router = useRouter()
 
   const [activeRealm, setActiveRealm] = useState(decodeURIComponent(String(router.query.realm ?? '')))
@@ -20,11 +24,13 @@ const Aside = () => {
   const activateRealm = realm => {
     setRealmPage('')
     setActiveRealm(realm)
+    closeMenu()
   }
 
   const activateRealmConfig = realm => {
     setRealmPage('config')
     setActiveRealm(realm)
+    closeMenu()
   }
 
   useEffect(() => {
