@@ -1,4 +1,3 @@
-import SelectInput from '@mui/material/Select/SelectInput'
 import { ChangeEventHandler } from 'react'
 
 interface props {
@@ -18,11 +17,6 @@ const Select = ({ children, name, onChange, selected }: props) =>
     >
       {children}
     </select>
-    <SelectInput
-      onChange={onChange}
-    >
-      {children}
-    </SelectInput>
   </>
 
 export default Select

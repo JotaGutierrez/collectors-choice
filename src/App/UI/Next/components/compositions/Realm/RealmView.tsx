@@ -1,7 +1,7 @@
-import { Add, CalendarViewWeek, Close, FilterList, GridView as GridViewIcon, List } from '@mui/icons-material'
-import { Fab, Grid, Grow, IconButton, Typography } from '@mui/material'
+import { Add, CalendarViewWeek, Close, GridView as GridViewIcon, List } from '@mui/icons-material'
+import { Fab, Grid, IconButton } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import styles from './ItemListPresenter.module.css'
 import Item from '../../../../../../Core/Item/domain/Item'
 import Realm from '../../../../../../Core/Realm/domain/Realm'
@@ -81,26 +81,6 @@ const RealmView = ({ realm, tags }: props) => {
     <div className={styles.listContainer}>
       <div className={`${styles.list} ${activeItem ? styles.closed : styles.open}`}>
         {realmContext.showFilterTags && <div style={{ padding: '1rem' }}><InlineTags tags={tags} /></div>}
-        { /*
-            <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-             <IconButton onClick={() => setView('list')}>
-              <List />
-            </IconButton>
-            <IconButton onClick={() => setView('grid')}>
-              <GridViewIcon />
-            </IconButton>
-            {[...Array.from(properties)].map((_property, key) =>
-              <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
-                <IconButton>
-                  <CalendarViewWeek />
-                </IconButton>
-                <div>
-                  {_property}
-                </div>
-              </div>
-            )}
-          </Grid>
-          */ }
         <div>
           {view === 'list' && <ListView tags={tags} setActiveItem={setActiveItem} />}
           {view === 'grid' && <GridView tags={tags} />}
@@ -121,6 +101,26 @@ const RealmView = ({ realm, tags }: props) => {
         }}>
           <ItemForm onSuccess={() => setShowItemAdd(false)} />
         </div>
+        {
+          <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <IconButton onClick={() => setView('list')}>
+              <List />
+            </IconButton>
+            <IconButton onClick={() => setView('grid')}>
+              <GridViewIcon />
+            </IconButton>
+            {[...Array.from(properties)].map((_property, key) =>
+              <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
+                <IconButton>
+                  <CalendarViewWeek />
+                </IconButton>
+                <div>
+                  {_property}
+                </div>
+              </div>
+            )}
+          </Grid>
+        }
       </div>
       <div className={`${styles.item} ${activeItem ? styles.open : styles.closed}`}>
         {activeItem && <ItemRenderer item={activeItem} />}

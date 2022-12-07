@@ -16,7 +16,7 @@ const RealmSelector = ({ active, realm, activateRealm, activateRealmConfig, real
   const realmContext = useContext(RealmContext)
 
   return <MenuItem key={realmKey} selected={realmContext.activeRealm === realm.name}>
-    <ListItemText onClick={() => realmContext.setActiveRealm(realm.name)}>{realm.name}</ListItemText>
+    <ListItemText onClick={() => realmContext.activateRealm(realm.name)}>{realm.name}</ListItemText>
     <IconButton onClick={event => { event.preventDefault(); activateRealmConfig(realm.name) }}>
       <Edit />
     </IconButton>

@@ -1,11 +1,35 @@
 import '../styles/globals.css'
 import 'reflect-metadata'
 import { useRouter } from 'next/router'
-import { createContext, useState } from 'react'
+import { Key, createContext, useState } from 'react'
 
-export const AlertBagContext = createContext([])
-export const RealmContext = createContext([])
-export const AsideContext = createContext([])
+interface AlertInterface {
+  message: string;
+  id: Key;
+}
+
+interface AlertBagContextInterface {
+  alerts: Array<AlertInterface>;
+  pushAlert: (string) => void;
+}
+
+interface RealmContextInterface {
+  activeRealm: string;
+  activateRealm: Function;
+  showFilterTags: boolean;
+  toggleFilterTags: Function;
+  activateRealmConfig: Function;
+  realmPage: string;
+}
+
+interface AsideContextInterface {
+  isOpened: boolean;
+  setIsOpened: Function;
+}
+
+export const AlertBagContext = createContext<AlertBagContextInterface | null>(null)
+export const RealmContext = createContext<RealmContextInterface | null>(null)
+export const AsideContext = createContext<AsideContextInterface | null>(null)
 
 // eslint-disable-next-line react/prop-types
 const MyApp = ({ Component, pageProps }) => {
@@ -49,14 +73,14 @@ const MyApp = ({ Component, pageProps }) => {
         showFilterTags,
         toggleFilterTags,
         activeRealm,
-        setActiveRealm: activateRealm,
+        activateRealm,
         activateRealmConfig,
         realmPage
       }}>
         <Component {...pageProps} />
       </RealmContext.Provider>
     </AlertBagContext.Provider>
-  </AsideContext.Provider>
+  </AsideContext.Provider >
 }
 
 export default MyApp

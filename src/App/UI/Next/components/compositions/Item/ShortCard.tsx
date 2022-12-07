@@ -2,9 +2,7 @@ import { Edit } from '@mui/icons-material'
 import { IconButton, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import Page from './Page'
 import Item from '../../../../../../Core/Item/domain/Item'
-import Modal from '../../layout/modal'
 
 interface props {
   rowKey: number;
@@ -41,7 +39,6 @@ const ShortCard = ({ rowKey, item }: props) => {
             {item.notes}
           </Typography>
         </div>
-        {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
       </div>
     </div>
     }

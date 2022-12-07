@@ -2,11 +2,9 @@
 import { Edit } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { Key, useState } from 'react'
-import Page from './Page'
 import Item from '../../../../../../Core/Item/domain/Item'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
 import TagSelect from '../../atoms/TagsSelect'
-import Modal from '../../layout/modal'
 
 interface props {
   rowKey: Key;
@@ -72,7 +70,6 @@ const Card = ({ rowKey, item, tags, properties }: props) => {
           </div>
         </div>
       })}
-      {showItemConfig && <Modal title={item.name} onClose={toggleItemConfig}><Page item={item}></Page></Modal>}
     </form>
   </div>
 }
