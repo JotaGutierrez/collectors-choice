@@ -9,6 +9,12 @@ interface props {
 }
 
 const ListView = ({ tags, setActiveItem }: props) =>
-  <ItemListPresenter setActiveItem={setActiveItem} tags={tags} GroupRenderer={Table} ItemRowRenderer={ItemRow} groupParams={[]} />
+  <ItemListPresenter
+    setActiveItem={setActiveItem}
+    tags={tags}
+    GroupRenderer={Table}
+    ItemRowRenderer={ItemRow}
+    groupParams={[]}
+  />
 
 export default ListView

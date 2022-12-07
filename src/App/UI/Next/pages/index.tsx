@@ -1,14 +1,16 @@
-import { ChevronLeft, Menu } from '@mui/icons-material'
+import { ChevronLeft, FilterList, Menu } from '@mui/icons-material'
 import { AppBar, Box, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
 import { NextPage } from 'next'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useContext } from 'react'
 import useSWR from 'swr'
 
+import { AsideContext, RealmContext } from './_app'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
+import AlertBag from '../components/layout/AlertBag'
 import Aside from '../components/layout/aside'
 
 import styles from '../styles/Home.module.css'
@@ -26,7 +28,9 @@ const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r 
 
 const Home: NextPage<Props> = () => {
   const { query } = useRouter()
-  const [isOpened, setIsOpened] = useState(false)
+
+  const realmContext = useContext(RealmContext)
+  const asideContext = useContext(AsideContext)
 
   const { data: realm, error: realmError } = useSWR(['/api/realm/fetchOne', '?name=' + query.realm], fetcher, { refreshInterval: 1000 })
   const { data: tags, error } = useSWR(['/api/tag/fetch', '?realm=' + query.realm], fetcher, { refreshInterval: 1000 })
@@ -44,31 +48,38 @@ const Home: NextPage<Props> = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box className={styles.root}>
+        <AlertBag />
         <Box className={styles.header}>
           <AppBar>
             <Toolbar>
               <IconButton
                 color="inherit"
-                onClick={() => setIsOpened(!isOpened)}
+                onClick={() => asideContext.setIsOpened(!asideContext.isOpened)}
               >
-                {isOpened ? <ChevronLeft /> : <Menu />}
+                {asideContext.isOpened ? <ChevronLeft /> : <Menu />}
               </IconButton>
-              <Typography variant="h6">
-                Collectors Choice
+              <Typography variant="body1" sx={{ flexGrow: 1, fontWeight: 700 }}>
+                {realmContext.activeRealm ?? 'Collectors Choice'}
               </Typography>
+              <IconButton
+                color="inherit"
+                onClick={() => realmContext.toggleFilterTags()}
+              >
+                <FilterList />
+              </IconButton>
             </Toolbar>
           </AppBar>
         </Box>
         <Box className={styles.container}>
           <Drawer
             variant="permanent"
-            open={isOpened}
+            open={asideContext.isOpened}
             style={{ zIndex: 1 }}
-            className={`${styles.aside} ${isOpened ? '' : styles.closed}`}
+            className={`${styles.aside} ${asideContext.isOpened ? '' : styles.closed}`}
           >
-            <Aside closeMenu={() => setIsOpened(false)} />
+            <Aside closeMenu={() => asideContext.setIsOpened(false)} />
           </Drawer>
-          <Box className={`${styles.main} ${isOpened ? '' : styles.closed}`} component="main">
+          <Box className={`${styles.main} ${asideContext.isOpened ? '' : styles.closed}`} component="main">
             {query.page === 'config' && <RealmConfig realm={realm} tags={tags} />}
             {query.page === '' && <RealmView realm={realm} tags={tags} />}
           </Box>

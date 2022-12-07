@@ -1,8 +1,10 @@
 
 import { Grid, MenuList } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import useSWR from 'swr'
+import saveRealm from '../../../../../Core/Realm/infrastructure/Api/CreateRealm'
+import { RealmContext } from '../../pages/_app'
 import InputButton from '../components/inputButton'
 import RealmSelector from '../compositions/Realm/RealmSelector'
 
@@ -18,30 +20,17 @@ interface props {
 const Aside = ({ closeMenu }: props) => {
   const router = useRouter()
 
-  const [activeRealm, setActiveRealm] = useState(decodeURIComponent(String(router.query.realm ?? '')))
-  const [realmPage, setRealmPage] = useState(decodeURIComponent(String(router.query.page ?? '')))
-
-  const activateRealm = realm => {
-    setRealmPage('')
-    setActiveRealm(realm)
-    closeMenu()
-  }
-
-  const activateRealmConfig = realm => {
-    setRealmPage('config')
-    setActiveRealm(realm)
-    closeMenu()
-  }
+  const realmContext = useContext(RealmContext)
 
   useEffect(() => {
     if (!router.isReady) return
-    if (router.query.realm === encodeURIComponent(activeRealm) &&
-      router.query.page === realmPage
+    if (router.query.realm === encodeURIComponent(realmContext.activeRealm) &&
+      router.query.page === realmContext.realmPage
     ) return
 
     router.query = {
-      realm: encodeURIComponent(activeRealm),
-      page: realmPage
+      realm: encodeURIComponent(realmContext.activeRealm),
+      page: realmContext.realmPage
     }
 
     router.push(
@@ -50,21 +39,7 @@ const Aside = ({ closeMenu }: props) => {
         query: { ...router.query }
       }
     )
-  }, [activeRealm, realmPage, router])
-
-  const saveRealm = async (event) => {
-    event.preventDefault()
-
-    const res = await fetch('/api/realm/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: event.target.name.value })
-    })
-
-    await res.json()
-  }
+  }, [realmContext.activeRealm, realmContext.realmPage, router])
 
   const { data, error } = useSWR(['/api/realm/fetch'], fetcher, { refreshInterval: 1000 })
 
@@ -84,9 +59,9 @@ const Aside = ({ closeMenu }: props) => {
             key={key}
             realm={realm}
             realmKey={key}
-            activateRealm={activateRealm}
-            activateRealmConfig={activateRealmConfig}
-            active={activeRealm === realm.name}
+            activateRealm={realmContext.activateRealm}
+            activateRealmConfig={realmContext.activateRealmConfig}
+            active={realmContext.activeRealm === realm.name}
           />
         )
       }

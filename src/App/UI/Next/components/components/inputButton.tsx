@@ -12,6 +12,7 @@ const InputButton = ({ name, placeholder }: props) =>
       <TextField
         id={name}
         name={name}
+        fullWidth
         type="text"
         aria-label={placeholder}
         placeholder={placeholder}

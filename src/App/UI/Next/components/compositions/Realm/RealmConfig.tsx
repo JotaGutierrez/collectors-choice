@@ -1,10 +1,15 @@
-import { ChevronLeft, Delete } from '@mui/icons-material'
-import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material'
+import { ChevronLeft } from '@mui/icons-material'
+import { Chip, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
 import Realm from '../../../../../../Core/Realm/domain/Realm'
+import saveRealmNotes from '../../../../../../Core/Realm/infrastructure/Api/SaveRealmNotes'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
+import saveTag from '../../../../../../Core/Tag/infrastructure/Api/CreateTagGroup'
+import deleteTag from '../../../../../../Core/Tag/infrastructure/Api/DeleteTag'
+import deleteTagGroup from '../../../../../../Core/TagGroup/application/DeleteTagGroup'
+import saveTagGroup from '../../../../../../Core/TagGroup/infrastructure/Api/CreateTagGroup'
 import InputButton from '../../components/inputButton'
 
 const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
@@ -22,187 +27,92 @@ const RealmConfig = ({ realm, tags }: props) => {
 
   const [realmNotes, setRealmNotes] = useState(realm.notes)
 
-  const saveTagGroup = async (event) => {
-    event.preventDefault()
-
-    const res = await fetch('/api/tag_group/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: event.target.name.value, realm: realm.name })
-    })
-
-    await res.json()
-  }
-
-  const saveRealmNotes = async notes => {
-    const res = await fetch('/api/realm/patch', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ description: notes, realm })
-    })
-
-    await res.json()
-  }
-
-  const saveTag = async (event) => {
-    event.preventDefault()
-
-    const res = await fetch('/api/tag/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: event.target.name.value,
-        realm: event.target.realm.value,
-        group: event.target.group.value
-      })
-    })
-
-    await res.json()
-  }
-
-  const deleteTag = async (id: string) => {
-    const res = await fetch('/api/tag/delete', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id
-      })
-    })
-
-    await res.json()
-  }
-
-  const deleteTagGroup = async (id: string) => {
-    const res = await fetch('/api/tag_group/delete', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id
-      })
-    })
-
-    await res.json()
-  }
-
   const { data, error } = useSWR(['/api/tag_group/fetch', '?realm=' + realm.name], fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>
 
-  return <div>
+  return <Grid style={{ display: 'flex', flexDirection: 'column', gap: '2rem', padding: '1rem' }}>
     <div>
-      <div>
-        <div>
-          <div>Realm description</div>
-          <div>
-            <IconButton onClick={() => setShowDescription(!showDescription)}>
-              <ChevronLeft />
-            </IconButton>
-          </div>
-        </div>
-        {showDescription &&
-          <div>
-            <div>
-              <TextField
-                multiline
-                name="notes"
-                id="notes"
-                placeholder="Add realm notes..."
-                defaultValue={realm.notes}
-                onChange={e => setRealmNotes(e.target.value)}
-              />
-              <Autosave data={realmNotes} onSave={saveRealmNotes} />
-            </div>
-          </div>
-        }
-      </div>
-      <div>
-        <div>
-          <div>Realm properties</div>
-          <div>
-            <IconButton onClick={() => setShowTagGroups(!showTagGroups)}>
-              <ChevronLeft />
-            </IconButton>
-          </div>
-          {showTagGroups && <>
-            <div>
-              <div>{data.map((data, groupKey) =>
-                <>
-                  <div key={groupKey}>{data.name}</div>
-                  <IconButton onClick={() => deleteTagGroup(data._id)}>
-                    <Delete />
-                  </IconButton>
-                </>
-              )}</div>
-            </div>
-            <form onSubmit={saveTagGroup}>
-              <div>
-                <div>
-                  <div>
-                    <InputButton name="name" placeholder="Add realm property..." />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </>
-          }
-        </div>
-        <div>
-          <div>
-            <div>Realm tags</div>
-            <div>
-              <IconButton onClick={() => setShowAddTag(!showAddTag)} >
-                <ChevronLeft />
-              </IconButton>
-            </div>
-          </div>
-          {showAddTag &&
-            <>
-              {/**
-            * @TODO: Refactor tag inline component
-            */}
-              <div>
-                <div>
-                  {Array.isArray(tags) && tags.map(function (tag, key) {
-                    return <>
-                      <Button key={key}>{tag.name}</Button>
-                      <IconButton onClick={() => deleteTag(tag._id)}>
-                        <Delete />
-                      </IconButton>
-                    </>
-                  })}
-                </div>
-              </div>
-              <div>
-                <form onSubmit={saveTag}>
-                  <div>
-                    <input type="hidden" name="realm" id="realm" value={realm.name}></input>
-                    <div>
-                      <Select name="group" onChange={null}>
-                        <MenuItem value="">(optional) property...</MenuItem>
-                        {Array.isArray(data) && data.map((group, key) => <MenuItem key={key}>{group.name}</MenuItem>)}
-                      </Select>
-                    </div>
-                    <InputButton name="name" placeholder="Add tag..." />
-                  </div>
-                </form>
-              </div>
-            </>
-          }
-        </div>
-      </div>
+      <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+        <Grid item style={{ flexGrow: 1 }}>
+          <Typography>Realm description</Typography>
+        </Grid>
+        <Grid item>
+          <IconButton onClick={() => setShowDescription(!showDescription)}>
+            <ChevronLeft />
+          </IconButton>
+        </Grid>
+      </Grid>
+      {showDescription &&
+        <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+          <TextField
+            minRows={5}
+            multiline
+            fullWidth
+            name="notes"
+            id="notes"
+            placeholder="Add realm notes..."
+            defaultValue={realm.notes}
+            onChange={e => setRealmNotes(e.target.value)}
+          />
+          <Autosave data={realmNotes} onSave={event => saveRealmNotes(event, realm)} />
+        </Grid>
+      }
     </div>
-  </div>
+    <div>
+      <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+        <Grid item sx={{ flexGrow: 1 }}>
+          <Typography>Realm properties</Typography>
+        </Grid>
+        <Grid item>
+          <IconButton onClick={() => setShowTagGroups(!showTagGroups)}>
+            <ChevronLeft />
+          </IconButton>
+        </Grid>
+      </Grid>
+      {showTagGroups && <>
+        <Grid style={{ display: 'flex', flexDirection: 'row', gap: '1rem', padding: '1rem 0' }}>
+          {data.map((data, groupKey) => <Chip key={groupKey} label={data.name} variant='outlined' onDelete={() => deleteTagGroup(data._id)} />)}
+        </Grid>
+        <form onSubmit={event => saveTagGroup(event, realm)}>
+          <InputButton name="name" placeholder="Add realm property..." />
+        </form>
+      </>
+      }
+    </div>
+    <div>
+      <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+        <Grid item style={{ flexGrow: 1 }}>
+          <Typography>Realm tags</Typography>
+        </Grid>
+        <Grid item>
+          <IconButton onClick={() => setShowAddTag(!showAddTag)} >
+            <ChevronLeft />
+          </IconButton>
+        </Grid>
+      </Grid>
+      {showAddTag &&
+        <>
+          {/**
+              * @TODO: Refactor tag inline component
+              */}
+          <Grid style={{ display: 'flex', flexDirection: 'row', gap: '1rem', padding: '1rem 0' }}>
+            {Array.isArray(tags) && tags.map((tag, key) =>
+              <Chip key={key} label={tag.name} variant='outlined' onDelete={() => deleteTag(tag._id)} />
+            )}
+          </Grid>
+          <form onSubmit={saveTag}>
+            <input type="hidden" name="realm" id="realm" value={realm.name}></input>
+            <Select fullWidth name="group" onChange={null} placeholder='Optional property group'>
+              {Array.isArray(data) && data.map((group, key) => <MenuItem key={key}>{group.name}</MenuItem>)}
+            </Select>
+            <InputButton name="name" placeholder="Add tag..." />
+          </form>
+        </>
+      }
+    </div>
+  </Grid >
 }
 
 export default RealmConfig

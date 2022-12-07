@@ -43,7 +43,13 @@
     - name: Unarchive package
       unarchive:
         src: /tmp/cc.tar.gz
+        dest: /tmp
+
+    - name: Copy app to target
+      copy:
+        src: /tmp/cc/
         dest: "{{ target_dir }}"
+        remote_src: true
 
     - name: restart pm2
       shell:

@@ -1,11 +1,12 @@
 import { Add, CalendarViewWeek, Close, FilterList, GridView as GridViewIcon, List } from '@mui/icons-material'
-import { Fab, Grid, IconButton, Typography } from '@mui/material'
+import { Fab, Grid, Grow, IconButton, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styles from './ItemListPresenter.module.css'
 import Item from '../../../../../../Core/Item/domain/Item'
 import Realm from '../../../../../../Core/Realm/domain/Realm'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
+import { AlertBagContext, RealmContext } from '../../../pages/_app'
 import InputButton from '../../components/inputButton'
 import BoardView from '../Item/BoardView'
 import GridView from '../Item/GridView'
@@ -19,8 +20,14 @@ interface itemRendererProps {
 
 const ItemRenderer = ({ item }: itemRendererProps) => <div><Page item={item}></Page></div>
 
+interface ItemFormProps {
+  onSuccess: Function;
+}
+
 /** @TODO: refactor */
-const ItemForm = () => {
+const ItemForm = ({ onSuccess }: ItemFormProps) => {
+  const alertBag = useContext(AlertBagContext)
+
   const registerItem = async event => {
     event.preventDefault()
 
@@ -36,6 +43,8 @@ const ItemForm = () => {
     })
 
     await res.json()
+    onSuccess()
+    alertBag.pushAlert(`Item guardado: ${event.target.name.value}`)
     event.target.name.value = ''
   }
 
@@ -61,7 +70,8 @@ const RealmView = ({ realm, tags }: props) => {
   const [view, setView] = useState('list')
   const [property, setProperty] = useState('')
   const [showItemAdd, setShowItemAdd] = useState(false)
-  const [showTagsFilter, setShowTagsFilter] = useState(true)
+
+  const realmContext = useContext(RealmContext)
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
@@ -70,17 +80,10 @@ const RealmView = ({ realm, tags }: props) => {
   return <>
     <div className={styles.listContainer}>
       <div className={`${styles.list} ${activeItem ? styles.closed : styles.open}`}>
-        <div style={{ padding: '1rem' }}>
-          <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <div>
-              <IconButton onClick={() => setShowTagsFilter(!showTagsFilter)}>
-                <FilterList />
-              </IconButton>
-            </div>
-            <div style={{ flexGrow: 1, paddingLeft: '1rem' }}>
-              <Typography variant='h6'>{realm.name}</Typography>
-            </div>
-            <IconButton onClick={() => setView('list')}>
+        {realmContext.showFilterTags && <div style={{ padding: '1rem' }}><InlineTags tags={tags} /></div>}
+        { /*
+            <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+             <IconButton onClick={() => setView('list')}>
               <List />
             </IconButton>
             <IconButton onClick={() => setView('grid')}>
@@ -97,8 +100,7 @@ const RealmView = ({ realm, tags }: props) => {
               </div>
             )}
           </Grid>
-        </div>
-        <div style={{ padding: '0 1rem' }}>{showTagsFilter && <InlineTags tags={tags} />}</div>
+          */ }
         <div>
           {view === 'list' && <ListView tags={tags} setActiveItem={setActiveItem} />}
           {view === 'grid' && <GridView tags={tags} />}
@@ -117,7 +119,7 @@ const RealmView = ({ realm, tags }: props) => {
           transition: 'all ease-in-out 250ms',
           textAlign: 'right'
         }}>
-          <ItemForm />
+          <ItemForm onSuccess={() => setShowItemAdd(false)} />
         </div>
       </div>
       <div className={`${styles.item} ${activeItem ? styles.open : styles.closed}`}>
