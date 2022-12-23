@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Item from '../../../../../../Core/Item/domain/Item'
+import fetcher from '../../../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
-
-const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
 interface itemListPresenterProps {
   tags?: Array<Tag>;

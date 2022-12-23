@@ -8,6 +8,7 @@ import { useContext } from 'react'
 import useSWR from 'swr'
 
 import { AsideContext, RealmContext } from './_app'
+import fetcher from '../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
 import AlertBag from '../components/layout/AlertBag'
@@ -22,9 +23,6 @@ import '@fontsource/roboto/700.css'
 interface Props {
   items?
 }
-
-/** @TODO: Refactor */
-const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
 const Home: NextPage<Props> = () => {
   const { query } = useRouter()
