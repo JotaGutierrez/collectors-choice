@@ -5,14 +5,13 @@ import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
 import Realm from '../../../../../../Core/Realm/domain/Realm'
 import saveRealmNotes from '../../../../../../Core/Realm/infrastructure/Api/SaveRealmNotes'
+import fetcher from '../../../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
 import saveTag from '../../../../../../Core/Tag/infrastructure/Api/CreateTagGroup'
 import deleteTag from '../../../../../../Core/Tag/infrastructure/Api/DeleteTag'
 import deleteTagGroup from '../../../../../../Core/TagGroup/application/DeleteTagGroup'
 import saveTagGroup from '../../../../../../Core/TagGroup/infrastructure/Api/CreateTagGroup'
 import InputButton from '../../components/inputButton'
-
-const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
 interface props {
   realm: Realm;

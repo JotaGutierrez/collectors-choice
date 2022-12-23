@@ -2,10 +2,8 @@ import { Chip, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
+import fetcher from '../../../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
-
-/** @TODO: Refactor */
-const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
 interface props {
   tags: Array<Tag>
