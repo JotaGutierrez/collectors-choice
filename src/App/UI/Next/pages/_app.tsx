@@ -1,7 +1,11 @@
 import '../styles/globals.css'
 import 'reflect-metadata'
 import { useRouter } from 'next/router'
-import { Key, createContext, useState } from 'react'
+import { Key, createContext, useEffect, useState } from 'react'
+import Item from '../../../../Core/Item/domain/Item'
+import Realm from '../../../../Core/Realm/domain/Realm'
+import fetcher from '../../../../Core/Shared/Infrastructure/Http/Fetcher'
+import Tag from '../../../../Core/Tag/domain/Tag'
 
 interface AlertInterface {
   message: string;
@@ -14,6 +18,13 @@ interface AlertBagContextInterface {
 }
 
 interface RealmContextInterface {
+  realm?: Realm;
+  tags?: Array<Tag>;
+  filter?: Array<String>;
+  items?: Array<Item>;
+  activeItem?: Item;
+  setActiveItem: Function;
+  setFilter: Function;
   activeRealm: string;
   activateRealm: Function;
   showFilterTags: boolean;
@@ -63,13 +74,59 @@ const MyApp = ({ Component, pageProps }) => {
   }
 
   const [showFilterTags, setShowFilterTags] = useState(false)
+  const [filter, setFilter] = useState()
   const [activeRealm, setActiveRealm] = useState(decodeURIComponent(String(router.query?.realm ?? '')))
   const [realmPage, setRealmPage] = useState(decodeURIComponent(String(router.query?.page ?? '')))
   const [isOpened, setIsOpened] = useState(false)
+  const [realm, setRealm] = useState()
+  const [tags, setTags] = useState()
+  const [items, setItems] = useState()
+  const [activeItem, _setActiveItem] = useState()
+
+  const setActiveItem = async item => {
+    await _setActiveItem(null)
+    await _setActiveItem(item)
+  }
+
+  useEffect(() => {
+    setActiveRealm(decodeURIComponent(String(router.query?.realm ?? '')))
+    setRealmPage(decodeURIComponent(String(router.query?.page ?? '')))
+  }, [router.query])
+
+  useEffect(() => {
+    const fetchRealm = async () => {
+      await _setActiveItem(null)
+      await setItems(null)
+      await setTags(null)
+
+      const realm = await fetcher('/api/realm/fetchOne', '?name=' + activeRealm)
+      setRealm(realm)
+
+      const tags = await fetcher('/api/tag/fetch', '?realm=' + activeRealm)
+      setTags(tags)
+
+      const _items = await fetcher(
+        '/api/item/fetch',
+        `?${filter !== undefined && filter !== '' ? `filter=${filter}&` : ''}realm=${activeRealm}`
+      )
+      setItems(_items)
+    }
+
+    if (activeRealm !== '') {
+      fetchRealm()
+    }
+  }, [activeRealm])
 
   return <AsideContext.Provider value={{ isOpened, setIsOpened }}>
     <AlertBagContext.Provider value={alerts}>
       <RealmContext.Provider value={{
+        realm,
+        tags,
+        filter,
+        items,
+        activeItem,
+        setActiveItem,
+        setFilter,
         showFilterTags,
         toggleFilterTags,
         activeRealm,

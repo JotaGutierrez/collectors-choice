@@ -1,40 +1,27 @@
 import { Chip, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import useSWR from 'swr'
 import fetcher from '../../../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
+import { RealmContext } from '../../../pages/_app'
 
 interface props {
-  tags: Array<Tag>
+  tags: Array<Tag>;
 }
 
 const InlineTags = ({ tags }: props) => {
-  const router = useRouter()
-  const [filter, setFilter] = useState([])
-
-  useEffect(() => {
-    if (!router.isReady) return
-    if (router.query.filter === encodeURIComponent(JSON.stringify(filter))) return
-
-    router.query.filter = encodeURIComponent(JSON.stringify(filter))
-
-    router.push(
-      {
-        pathname: router.route,
-        query: { ...router.query }
-      }
-    )
-  }, [filter, router])
+  const realmContext = useContext(RealmContext)
+  const setFilter = realmContext.setFilter
 
   const toggleFilter = tag => {
-    const index = filter.indexOf(tag)
+    const index = realmContext.filter.indexOf(tag)
 
     if (index > -1) {
-      filter.splice(index, 1)
-      setFilter([...filter].sort())
+      realmContext.filter.splice(index, 1)
+      setFilter([...realmContext.filter].sort())
     } else {
-      setFilter([...filter, tag].sort())
+      setFilter([...realmContext.filter, tag].sort())
     }
   }
 
@@ -51,7 +38,7 @@ const InlineTags = ({ tags }: props) => {
   return <Grid container columnSpacing={1}>
     {Array.isArray(tags) && tags.map((tag, key) => <Grid key={key} item>
       <Chip
-        variant={filter.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
+        variant={realmContext.filter.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
         onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }}
         label={tag.name}
       />

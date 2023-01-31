@@ -1,5 +1,5 @@
-import { Multiselect } from 'multiselect-react-dropdown'
-import * as React from 'react'
+import { Box, Chip, Stack } from '@mui/material'
+import { useEffect, useState } from 'react'
 import Item from '../../../../../Core/Item/domain/Item'
 import Tag from '../../../../../Core/Tag/domain/Tag'
 
@@ -9,6 +9,8 @@ interface TagSelectProps {
 }
 
 const TagSelect = ({ item, tags }: TagSelectProps) => {
+  const [selectedTags, setSelectedTags] = useState([])
+
   const saveTags = async tags => await fetch('/api/item/setTags', {
     method: 'PATCH',
     headers: {
@@ -20,18 +22,22 @@ const TagSelect = ({ item, tags }: TagSelectProps) => {
     })
   })
 
-  const onSelect = async event => saveTags(event)
+  useEffect(() => setSelectedTags(item.tags ?? []), [item])
 
-  const onRemove = async event => saveTags(event)
+  const toggleTag = async tag => {
+    const _tags = selectedTags.includes(tag) ? selectedTags.filter(selectedTag => selectedTag.name !== tag.name) : [...selectedTags, tag]
+    saveTags(_tags)
+    setSelectedTags(_tags)
+  }
 
-  return <Multiselect
-    style={{ border: 0 }}
-    options={tags.filter((tag: { group: string; }) => tag.group === '')}
-    selectedValues={item.tags ? item.tags.filter(tag => tag !== null) : []}
-    onSelect={onSelect}
-    onRemove={onRemove}
-    displayValue="name"
-  />
+  return <Stack direction="row" spacing={1}>
+    {tags.map((tag, key) => <Chip
+      key={key}
+      label={tag.name}
+      onClick={() => toggleTag(tag)}
+      variant={selectedTags.filter(itemTag => tag.name === itemTag.name).length > 0 ? 'filled' : 'outlined'}
+    />)}
+  </Stack>
 }
 
 export default TagSelect

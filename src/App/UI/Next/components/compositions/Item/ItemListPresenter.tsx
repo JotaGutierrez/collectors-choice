@@ -1,30 +1,23 @@
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import { useContext } from 'react'
 import Item from '../../../../../../Core/Item/domain/Item'
-import fetcher from '../../../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '../../../../../../Core/Tag/domain/Tag'
+import { RealmContext } from '../../../pages/_app'
 
 interface itemListPresenterProps {
   tags?: Array<Tag>;
   GroupRenderer: any;
   ItemRowRenderer: any;
   groupParams: Array<string>;
-  setActiveItem: Function;
 }
 
-const ItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams, setActiveItem }: itemListPresenterProps) => {
+const ItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams }: itemListPresenterProps) => {
   const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group !== '').map(tag => tag.group)))] : []
 
-  const { query } = useRouter()
-
-  const { data, error } = useSWR(['/api/item/fetch', '?filter=' + query.filter + '&realm=' + query.realm], fetcher, { refreshInterval: 1000 })
-
-  if (error) return <div>Failed to load</div>
-  if (data === undefined) return <div>Loading...</div>
+  const realmContext = useContext(RealmContext)
 
   return <GroupRenderer properties={properties} params={groupParams}>
-    {data.map(function (item: Item, key: number) {
-      return <ItemRowRenderer key={key} rowKey={key} item={item} tags={tags} setActiveItem={setActiveItem} properties={properties} />
+    {realmContext.items && realmContext.items.map(function (item: Item, key: number) {
+      return <ItemRowRenderer key={key} rowKey={key} item={item} tags={tags} properties={properties} />
     })}
   </GroupRenderer>
 }

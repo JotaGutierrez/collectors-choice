@@ -19,10 +19,11 @@
 @media (min-width: 1200px) {
   .listContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     box-sizing: border-box;
     width: calc(100vw - var(--aside-width));
-    min-height: 100vh;
+    height: calc(100vh - var(--header-height));
+    overflow-x: scroll;
   }
 
   .list {

@@ -1,6 +1,5 @@
 import { Add, CalendarViewWeek, Close, GridView as GridViewIcon, List } from '@mui/icons-material'
-import { Fab, Grid, IconButton } from '@mui/material'
-import { useRouter } from 'next/router'
+import { Box, Fab, Grid, IconButton } from '@mui/material'
 import { useContext, useState } from 'react'
 import styles from './ItemListPresenter.module.css'
 import Item from '../../../../../../Core/Item/domain/Item'
@@ -16,16 +15,20 @@ import InlineTags from '../Tag/InlineTags'
 
 interface itemRendererProps {
   item: Item;
+  tags: Array<Tag>;
 }
 
-const ItemRenderer = ({ item }: itemRendererProps) => <div><Page item={item}></Page></div>
+const ItemRenderer = ({ item, tags }: itemRendererProps) => <Box sx={{ p: '1rem' }}>
+  <Page item={item} tags={tags}></Page>
+</Box>
 
 interface ItemFormProps {
   onSuccess: Function;
+  activeRealm: String;
 }
 
 /** @TODO: refactor */
-const ItemForm = ({ onSuccess }: ItemFormProps) => {
+const ItemForm = ({ onSuccess, activeRealm }: ItemFormProps) => {
   const alertBag = useContext(AlertBagContext)
 
   const registerItem = async event => {
@@ -48,14 +51,8 @@ const ItemForm = ({ onSuccess }: ItemFormProps) => {
     event.target.name.value = ''
   }
 
-  const { query } = useRouter()
-
-  if (query.realm === undefined) return <div>Select any realm to start...</div>
-
-  if (query.realm === '') return <div>Select any realm to start...</div>
-
   return <form onSubmit={registerItem}>
-    <input type="hidden" name="realm" id="realm" value={decodeURIComponent(String(query.realm))}></input>
+    <input type="hidden" name="realm" id="realm" value={activeRealm}></input>
     <InputButton name="name" placeholder="add item..." />
   </form>
 }
@@ -75,18 +72,16 @@ const RealmView = ({ realm, tags }: props) => {
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
-  const [activeItem, setActiveItem] = useState(null)
-
   return <>
-    <div className={styles.listContainer}>
-      <div className={`${styles.list} ${activeItem ? styles.closed : styles.open}`}>
+    <Box className={styles.listContainer} sx={{ backgroundColor: '#f5f5f5', height: 'calc(100vh - var(--header-height))', overflowX: 'scroll' }}>
+      <Box sx={{}} className={`${styles.list} ${realmContext.activeItem ? styles.closed : styles.open}`}>
         {realmContext.showFilterTags && <div style={{ padding: '1rem' }}><InlineTags tags={tags} /></div>}
-        <div>
-          {view === 'list' && <ListView tags={tags} setActiveItem={setActiveItem} />}
+        <Box>
+          {view === 'list' && <ListView />}
           {view === 'grid' && <GridView tags={tags} />}
           {view === 'board' && <BoardView tags={tags} property={property} />}
-        </div>
-        <div style={{
+        </Box>
+        <Box sx={{
           zIndex: 1,
           boxSizing: 'border-box',
           position: 'fixed',
@@ -99,8 +94,8 @@ const RealmView = ({ realm, tags }: props) => {
           transition: 'all ease-in-out 250ms',
           textAlign: 'right'
         }}>
-          <ItemForm onSuccess={() => setShowItemAdd(false)} />
-        </div>
+          <ItemForm onSuccess={() => setShowItemAdd(false)} activeRealm={realmContext.activeRealm} />
+        </Box>
         {
           <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <IconButton onClick={() => setView('list')}>
@@ -121,23 +116,23 @@ const RealmView = ({ realm, tags }: props) => {
             )}
           </Grid>
         }
-      </div>
-      <div className={`${styles.item} ${activeItem ? styles.open : styles.closed}`}>
-        {activeItem && <ItemRenderer item={activeItem} />}
-      </div>
+      </Box>
+      <Box className={`${styles.item} ${realmContext.activeItem ? styles.open : styles.closed}`}>
+        {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} tags={tags} />}
+      </Box>
 
-      {activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
-        <Fab color="primary" aria-label="add" onClick={() => setActiveItem(null)}>
+      {realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
+        <Fab color="primary" aria-label="add" onClick={() => realmContext.setActiveItem(null)}>
           <Close />
         </Fab>
       </div>}
 
-      {!activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
+      {!realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
         <Fab color="primary" aria-label="add" onClick={() => setShowItemAdd(!showItemAdd)}>
           {showItemAdd ? <Close /> : <Add />}
         </Fab>
       </div>}
-    </div>
+    </Box>
   </>
 }
 

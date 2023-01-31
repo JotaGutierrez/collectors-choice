@@ -15,7 +15,7 @@
   flex: 1;
   flex-direction: row;
   overflow: hidden;
-  height: inherit;
+  height: calc(100vh - var(--header-height));
   padding: 0;
 }
 
@@ -45,7 +45,7 @@
   flex-direction: column;
   margin-left: var(--aside-width);
   min-height: calc(100vh - var(--header-height));
-  min-width: 100vw;
+  width: calc(100vw - var(--aside-width));
 }
 
 .main.closed {

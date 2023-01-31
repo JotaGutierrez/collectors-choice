@@ -4,14 +4,10 @@ import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
 import useSWR from 'swr'
 import saveRealm from '../../../../../Core/Realm/infrastructure/Api/CreateRealm'
+import fetcher from '../../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import { RealmContext } from '../../pages/_app'
 import InputButton from '../components/inputButton'
 import RealmSelector from '../compositions/Realm/RealmSelector'
-
-/**
- * @TODO Refactor
- */
-const fetcher = (url, queryParams = '') => fetch(`${url}${queryParams}`).then(r => r.json())
 
 interface props {
   closeMenu: Function
@@ -41,7 +37,7 @@ const Aside = ({ closeMenu }: props) => {
     )
   }, [realmContext.activeRealm, realmContext.realmPage, router])
 
-  const { data, error } = useSWR(['/api/realm/fetch'], fetcher, { refreshInterval: 1000 })
+  const { data, error } = useSWR(['/api/realm/fetch'], fetcher, { refreshInterval: 10000 })
 
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>
