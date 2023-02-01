@@ -22,10 +22,10 @@ const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {
       <Box sx={{ mb: '2rem' }}>
         {tags && tags.length > 0 && <TagSelect tags={tags} item={item} />}
         {
-          [...properties].map((property, key) => {
+          [...Array.from(properties)].map((property, key) => {
             const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group === property)
             return <div key={key}>
-              <Select name="" onChange={event => saveProperty(item, event.target.value, property, tags)} selected={selectedTag && selectedTag.name}>
+              <Select name="" onChange={event => saveProperty(item, event.target.value, property, tags)} value={selectedTag ? selectedTag.name : ''}>
                 <option value=""></option>
                 {tags.filter(tag => tag.group === property).map((tag, key) => <option key={key} value={tag.name}>{tag.name}</option>)}
               </Select>

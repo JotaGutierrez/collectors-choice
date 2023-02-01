@@ -52,7 +52,7 @@ const ItemForm = ({ onSuccess, activeRealm }: ItemFormProps) => {
   }
 
   return <form onSubmit={registerItem}>
-    <input type="hidden" name="realm" id="realm" value={activeRealm}></input>
+    <input type="hidden" name="realm" id="realm" value={activeRealm.toString()} />
     <InputButton name="name" placeholder="add item..." />
   </form>
 }
