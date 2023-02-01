@@ -98,6 +98,7 @@ const MyApp = ({ Component, pageProps }) => {
       await _setActiveItem(null)
       await setItems(null)
       await setTags(null)
+      await setFilter(null)
 
       const realm = await fetcher('/api/realm/fetchOne', '?name=' + activeRealm)
       setRealm(realm)
@@ -107,7 +108,7 @@ const MyApp = ({ Component, pageProps }) => {
 
       const _items = await fetcher(
         '/api/item/fetch',
-        `?${filter !== undefined && filter !== '' ? `filter=${filter}&` : ''}realm=${activeRealm}`
+        `?${filter && filter !== '' ? `filter=${encodeURIComponent(JSON.stringify(filter))}&` : ''}realm=${activeRealm}`
       )
       setItems(_items)
     }
@@ -116,6 +117,18 @@ const MyApp = ({ Component, pageProps }) => {
       fetchRealm()
     }
   }, [activeRealm])
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const _items = await fetcher(
+        '/api/item/fetch',
+        `?${filter && filter !== '' ? `filter=${encodeURIComponent(JSON.stringify(filter))}&` : ''}realm=${activeRealm}`
+      )
+      setItems(_items)
+    }
+
+    fetchItems()
+  }, [filter])
 
   return <AsideContext.Provider value={{ isOpened, setIsOpened }}>
     <AlertBagContext.Provider value={alerts}>

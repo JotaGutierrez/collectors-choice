@@ -17,9 +17,9 @@ const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {
   }, [item])
 
   return <>
-    <Typography sx={{ mb: '1rem' }} variant={'h2'}>{item.name}</Typography>
-    <Paper elevation={0} sx={{ mb: '1rem', p: '1rem' }}>
-      <Box sx={{ mb: '1rem' }}>
+    <Typography sx={{ m: '0rem 1rem 2rem 1rem' }} variant={'h2'}>{item.name}</Typography>
+    <Paper elevation={0} sx={{ m: '1rem 0', p: '1rem' }}>
+      <Box sx={{ mb: '2rem' }}>
         {tags && tags.length > 0 && <TagSelect tags={tags} item={item} />}
         {
           [...properties].map((property, key) => {

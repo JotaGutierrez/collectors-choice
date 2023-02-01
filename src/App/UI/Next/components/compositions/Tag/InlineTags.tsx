@@ -15,13 +15,13 @@ const InlineTags = ({ tags }: props) => {
   const setFilter = realmContext.setFilter
 
   const toggleFilter = tag => {
-    const index = realmContext.filter.indexOf(tag)
+    const index = realmContext.filter?.indexOf(tag)
 
     if (index > -1) {
-      realmContext.filter.splice(index, 1)
-      setFilter([...realmContext.filter].sort())
+      realmContext.filter?.splice(index, 1)
+      setFilter([...realmContext.filter ?? []].sort())
     } else {
-      setFilter([...realmContext.filter, tag].sort())
+      setFilter([...realmContext.filter ?? [], tag].sort())
     }
   }
 
@@ -38,7 +38,7 @@ const InlineTags = ({ tags }: props) => {
   return <Grid container columnSpacing={1}>
     {Array.isArray(tags) && tags.map((tag, key) => <Grid key={key} item>
       <Chip
-        variant={realmContext.filter.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
+        variant={realmContext.filter?.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
         onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }}
         label={tag.name}
       />

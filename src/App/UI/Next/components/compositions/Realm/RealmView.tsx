@@ -1,5 +1,5 @@
 import { Add, CalendarViewWeek, Close, GridView as GridViewIcon, List } from '@mui/icons-material'
-import { Box, Fab, Grid, IconButton } from '@mui/material'
+import { Box, Fab, Grid, IconButton, Paper } from '@mui/material'
 import { useContext, useState } from 'react'
 import styles from './ItemListPresenter.module.css'
 import Item from '../../../../../../Core/Item/domain/Item'
@@ -18,9 +18,9 @@ interface itemRendererProps {
   tags: Array<Tag>;
 }
 
-const ItemRenderer = ({ item, tags }: itemRendererProps) => <Box sx={{ p: '1rem' }}>
+const ItemRenderer = ({ item, tags }: itemRendererProps) => <Paper elevation={0} sx={{ p: '1rem' }}>
   <Page item={item} tags={tags}></Page>
-</Box>
+</Paper>
 
 interface ItemFormProps {
   onSuccess: Function;
@@ -73,66 +73,67 @@ const RealmView = ({ realm, tags }: props) => {
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
   return <>
-    <Box className={styles.listContainer} sx={{ backgroundColor: '#f5f5f5', height: 'calc(100vh - var(--header-height))', overflowX: 'scroll' }}>
-      <Box sx={{}} className={`${styles.list} ${realmContext.activeItem ? styles.closed : styles.open}`}>
+    <Grid container sx={{ height: 'calc(100vh - var(--header-height))', overflowX: 'scroll' }}>
+      <Grid item xs={12} sx={{ borderBottom: '1px solid rgba(0,0,0,.12)' }}>
         {realmContext.showFilterTags && <div style={{ padding: '1rem' }}><InlineTags tags={tags} /></div>}
-        <Box>
-          {view === 'list' && <ListView />}
-          {view === 'grid' && <GridView tags={tags} />}
-          {view === 'board' && <BoardView tags={tags} property={property} />}
-        </Box>
-        <Box sx={{
-          zIndex: 1,
-          boxSizing: 'border-box',
-          position: 'fixed',
-          bottom: 0,
-          width: '100vw',
-          left: `${showItemAdd ? 0 : '100vw'}`,
-          padding: '1rem',
-          backgroundColor: '#fff',
-          height: '154px',
-          transition: 'all ease-in-out 250ms',
-          textAlign: 'right'
-        }}>
-          <ItemForm onSuccess={() => setShowItemAdd(false)} activeRealm={realmContext.activeRealm} />
-        </Box>
-        {
-          <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <IconButton onClick={() => setView('list')}>
-              <List />
-            </IconButton>
-            <IconButton onClick={() => setView('grid')}>
-              <GridViewIcon />
-            </IconButton>
-            {[...Array.from(properties)].map((_property, key) =>
-              <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
-                <IconButton>
-                  <CalendarViewWeek />
-                </IconButton>
-                <div>
-                  {_property}
-                </div>
-              </div>
-            )}
-          </Grid>
-        }
-      </Box>
-      <Box className={`${styles.item} ${realmContext.activeItem ? styles.open : styles.closed}`}>
+      </Grid>
+      <Grid item xs={12} md={4} sx={{ backgroundColor: '#f5f5f5', height: `calc(100vh - var(--header-height) - ${realmContext.showFilterTags ? '65px' : '0px'} - 73px)`, overflowX: 'scroll' }} className={`${styles.list} ${realmContext.activeItem ? styles.closed : styles.open}`}>
+        {view === 'list' && <ListView />}
+        {view === 'grid' && <GridView tags={tags} />}
+        {view === 'board' && <BoardView tags={tags} property={property} />}
+      </Grid>
+      <Grid item xs={12} md={8} className={`${styles.item} ${realmContext.activeItem ? styles.open : styles.closed}`}>
         {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} tags={tags} />}
-      </Box>
+      </Grid>
+      <Grid item xs={12} sx={{ p: '1rem', borderTop: '1px solid rgba(0,0,0,.12)' }}>
+        <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} spacing={2}>
+          <IconButton onClick={() => setView('list')}>
+            <List />
+          </IconButton>
+          <IconButton onClick={() => setView('grid')}>
+            <GridViewIcon />
+          </IconButton>
+          {[...Array.from(properties)].map((_property, key) =>
+            <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
+              <IconButton>
+                <CalendarViewWeek />
+              </IconButton>
+              <div>
+                {_property}
+              </div>
+            </div>
+          )}
+        </Grid>
+      </Grid>
+    </Grid>
 
-      {realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
-        <Fab color="primary" aria-label="add" onClick={() => realmContext.setActiveItem(null)}>
-          <Close />
-        </Fab>
-      </div>}
-
-      {!realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
-        <Fab color="primary" aria-label="add" onClick={() => setShowItemAdd(!showItemAdd)}>
-          {showItemAdd ? <Close /> : <Add />}
-        </Fab>
-      </div>}
+    <Box sx={{
+      zIndex: 1,
+      boxSizing: 'border-box',
+      position: 'fixed',
+      bottom: 0,
+      width: '100vw',
+      left: `${showItemAdd ? 0 : '100vw'}`,
+      padding: '1rem',
+      backgroundColor: '#fff',
+      height: '154px',
+      transition: 'all ease-in-out 250ms',
+      textAlign: 'right'
+    }}>
+      <ItemForm onSuccess={() => setShowItemAdd(false)} activeRealm={realmContext.activeRealm} />
     </Box>
+
+    {realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
+      <Fab color="primary" aria-label="add" onClick={() => realmContext.setActiveItem(null)}>
+        <Close />
+      </Fab>
+    </div>}
+
+    {!realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
+      <Fab color="primary" aria-label="add" onClick={() => setShowItemAdd(!showItemAdd)}>
+        {showItemAdd ? <Close /> : <Add />}
+      </Fab>
+    </div>}
   </>
 }
 
