@@ -7,8 +7,8 @@ interface props {
 }
 
 const InputButton = ({ name, placeholder }: props) =>
-  <Grid style={{ display: 'flex', flexDirection: 'row' }}>
-    <div style={{ flexGrow: '1' }}>
+  <Grid container>
+    <Grid item flexGrow={'grow'}>
       <TextField
         id={name}
         name={name}
@@ -17,10 +17,12 @@ const InputButton = ({ name, placeholder }: props) =>
         aria-label={placeholder}
         placeholder={placeholder}
       />
-    </div>
-    <IconButton type='submit'>
-      <Add />
-    </IconButton>
+    </Grid>
+    <Grid item>
+      <IconButton type='submit'>
+        <Add />
+      </IconButton>
+    </Grid>
   </Grid>
 
 export default InputButton

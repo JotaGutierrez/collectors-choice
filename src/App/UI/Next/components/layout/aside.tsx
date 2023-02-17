@@ -1,5 +1,5 @@
 
-import { Grid, MenuList } from '@mui/material'
+import { Divider, Grid, MenuList } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
 import useSWR from 'swr'
@@ -43,25 +43,28 @@ const Aside = ({ closeMenu }: props) => {
   if (data === undefined) return <div>Loading...</div>
 
   return (
-    <MenuList>
+    <>
+      <MenuList>
+        {
+          data.map((realm, key) =>
+            <RealmSelector
+              key={key}
+              realm={realm}
+              realmKey={key}
+              activateRealm={realmContext.activateRealm}
+              activateRealmConfig={realmContext.activateRealmConfig}
+              active={realmContext.activeRealm === realm.name}
+            />
+          )
+        }
+      </MenuList>
+      <Divider />
       <Grid style={{ padding: '1rem' }}>
         <form onSubmit={saveRealm}>
           <InputButton name="name" placeholder="Add realm..." />
         </form>
       </Grid>
-      {
-        data.map((realm, key) =>
-          <RealmSelector
-            key={key}
-            realm={realm}
-            realmKey={key}
-            activateRealm={realmContext.activateRealm}
-            activateRealmConfig={realmContext.activateRealmConfig}
-            active={realmContext.activeRealm === realm.name}
-          />
-        )
-      }
-    </MenuList>
+    </>
   )
 }
 
