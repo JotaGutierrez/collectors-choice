@@ -1,6 +1,9 @@
 ---
   - hosts: webserver
     tasks:
+    - name: Get release timestamp
+      set_fact: 
+        timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
     - name: Clone github repository
       git:
         repo: "{{ repository }}"
@@ -54,8 +57,19 @@
     - name: Copy app to target
       copy:
         src: /tmp/cc/
-        dest: "{{ target_dir }}"
+        dest: "{{ target_dir }}/releases/{{ timestamp }}"
         remote_src: true
+      register: log
+    
+
+
+    - name: Link release
+      file: 
+        src: "{{ target_dir }}/releases/{{ timestamp }}"
+        path: "{{ target_dir }}/current"
+        state: link
+        force: yes
+        follow: false
 
     - name: Remove remote package
       shell:
@@ -72,3 +86,15 @@
         chdir: /tmp
       delegate_to: localhost
     
+    - name: Find all directories in releases folder
+      find:
+        paths: "{{ target_dir }}/releases"
+        file_type: directory
+      register: dirs
+
+    - name: Keep last release
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items:
+        - "{{ (dirs.files | sort(attribute='ctime'))[:-1] }}"
