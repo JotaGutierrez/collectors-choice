@@ -1,7 +1,7 @@
 
-import { Divider, Grid, MenuList } from '@mui/material'
+import { CircularProgress, Divider, Grid, MenuList } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import saveRealm from '../../../../../Core/Realm/infrastructure/Api/CreateRealm'
 import fetcher from '../../../../../Core/Shared/Infrastructure/Http/Fetcher'
@@ -9,14 +9,20 @@ import { RealmContext } from '../../pages/_app'
 import InputButton from '../components/inputButton'
 import RealmSelector from '../compositions/Realm/RealmSelector'
 
-interface props {
-  closeMenu: Function
-}
-
-const Aside = ({ closeMenu }: props) => {
+const Aside = () => {
   const router = useRouter()
 
   const realmContext = useContext(RealmContext)
+
+  const [name, setName] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+
+  const submitForm = async (event) => {
+    event.preventDefault()
+    await setSubmitting(true)
+    await saveRealm(name)
+    await setSubmitting(false)
+  }
 
   useEffect(() => {
     if (!router.isReady) return
@@ -60,8 +66,12 @@ const Aside = ({ closeMenu }: props) => {
       </MenuList>
       <Divider />
       <Grid style={{ padding: '1rem' }}>
-        <form onSubmit={saveRealm}>
-          <InputButton name="name" placeholder="Add realm..." />
+        <form onSubmit={submitForm}>
+          {
+            submitting
+              ? <CircularProgress />
+              : <InputButton name="name" onChange={event => setName(event.target.value)} placeholder="Add realm..." />
+          }
         </form>
       </Grid>
     </>
