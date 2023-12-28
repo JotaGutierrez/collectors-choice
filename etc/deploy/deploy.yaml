@@ -2,7 +2,7 @@
   - hosts: webserver
     tasks:
     - name: Get release timestamp
-      set_fact: 
+      set_fact:
         timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
     - name: Clone github repository
       git:
@@ -11,31 +11,31 @@
         clone: yes
         update: yes
       delegate_to: localhost
-    
+
     - name: install node modules
       shell:
         cmd: yarn install
         chdir: /tmp/cc/src/App/UI/Next
-      delegate_to: localhost 
+      delegate_to: localhost
 
     - name: Configure env variables
       shell:
         cmd: echo "DB_URI={{ db_uri }}" > ./.env.local
         chdir: /tmp/cc/src/App/UI/Next
-      delegate_to: localhost  
-    
+      delegate_to: localhost
+
     - name: Build production app
       shell:
         cmd: yarn build
         chdir: /tmp/cc/src/App/UI/Next
       delegate_to: localhost
-    
+
     - name: Remove git dir
       shell:
         cmd: rm -rf .git
         chdir: /tmp/cc
       delegate_to: localhost
-      
+
     - name: Packing application
       archive:
         path: /tmp/cc
@@ -43,7 +43,7 @@
         format: gz
         remove: yes
       delegate_to: localhost
-      
+
     - name: Copying file
       copy:
         src: /tmp/cc.tar.gz
@@ -60,11 +60,11 @@
         dest: "{{ target_dir }}/releases/{{ timestamp }}"
         remote_src: true
       register: log
-    
+
 
 
     - name: Link release
-      file: 
+      file:
         src: "{{ target_dir }}/releases/{{ timestamp }}"
         path: "{{ target_dir }}/current"
         state: link
@@ -85,7 +85,7 @@
         cmd: rm -rf cc*
         chdir: /tmp
       delegate_to: localhost
-    
+
     - name: Find all directories in releases folder
       find:
         paths: "{{ target_dir }}/releases"

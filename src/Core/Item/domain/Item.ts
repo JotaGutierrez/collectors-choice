@@ -5,19 +5,15 @@ import ItemTagOrder from './ItemTagOrder';
 class Item {
     _id: any;
     name: string;
-    tags: Tag[];
-    wanted: boolean;
-    priority: number;
-    notes: string;
+    tags: Tag[] = [];
+    notes: string = '';
     realm: string;
-    order: number;
-    itemTagOrders: ItemTagOrder[];
+    order: number = 0;
+    itemTagOrders: ItemTagOrder[] = [];
 
     constructor(name: string, realm: string) {
-        this.name = name;
-        this.realm = realm;
-
-        this.tags = [];
+        this.name = name
+        this.realm = realm
     }
 
     getId(): string {
