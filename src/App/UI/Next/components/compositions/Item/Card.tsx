@@ -1,9 +1,8 @@
-
+import Item from '@Core/Item/domain/Item'
+import Tag from '@Core/Tag/domain/Tag'
 import { Edit } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { Key, useState } from 'react'
-import Item from '../../../../../../Core/Item/domain/Item'
-import Tag from '../../../../../../Core/Tag/domain/Tag'
 import TagSelect from '../../atoms/TagsSelect'
 
 interface props {

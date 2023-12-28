@@ -1,8 +1,8 @@
+import Item from '@Core/Item/domain/Item'
 import { Edit } from '@mui/icons-material'
 import { IconButton, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import Item from '../../../../../../Core/Item/domain/Item'
 
 interface props {
   rowKey: number;

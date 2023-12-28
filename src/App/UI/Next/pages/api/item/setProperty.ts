@@ -1,7 +1,7 @@
+import setItemProperty from '@Core/Item/application/SetItemProperty'
+import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
+import MongoTagRepository from '@Core/Tag/infrastructure/MongoTagRepository'
 import { MongoClient } from 'mongodb'
-import setItemProperty from '../../../../../../Core/Item/application/SetItemProperty'
-import MongoItemRepository from '../../../../../../Core/Item/infrastructure/MongoItemRepository'
-import MongoTagRepository from '../../../../../../Core/Tag/infrastructure/MongoTagRepository'
 
 export default async function handler (req, res) {
   const client = await MongoClient.connect(process.env.DB_URI)

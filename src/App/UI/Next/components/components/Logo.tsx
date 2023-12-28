@@ -1,4 +1,3 @@
-
 const Logo = () =>
   <div>Collectors Choice</div>
 

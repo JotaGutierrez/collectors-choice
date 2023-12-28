@@ -1,10 +1,10 @@
+import Item from '@Core/Item/domain/Item'
+import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
+import saveProperty from '@Core/Item/infrastructure/Api/SaveProperty'
+import Tag from '@Core/Tag/domain/Tag'
 import { Box, Paper, Select, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Autosave } from 'react-autosave'
-import Item from '../../../../../../Core/Item/domain/Item'
-import saveDescription from '../../../../../../Core/Item/infrastructure/Api/SaveDescription'
-import saveProperty from '../../../../../../Core/Item/infrastructure/Api/SaveProperty'
-import Tag from '../../../../../../Core/Tag/domain/Tag'
 import TagSelect from '../../atoms/TagsSelect'
 
 const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {

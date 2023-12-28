@@ -1,7 +1,7 @@
+import Item from '@Core/Item/domain/Item'
+import Tag from '@Core/Tag/domain/Tag'
 import { Chip, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
-import Item from '../../../../../Core/Item/domain/Item'
-import Tag from '../../../../../Core/Tag/domain/Tag'
 
 interface TagSelectProps {
   item: Item;

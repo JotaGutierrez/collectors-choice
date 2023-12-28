@@ -1,8 +1,7 @@
-
+import Item from '@Core/Item/domain/Item'
+import Tag from '@Core/Tag/domain/Tag'
 import { useEffect, useMemo, useState } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import Item from '../../../../../../Core/Item/domain/Item'
-import Tag from '../../../../../../Core/Tag/domain/Tag'
 
 interface props {
   properties: Array<string>;

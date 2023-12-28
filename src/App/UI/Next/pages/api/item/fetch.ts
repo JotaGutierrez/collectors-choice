@@ -1,8 +1,8 @@
+import ItemsByCriteria from '@Core/Item/application/ItemsByCriteria'
+import MongoCriteria from '@Core/Item/infrastructure/MongoCriteria'
+import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
+import QueryParamsCriteriaConstraintsBuilder from '@Core/Item/infrastructure/QueryParamsCriteriaConstraintsBuilder'
 import { MongoClient } from 'mongodb'
-import ItemsByCriteria from '../../../../../../Core/Item/application/ItemsByCriteria'
-import MongoCriteria from '../../../../../../Core/Item/infrastructure/MongoCriteria'
-import MongoItemRepository from '../../../../../../Core/Item/infrastructure/MongoItemRepository'
-import QueryParamsCriteriaConstraintsBuilder from '../../../../../../Core/Item/infrastructure/QueryParamsCriteriaConstraintsBuilder'
 
 export default async function handler (req, res) {
   /** @TODO: use middleware to avoid connecting from each controller */

@@ -1,6 +1,6 @@
+import CreateRealm from '@Core/Realm/application/CreateRealm'
+import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
 import { MongoClient } from 'mongodb'
-import CreateRealm from '../../../../../../Core/Realm/application/CreateRealm'
-import MongoRealmRepository from '../../../../../../Core/Realm/infrastructure/MongoRealmRepository'
 
 export default async function handler (req, res) {
   const client = await MongoClient.connect(process.env.DB_URI)

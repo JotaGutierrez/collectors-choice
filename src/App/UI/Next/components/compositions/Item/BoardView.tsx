@@ -1,7 +1,7 @@
+import Tag from '@Core/Tag/domain/Tag'
 import Board from './Board'
 import ShortCard from './ShortCard'
 import UnboundDelegatedItemListPresenter from './UnboundDelegatedItemListPresenter'
-import Tag from '../../../../../../Core/Tag/domain/Tag'
 
 interface props {
   tags: Array<Tag>;

@@ -1,5 +1,5 @@
+import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
 import { MongoClient } from 'mongodb'
-import MongoItemRepository from '../../../../../../Core/Item/infrastructure/MongoItemRepository'
 
 export default async function handler (req, res) {
   const client = await MongoClient.connect(process.env.DB_URI)

@@ -1,7 +1,7 @@
+import Realm from '@Core/Realm/domain/Realm'
 import { Edit } from '@mui/icons-material'
 import { IconButton, ListItemText, MenuItem } from '@mui/material'
 import { Key, useContext } from 'react'
-import Realm from '../../../../../../Core/Realm/domain/Realm'
 import { RealmContext } from '../../../pages/_app'
 
 interface Props {

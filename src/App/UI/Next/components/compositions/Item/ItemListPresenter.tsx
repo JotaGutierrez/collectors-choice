@@ -1,6 +1,6 @@
+import Item from '@Core/Item/domain/Item'
+import Tag from '@Core/Tag/domain/Tag'
 import { useContext } from 'react'
-import Item from '../../../../../../Core/Item/domain/Item'
-import Tag from '../../../../../../Core/Tag/domain/Tag'
 import { RealmContext } from '../../../pages/_app'
 
 interface itemListPresenterProps {

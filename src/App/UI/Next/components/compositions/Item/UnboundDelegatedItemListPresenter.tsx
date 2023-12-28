@@ -1,6 +1,6 @@
+import Tag from '@Core/Tag/domain/Tag'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import Tag from '../../../../../../Core/Tag/domain/Tag'
 
 interface props {
   tags: Array<Tag>;
