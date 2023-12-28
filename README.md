@@ -4,32 +4,19 @@ Example of a TypeScript application following Domain-Driven Design (DDD) princip
 ## Getting Started
 
 ### Docker
-The app is ready to run in docker containers:
-
+The app is ready to run in docker containers.
+To install dependencies run:
 ```bash
-docker compose up
+make init
+```
+
+In further executions simply
+```bash
+make up
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
-### CLI
-
-> If you choose to launch the app in a terminal, you need a mongobd instance running a database named "lotion" and update all database connections along the next api controllers (this is not parametrized yet).
-
-First, install dependencies:
-
-```bash
-sh ./etc/bash/start-next-ui.sh install
-```
-
-Run dev server:
-
-```bash
-sh ./etc/bash/start-next-ui.sh dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
 ## Arquitecture

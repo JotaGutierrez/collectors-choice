@@ -36,3 +36,6 @@ yarn-error.log*
 node_modules
 etc/docker/mongo/data
 etc/deploy/prod
+
+.idea
+.yarnrc
