@@ -7,6 +7,9 @@ down:
 shell:
 	docker exec -it node-docker /bin/sh
 
+tests:
+	docker exec -i node-docker bash -c "cd /home/node/test && yarn install && yarn test"
+
 logs:
 	docker logs node-docker
 
