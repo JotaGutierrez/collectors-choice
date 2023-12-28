@@ -6,7 +6,7 @@ services:
       dockerfile: ./etc/docker/mongo/Dockerfile
     container_name: mongodb
     environment:
-      MONGO_INITDB_DATABASE: lotion
+      MONGO_INITDB_DATABASE: collectors_choice
     ports:
       - 27017:27017
     volumes:

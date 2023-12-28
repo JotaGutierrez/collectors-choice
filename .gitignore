@@ -39,3 +39,5 @@ etc/deploy/prod
 
 .idea
 .yarnrc
+.cache
+.yarn
