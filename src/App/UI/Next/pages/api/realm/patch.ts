@@ -7,9 +7,10 @@ export default async function handler (req, res) {
   const realmRepository = new MongoRealmRepository(client)
   const realm = await realmRepository.findById(req.body.realm._id)
 
-  realm.notes = req.body.description
+  realm.notes = req.body.description ?? realm.notes
+  realm.config = req.body.config ?? realm.config
 
-  realmRepository.update(realm)
+  await realmRepository.update(realm)
 
   res.status(200).json(await realmRepository.findAll())
 }

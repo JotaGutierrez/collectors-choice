@@ -50,19 +50,12 @@ interface props {
 }
 
 const RealmView = ({ realm, tags }: props) => {
-  /** @TODO: Use query params instead of state, ie.: ?...&view=board&property=state */
-  const [view, setView] = useState('list')
-  const [property, setProperty] = useState('')
-  const [showItemAdd, setShowItemAdd] = useState(false)
-
   const realmContext = useContext(RealmContext)
   const asideContext = useContext(AsideContext)
 
-  const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
-
   return <>
-    <div className='flex flex-col w-full h-screen'>
-      <div className='border-b'>
+    <div className='flex flex-col w-full h-screen overflow-scroll snap-x'>
+      <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
         <div className='flex flex-row items-center p-4'>
           <Button
             color="inherit"
@@ -90,9 +83,9 @@ const RealmView = ({ realm, tags }: props) => {
         {realmContext.showFilterTags && <div className='px-4 pb-4 pt-0'><InlineTags tags={tags}/></div>}
       </div>
       <div className={`${realmContext.activeItem ? 'closed' : 'open'} grow p-4` }>
-        {view === 'list' && <ListView/>}
-        {view === 'grid' && <GridView tags={tags}/>}
-        {view === 'board' && <BoardView tags={tags} property={property}/>}
+        {realm.config?.view === 'list' && <ListView/>}
+        {realm.config?.view === 'grid' && <GridView tags={tags}/>}
+        {realm.config?.view === 'board' && <BoardView tags={tags} property={realm.config._property}/>}
       </div>
       <Separator className="mb-4 mt-4" />
       <div className="flex w-full items-center space-x-2 p-4 pb-8">

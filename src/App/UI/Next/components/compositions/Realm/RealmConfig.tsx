@@ -1,4 +1,5 @@
 import Realm from '@Core/Realm/domain/Realm'
+import saveRealmConfig from '@Core/Realm/infrastructure/Api/SaveRealmConfig'
 import saveRealmNotes from '@Core/Realm/infrastructure/Api/SaveRealmNotes'
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '@Core/Tag/domain/Tag'
@@ -18,12 +19,13 @@ import {
 import { useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
-import { TypographyNav, TypographySmall } from '../../atoms/Typography'
+import { TypographyH4, TypographyNav } from '../../atoms/Typography'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 
 interface props {
@@ -31,9 +33,7 @@ interface props {
   tags: Array<Tag>;
 }
 
-function saveView (view: string, property: string|null) {
-  console.log(view, property)
-}
+const saveView = async (view: string, property: string|null, realm: Realm) => await saveRealmConfig({ view, property }, realm)
 
 /** @TODO: Refactor. Split modules */
 const RealmConfig = ({ realm, tags }: props) => {
@@ -54,149 +54,201 @@ const RealmConfig = ({ realm, tags }: props) => {
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>
 
-  return <div className={'flex flex-col gap-4 py-2'}>
-    <div className={'p-4'}>
-      <div className={'flex flex-row  pb-4'}>
-        <TypographyNav text="Realm description" className={'grow'}/>
-        <Button
-          color="inherit"
-          onClick={() => setShowDescription(!showDescription)}
-          variant={'ghost'}
-        >
-          {showDescription ? <ChevronDownIcon /> : <ChevronLeftIcon/>}
-        </Button>
-      </div>
-      {showDescription &&
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-              <Textarea
-                  name="notes"
-                  id="notes"
-                  placeholder="Add realm notes..."
-                  defaultValue={realm.notes}
-                  onChange={e => setRealmNotes(e.target.value)}
-              />
-              <Autosave data={realmNotes} onSave={event => saveRealmNotes(event, realm)}/>
+  return <>
+    <div className='flex flex-col w-full h-screen overflow-scroll'>
+      <div className={'flex flex-col gap-2 snap-x'}>
+        <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
+          <div className='flex flex-row items-center p-4'>
+            <Button
+              color="inherit"
+              onClick={() => null}
+              variant="ghost"
+            >
+              <ChevronLeftIcon/>
+            </Button>
+            <TypographyH4 text="Realm Configuration" className="grow"/>
+            <Button
+              color="inherit"
+              onClick={() => null}
+              variant={'ghost'}
+            >
+              <TrashIcon />
+            </Button>
           </div>
-      }
-    </div>
-    <Separator className={'my-4'} />
-    <div className={'p-4'}>
-      <div className={'flex flex-row pb-4'}>
-        <TypographyNav text="Realm properties" className={'grow'}/>
-        <Button
-          color="inherit"
-          onClick={() => setShowTagGroups(!showTagGroups)}
-          variant={'ghost'}
-        >
-          {showTagGroups ? <ChevronDownIcon /> : <ChevronLeftIcon/>}
-        </Button>
-      </div>
-      {showTagGroups && <>
-          <div className={'flex flex-col gap-4 mb-4'}>
-            {data.map((data, groupKey) =>
-              <div className={'flex flex-row'} key={groupKey}>
-                  <TypographySmall text={data.name} className={'grow'}/>
-                  <Button
-                      variant='ghost'
-                      onClick={() => deleteTagGroup(data._id)}
-                  >
-                      <TrashIcon/>
-                  </Button>
+        </div>
+        <div className={'p-4 snap-top'}>
+          <div className={'flex flex-row pb-4'}>
+            <TypographyNav text="Realm description" className={'grow'}/>
+            <Button
+              color="inherit"
+              onClick={() => setShowDescription(!showDescription)}
+              variant={'ghost'}
+            >
+              {showDescription ? <ChevronDownIcon/> : <ChevronLeftIcon/>}
+            </Button>
+          </div>
+          {showDescription &&
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                  <Textarea
+                      name="notes"
+                      id="notes"
+                      placeholder="Add realm notes..."
+                      defaultValue={realm.notes}
+                      onChange={e => setRealmNotes(e.target.value)}
+                  />
+                  <Autosave data={realmNotes} onSave={event => saveRealmNotes(event, realm)}/>
               </div>
-            )}
+          }
+        </div>
+        <Separator />
+        <div className={'p-4 snap-top'}>
+          <div className={'flex flex-row pb-4'}>
+            <TypographyNav text="Realm properties" className={'grow'}/>
+            <Button
+              color="inherit"
+              onClick={() => setShowTagGroups(!showTagGroups)}
+              variant={'ghost'}
+            >
+              {showTagGroups ? <ChevronDownIcon/> : <ChevronLeftIcon/>}
+            </Button>
           </div>
-          <div className="flex w-full items-center space-x-2 pb-8">
-              <Input name="name-group-name"
-                     onChange={event => setTagGroupName(event.target.value)}
-                     placeholder="Add Tag Group..."
-              />
-            {
-              submitting
-                ? <Progress />
-                : <Button
-                    onClick={() => saveTagGroup(tagGroupName, realm)}
-                    placeholder="Add Tag Group..."
-                ><PlusIcon /></Button>
-            }
-          </div>
-      </>
-      }
-    </div>
-    <Separator className={'my-4'} />
-    <div className={'p-4'}>
-      <div className={'flex flex-row mb-4'}>
-        <TypographyNav text="Realm tags" className={'grow'}/>
-        <Button
-          color="inherit"
-          onClick={() => setShowAddTag(!showAddTag)}
-          variant={'ghost'}
-        >
-          {showAddTag ? <ChevronDownIcon /> : <ChevronLeftIcon/>}
-        </Button>
-      </div>
-      {showAddTag &&
-        <>
-          <div className={'flex flex-col gap-4 mb-4'}>
-            {Array.isArray(tags) && tags.map((tag, key) =>
-              <div className={'flex flex-row'} key={key}>
-                <TypographySmall text={tag.name} className={'grow'}/>
-                <Button
-                  variant='ghost'
-                  onClick={() => deleteTag(tag._id)}
-                >
-                  <TrashIcon />
-                </Button>
+          {showTagGroups && <>
+              <div className={'flex flex-col gap-4 mb-4'}>
+                  <Table>
+                      <TableCaption>Current Tag Groups</TableCaption>
+                      <TableHeader>
+                          <TableRow>
+                              <TableHead>Tag</TableHead>
+                              <TableHead className={'text-right'}>Actions</TableHead>
+                          </TableRow>
+                      </TableHeader>
+                    <TableBody>
+                      {data.map((data, groupKey) =>
+                        <TableRow key={groupKey}>
+                          <TableCell className={'font-medium'}>{data.name}</TableCell>
+                          <TableCell className={'text-right'}>
+                            <Button
+                              variant='ghost'
+                              onClick={() => deleteTagGroup(data._id)}
+                            >
+                              <TrashIcon/>
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
               </div>
-            )}
+              <div className="flex w-full items-center space-x-2">
+                  <Input name="name-group-name"
+                         onChange={event => setTagGroupName(event.target.value)}
+                         placeholder="Add Tag Group..."
+                  />
+                {
+                  submitting
+                    ? <Progress/>
+                    : <Button
+                      onClick={() => saveTagGroup(tagGroupName, realm)}
+                      placeholder="Add Tag Group..."
+                    ><PlusIcon/></Button>
+                }
+              </div>
+          </>
+          }
+        </div>
+        <Separator />
+        <div className={'p-4 snap-top'}>
+          <div className={'flex flex-row pb-4'}>
+            <TypographyNav text="Realm tags" className={'grow'}/>
+            <Button
+              color="inherit"
+              onClick={() => setShowAddTag(!showAddTag)}
+              variant={'ghost'}
+            >
+              {showAddTag ? <ChevronDownIcon/> : <ChevronLeftIcon/>}
+            </Button>
           </div>
-          <div className="flex w-full items-center space-x-2">
-              <Input name="name"
-                     onChange={event => setTagName(event.target.value)}
-                     placeholder="Add Tag..."
-              />
-            {
-              submitting
-                ? <Progress/>
-                : <Button onClick={() => saveTag({ tagName, realm: realm.name, group: '' })}
-                          placeholder="Add Tag..."><PlusIcon/></Button>
-            }
-          </div>
-      </>
-      }
-    </div>
-    <Separator className={'my-4'}/>
-    <div className={'p-4'}>
-      <Card>
-        <CardHeader>
-          <TypographyNav text={'View Settings'} className={''}></TypographyNav>
-          <CardDescription>Choose the default view. You can change it at any time.</CardDescription>
-        </CardHeader>
+          {showAddTag &&
+              <>
+                  <div className={'flex flex-col gap-4 mb-4'}>
+                      <Table>
+                          <TableCaption>Current Tag Groups</TableCaption>
+                          <TableHeader>
+                              <TableRow>
+                                  <TableHead>Tag</TableHead>
+                                  <TableHead className={'text-right'}>Actions</TableHead>
+                              </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {Array.isArray(tags) && tags.map((tag, key) =>
+                              <TableRow key={key}>
+                                <TableCell className={'font-medium'}>{tag.name}</TableCell>
+                                <TableCell className={'text-right'}>
+                                  <Button
+                                    variant='ghost'
+                                    onClick={() => deleteTag(tag._id)}
+                                  >
+                                    <TrashIcon/>
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </TableBody>
+                      </Table>
+                  </div>
+                  <div className="flex w-full items-center space-x-2">
+                      <Input name="name"
+                             onChange={event => setTagName(event.target.value)}
+                             placeholder="Add Tag..."
+                      />
+                    {
+                      submitting
+                        ? <Progress/>
+                        : <Button onClick={() => saveTag({ tagName, realm: realm.name, group: '' })}
+                                  placeholder="Add Tag..."><PlusIcon/></Button>
+                    }
+                  </div>
+              </>
+          }
+        </div>
+        <Separator />
+        <div className={'p-4 snap-top'}>
+          <Card>
+            <CardHeader>
+              <TypographyNav text={'View Settings'} className={''}></TypographyNav>
+              <CardDescription>Choose the default view. You can change it at any time.</CardDescription>
+            </CardHeader>
 
-        <CardDescription>
-          <div className={'flex flex-row gap-2 p-4'}>
-            <Button onClick={() => saveView('list', null)} variant={'ghost'}>
-              <ListBulletIcon />
-            </Button>
-            <Button onClick={() => saveView('grid', null)} variant={'ghost'}>
-              <GridIcon />
-            </Button>
-            {[...Array.from(properties)].map((_property, key) =>
-              <div key={key} onClick={() => {
-                saveView('board', _property)
-              }}>
-                <Button variant={'ghost'}>
-                  <LayoutIcon />
+            <CardDescription>
+              <div className={'flex flex-row gap-2 p-4'}>
+                <Button onClick={() => saveView('list', null, realm)}
+                        variant={realm.config?.view === 'list' ? 'default' : 'ghost'}>
+                  <ListBulletIcon/>
                 </Button>
-                <div>
-                  {_property}
-                </div>
+                <Button onClick={() => saveView('grid', null, realm)}
+                        variant={realm.config?.view === 'grid' ? 'default' : 'ghost'}>
+                  <GridIcon/>
+                </Button>
+                {[...Array.from(properties)].map((_property, key) =>
+                  <div key={key} onClick={() => {
+                    saveView('board', _property, realm)
+                  }}>
+                    <Button
+                      variant={realm.config?.view === 'board' && realm.config?._property === _property ? 'default' : 'ghost'}>
+                      <LayoutIcon/>
+                    </Button>
+                    <div>
+                      {_property}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </CardDescription>
-      </Card>
+            </CardDescription>
+          </Card>
+        </div>
+      </div>
     </div>
-  </div>
+  </>
 }
 
 export default RealmConfig

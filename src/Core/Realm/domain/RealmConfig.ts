@@ -1,14 +1,16 @@
-import Item from '../../Item/domain/Item';
+interface RealmConfigInterface {
+    view: string;
+    _property: string;
+}
 
-class Realm {
-    _id: any;
-    name: string;
-    items: Item[] = [];
-    notes: string = "";
+class RealmConfig {
+    view: string;
+    _property: string;
 
-    constructor(name: string) {
-        this.name = name;
+    constructor({view, _property}: RealmConfigInterface) {
+        this.view = view;
+        this._property = _property;
     }
 }
 
-export default Realm;
+export default RealmConfig;

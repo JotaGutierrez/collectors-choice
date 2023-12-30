@@ -1,8 +1,6 @@
-
 import Realm from '../domain/Realm';
 import RealmRepository from '../domain/RealmRepository';
-import CreateRealm from '../application/CreateRealm'; 
-import { ObjectId } from '../../../App/UI/Next/node_modules/mongodb';
+import {ObjectId} from '../../../App/UI/Next/node_modules/mongodb';
 
 
 class MongoRealmRepository implements RealmRepository
@@ -22,13 +20,14 @@ class MongoRealmRepository implements RealmRepository
     }
 
     async update(realm: Realm): Promise<Realm> {
-        const result = await this.collection.updateOne(
+        await this.collection.updateOne(
             {'_id': realm._id},
             {
                 $set: {
                     'name': realm.name,
                     'items': realm.items,
-                    'notes': realm.notes
+                    'notes': realm.notes,
+                    'config': realm.config
                 },
                 $currentDate: {
                     "lastModified": true
