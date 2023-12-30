@@ -1,10 +1,17 @@
+import ItemDeletedEvent from '@Core/Item/domain/ItemDeletedEvent'
 import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
+import ItemCountDecrement from '@Core/Realm/application/ItemCountDecrement'
+import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
+import EventBus from '@Core/Shared/Infrastructure/EventBus/EventBus'
 import { MongoClient } from 'mongodb'
 
 export default async function handler (req, res) {
   const client = await MongoClient.connect(process.env.DB_URI)
 
   const itemRepository = new MongoItemRepository(client)
+  const realmRepository = new MongoRealmRepository(client)
+
+  EventBus.getInstance().subscribe(ItemDeletedEvent, ItemCountDecrement(realmRepository))
 
   const id = req?.body?.id
 

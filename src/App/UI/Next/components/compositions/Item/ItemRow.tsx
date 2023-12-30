@@ -24,7 +24,7 @@ const ItemRow = ({ rowKey, item }: props) => {
         <div className={'flex flex-row justify-start items-center'}>
           <div className="pr-4">
             <Avatar>
-              <AvatarFallback>{Array.from(item.name)[0].toUpperCase()}</AvatarFallback>
+              <AvatarFallback>{Array.from(item.name === '' ? 'I' : item.name)[0].toUpperCase()}</AvatarFallback>
             </Avatar>
           </div>
           <div>

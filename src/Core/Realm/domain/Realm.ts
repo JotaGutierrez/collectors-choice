@@ -6,6 +6,7 @@ class Realm {
     name: string;
     items: Item[] = [];
     notes: string = "";
+    itemCount: number = 0;
     config: RealmConfig = null;
 
     constructor(name: string) {

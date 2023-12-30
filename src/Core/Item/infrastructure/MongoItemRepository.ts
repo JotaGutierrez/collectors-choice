@@ -1,11 +1,11 @@
-
 import Item from '../domain/Item';
 import ItemRepository from '../domain/ItemRepository';
-import CreateItem from '../application/CreateItem';
-import { ObjectId } from '../../../App/UI/Next/node_modules/mongodb';
-import { plainToInstance } from '../../../App/UI/Next/node_modules/class-transformer';
-import ItemTagOrder from '../domain/ItemTagOrder';
+import {ObjectId} from '../../../App/UI/Next/node_modules/mongodb';
+import {plainToInstance} from '../../../App/UI/Next/node_modules/class-transformer';
 import Criteria from '../domain/Criteria';
+import EventBus from "../../Shared/Infrastructure/EventBus/EventBus";
+import ItemCreatedEvent from "../domain/ItemCreatedEvent";
+import ItemDeletedEvent from "../domain/ItemDeletedEvent";
 
 class MongoItemRepository implements ItemRepository
 {
@@ -18,14 +18,15 @@ class MongoItemRepository implements ItemRepository
     }
 
     create(item: Item): Item {
+        this.collection.insertOne(item);
 
-        const result = this.collection.insertOne(item);
+        EventBus.getInstance().dispatch<any>(ItemCreatedEvent, item.realm)
 
         return item;
     }
 
     async update(item: Item): Promise<Item> {
-        const result = await this.collection.update(
+        await this.collection.update(
             {'_id': item._id},
             {
                 $set: {
@@ -56,7 +57,7 @@ class MongoItemRepository implements ItemRepository
          * plainToInstance creates a new id. Don't know why
          * We must preserve the original
          */
-        item._id = data._id;
+        item._id = id;
         return item;
     }
 
@@ -82,7 +83,11 @@ class MongoItemRepository implements ItemRepository
     }
 
     async deleteById(id: string): Promise<any> {
-        return await this.collection.deleteOne({_id: new ObjectId(id)});
+        const item = await this.findById(id);
+        console.log(item)
+        EventBus.getInstance().dispatch<any>(ItemDeletedEvent, item.realm)
+
+        await this.collection.deleteOne({_id: new ObjectId(id)});
     }
 
     async findByCriteria(criteria: Criteria): Promise<Item[]> {

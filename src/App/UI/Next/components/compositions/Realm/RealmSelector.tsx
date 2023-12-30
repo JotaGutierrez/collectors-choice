@@ -21,7 +21,7 @@ const RealmSelector = ({ realm, activateRealm, realmKey }: Props) => {
       onClick={event => { event.preventDefault(); activateRealm(realm.name) }}
       text={realm.name}
     />
-    <TypographyNav text={realm.items?.length} className="" />
+    <TypographyNav text={realm.itemCount} className="" />
   </div>
 }
 

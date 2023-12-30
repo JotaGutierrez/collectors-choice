@@ -27,6 +27,7 @@ class MongoRealmRepository implements RealmRepository
                     'name': realm.name,
                     'items': realm.items,
                     'notes': realm.notes,
+                    'itemCount': realm.itemCount,
                     'config': realm.config
                 },
                 $currentDate: {
