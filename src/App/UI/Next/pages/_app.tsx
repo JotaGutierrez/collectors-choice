@@ -29,7 +29,8 @@ interface RealmContextInterface {
   activateRealm: Function;
   showFilterTags: boolean;
   toggleFilterTags: Function;
-  activateRealmConfig: Function;
+  showRealmConfig: Function;
+  hideRealmConfig: Function;
   realmPage: string;
 }
 
@@ -67,10 +68,12 @@ const MyApp = ({ Component, pageProps }) => {
     setIsOpened(false)
   }
 
-  const activateRealmConfig = realm => {
+  const showRealmConfig = () => {
     setRealmPage('config')
-    setActiveRealm(realm)
-    setIsOpened(false)
+  }
+
+  const hideRealmConfig = () => {
+    setRealmPage('')
   }
 
   const [showFilterTags, setShowFilterTags] = useState(false)
@@ -144,13 +147,14 @@ const MyApp = ({ Component, pageProps }) => {
         toggleFilterTags,
         activeRealm,
         activateRealm,
-        activateRealmConfig,
+        showRealmConfig,
+        hideRealmConfig,
         realmPage
       }}>
         <Component {...pageProps} />
       </RealmContext.Provider>
     </AlertBagContext.Provider>
-  </AsideContext.Provider >
+  </AsideContext.Provider>
 }
 
 export default MyApp

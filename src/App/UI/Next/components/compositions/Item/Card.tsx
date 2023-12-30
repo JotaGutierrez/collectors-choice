@@ -1,9 +1,8 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
-import { Edit } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
 import { Key, useState } from 'react'
 import TagSelect from '../../atoms/TagsSelect'
+import { Button } from '@/components/ui/button'
 
 interface props {
   rowKey: Key;
@@ -41,9 +40,9 @@ const Card = ({ rowKey, item, tags, properties }: props) => {
           {item.name}
         </h1>
         <div>
-          <IconButton>
-            <Edit onClick={toggleItemConfig} />
-          </IconButton>
+          <Button onClick={toggleItemConfig}>
+            Edit
+          </Button>
         </div>
       </div>
       <div>

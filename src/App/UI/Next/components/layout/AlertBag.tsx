@@ -1,10 +1,6 @@
-import CloseIcon from '@mui/icons-material/Close'
-import Alert from '@mui/material/Alert'
-import Box from '@mui/material/Box'
-import Collapse from '@mui/material/Collapse'
-import IconButton from '@mui/material/IconButton'
 import * as React from 'react'
 import { AlertBagContext } from '../../pages/_app'
+import {Button} from "@/components/ui/button";
 
 interface notificationProps {
   message: string
@@ -13,25 +9,20 @@ interface notificationProps {
 const Notification = ({ message }: notificationProps) => {
   const [open, setOpen] = React.useState(true)
 
-  return <Box><Collapse in={open}>
-    <Alert
-      action={
-        <IconButton
-          aria-label="close"
-          color="inherit"
-          size="small"
-          onClick={() => {
-            setOpen(false)
-          }}
+  return <div>
+    <div>
+        <Button
+            aria-label="close"
+            color="inherit"
+            onClick={() => {
+                setOpen(false)
+            }}
         >
-          <CloseIcon fontSize="inherit" />
-        </IconButton>
-      }
-      sx={{ mb: 2 }}
-    >
+            CloseIcon
+        </Button>
+    </div>
       {message}
-    </Alert>
-  </Collapse></Box>
+    </div>
 }
 
 const AlertBag = () => {
@@ -39,9 +30,9 @@ const AlertBag = () => {
 
   return <>{(alertBag.alerts && alertBag.alerts.length > 0)
     ? alertBag.alerts.map(alert =>
-      <Box key={alert.id} style={{ position: 'fixed', zIndex: 100, bottom: '10vh', width: '100vw', padding: '2rem', boxSizing: 'border-box' }}>
+      <div key={alert.id} style={{ position: 'fixed', zIndex: 100, bottom: '10vh', width: '100vw', padding: '2rem', boxSizing: 'border-box' }}>
         <Notification message={alert.message} />
-      </Box>)
+      </div>)
     : ''}
   </>
 }

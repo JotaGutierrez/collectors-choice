@@ -1,60 +1,47 @@
-import Item from '@Core/Item/domain/Item'
+import createItem from '@Core/Item/infrastructure/Api/CreateItem'
 import Realm from '@Core/Realm/domain/Realm'
 import Tag from '@Core/Tag/domain/Tag'
-import { Add, CalendarViewWeek, Close, GridView as GridViewIcon, List } from '@mui/icons-material'
-import { Box, Fab, Grid, IconButton, Paper } from '@mui/material'
+import { ChevronLeftIcon, GearIcon, HamburgerMenuIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
 import { useContext, useState } from 'react'
-import styles from './ItemListPresenter.module.css'
-import { AlertBagContext, RealmContext } from '../../../pages/_app'
-import InputButton from '../../components/inputButton'
+import { AlertBagContext, AsideContext, RealmContext } from '../../../pages/_app'
+import { TypographyH4 } from '../../atoms/Typography'
 import BoardView from '../Item/BoardView'
 import GridView from '../Item/GridView'
 import ListView from '../Item/ListView'
-import Page from '../Item/Page'
 import InlineTags from '../Tag/InlineTags'
-
-interface itemRendererProps {
-  item: Item;
-  tags: Array<Tag>;
-}
-
-const ItemRenderer = ({ item, tags }: itemRendererProps) => <Paper elevation={0} sx={{ p: '1rem' }}>
-  <Page item={item} tags={tags}></Page>
-</Paper>
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
 
 interface ItemFormProps {
-  onSuccess: Function;
   activeRealm: String;
 }
 
-/** @TODO: refactor */
-const ItemForm = ({ onSuccess, activeRealm }: ItemFormProps) => {
+const ItemForm = ({ activeRealm }: ItemFormProps) => {
   const alertBag = useContext(AlertBagContext)
+  const [name, setName] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   const registerItem = async event => {
     event.preventDefault()
+    setSubmitting(true)
 
-    const res = await fetch('/api/item/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: event.target.name.value,
-        realm: event.target.realm.value
-      })
-    })
+    await createItem(name, activeRealm.toString())
 
-    await res.json()
-    onSuccess()
-    alertBag.pushAlert(`Item guardado: ${event.target.name.value}`)
-    event.target.name.value = ''
+    alertBag.pushAlert(`Item guardado: ${name}`)
+    setName('')
+    setSubmitting(false)
   }
 
-  return <form onSubmit={registerItem}>
-    <input type="hidden" name="realm" id="realm" value={activeRealm.toString()} />
-    <InputButton name="name" placeholder="add item..." />
-  </form>
+  return <>
+    <Input name="name" onChange={event => setName(event.target.value)} placeholder="Add item..." />
+    {
+      submitting
+        ? <Progress />
+        : <Button onClick={registerItem} name="name" placeholder="Add Item..."><PlusIcon /></Button>
+    }
+  </>
 }
 
 interface props {
@@ -69,71 +56,50 @@ const RealmView = ({ realm, tags }: props) => {
   const [showItemAdd, setShowItemAdd] = useState(false)
 
   const realmContext = useContext(RealmContext)
+  const asideContext = useContext(AsideContext)
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
   return <>
-    <Grid container sx={{ height: 'calc(100vh - var(--header-height))', overflowX: 'scroll' }}>
-      <Grid item xs={12} sx={{ borderBottom: '1px solid rgba(0,0,0,.12)' }}>
-        {realmContext.showFilterTags && <div style={{ padding: '1rem' }}><InlineTags tags={tags} /></div>}
-      </Grid>
-      <Grid item xs={12} md={4} sx={{ backgroundColor: '#f5f5f5', height: `calc(100vh - var(--header-height) - ${realmContext.showFilterTags ? '65px' : '0px'} - 73px)`, overflowX: 'scroll' }} className={`${styles.list} ${realmContext.activeItem ? styles.closed : styles.open}`}>
-        {view === 'list' && <ListView />}
-        {view === 'grid' && <GridView tags={tags} />}
-        {view === 'board' && <BoardView tags={tags} property={property} />}
-      </Grid>
-      <Grid item xs={12} md={8} className={`${styles.item} ${realmContext.activeItem ? styles.open : styles.closed}`}>
-        {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} tags={tags} />}
-      </Grid>
-      <Grid item xs={12} sx={{ p: '1rem', borderTop: '1px solid rgba(0,0,0,.12)' }}>
-        <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} spacing={2}>
-          <IconButton onClick={() => setView('list')}>
-            <List />
-          </IconButton>
-          <IconButton onClick={() => setView('grid')}>
-            <GridViewIcon />
-          </IconButton>
-          {[...Array.from(properties)].map((_property, key) =>
-            <div key={key} onClick={() => { setView('board'); setProperty(_property) }}>
-              <IconButton>
-                <CalendarViewWeek />
-              </IconButton>
-              <div>
-                {_property}
-              </div>
-            </div>
-          )}
-        </Grid>
-      </Grid>
-    </Grid>
+    <div className='flex flex-col w-full h-screen'>
+      <div className='border-b'>
+        <div className='flex flex-row items-center p-4'>
+          <Button
+            color="inherit"
+            onClick={() => asideContext.setIsOpened(!asideContext.isOpened)}
+            variant="ghost"
+          >
+            {asideContext.isOpened ? <ChevronLeftIcon /> : <HamburgerMenuIcon /> }
+          </Button>
+          <TypographyH4 text={realmContext.activeRealm ?? 'Collectors Choice'} className="grow" />
+          <Button
+            color="inherit"
+            onClick={() => realmContext.toggleFilterTags()}
+            variant={'ghost'}
+          >
+            <MixerHorizontalIcon />
+          </Button>
+          <Button
+            color="inherit"
+            onClick={ () => realmContext.setActiveItem(null) && realmContext.showRealmConfig(realm.name) }
+            variant={'ghost'}
+          >
+            <GearIcon />
+          </Button>
+        </div>
+        {realmContext.showFilterTags && <div className='px-4 pb-4 pt-0'><InlineTags tags={tags}/></div>}
+      </div>
+      <div className={`${realmContext.activeItem ? 'closed' : 'open'} grow p-4` }>
+        {view === 'list' && <ListView/>}
+        {view === 'grid' && <GridView tags={tags}/>}
+        {view === 'board' && <BoardView tags={tags} property={property}/>}
+      </div>
+      <Separator className="mb-4 mt-4" />
+      <div className="flex w-full items-center space-x-2 p-4 pb-8">
+        <ItemForm activeRealm={realmContext.activeRealm} />
+      </div>
+    </div>
 
-    <Box sx={{
-      zIndex: 1,
-      boxSizing: 'border-box',
-      position: 'fixed',
-      bottom: 0,
-      width: '100vw',
-      left: `${showItemAdd ? 0 : '100vw'}`,
-      padding: '1rem',
-      backgroundColor: '#fff',
-      height: '154px',
-      transition: 'all ease-in-out 250ms',
-      textAlign: 'right'
-    }}>
-      <ItemForm onSuccess={() => setShowItemAdd(false)} activeRealm={realmContext.activeRealm} />
-    </Box>
-
-    {realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
-      <Fab color="primary" aria-label="add" onClick={() => realmContext.setActiveItem(null)}>
-        <Close />
-      </Fab>
-    </div>}
-
-    {!realmContext.activeItem && <div style={{ zIndex: 2, position: 'fixed', bottom: '1rem', right: '1rem' }}>
-      <Fab color="primary" aria-label="add" onClick={() => setShowItemAdd(!showItemAdd)}>
-        {showItemAdd ? <Close /> : <Add />}
-      </Fab>
-    </div>}
   </>
 }
 

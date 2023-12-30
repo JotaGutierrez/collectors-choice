@@ -1,8 +1,7 @@
-import { List } from '@mui/material'
 
 // eslint-disable-next-line no-undef
-const Table = ({ properties, children }: { properties: Array<string>, children: Array<ChildNode> }) => <List>
+const Table = ({ properties, children }: { properties: Array<string>, children: Array<ChildNode> }) => <div className={"flex flex-col gap-2"}>
   {children}
-</List>
+</div>
 
 export default Table

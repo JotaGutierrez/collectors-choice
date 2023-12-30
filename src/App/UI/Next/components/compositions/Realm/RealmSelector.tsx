@@ -1,26 +1,28 @@
 import Realm from '@Core/Realm/domain/Realm'
-import { Edit } from '@mui/icons-material'
-import { IconButton, ListItemText, MenuItem } from '@mui/material'
 import { Key, useContext } from 'react'
 import { RealmContext } from '../../../pages/_app'
+import { TypographyNav } from '../../atoms/Typography'
 
 interface Props {
-  active: boolean,
   realm: Realm,
   activateRealm: Function,
-  activateRealmConfig: Function,
   realmKey: Key,
 }
 
-const RealmSelector = ({ active, realm, activateRealm, activateRealmConfig, realmKey }: Props) => {
+const RealmSelector = ({ realm, activateRealm, realmKey }: Props) => {
   const realmContext = useContext(RealmContext)
 
-  return <MenuItem key={realmKey} selected={realmContext.activeRealm === realm.name}>
-    <ListItemText onClick={() => realmContext.activateRealm(realm.name)}>{realm.name}</ListItemText>
-    <IconButton onClick={event => { event.preventDefault(); activateRealmConfig(realm.name) }}>
-      <Edit />
-    </IconButton>
-  </MenuItem>
+  return <div
+    key={realmKey}
+    className={`flex flex-row items-center rounded p-2 hover:bg-slate-100 ${realmContext.activeRealm === realm.name ? 'bg-primary text-white hover:text-foreground' : ''}`}
+  >
+    <TypographyNav
+      className='grow'
+      onClick={event => { event.preventDefault(); activateRealm(realm.name) }}
+      text={realm.name}
+    />
+    <TypographyNav text={realm.items?.length} className="" />
+  </div>
 }
 
 export default RealmSelector

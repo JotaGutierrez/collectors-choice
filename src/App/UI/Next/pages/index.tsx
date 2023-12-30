@@ -1,24 +1,19 @@
-import { ChevronLeft, FilterList, Menu } from '@mui/icons-material'
-import { AppBar, Box, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
 import { NextPage } from 'next'
 
 import Head from 'next/head'
 import { useContext } from 'react'
 
 import { AsideContext, RealmContext } from './_app'
+import ItemRenderer from '../components/compositions/Item/ItemRenderer'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
 import AlertBag from '../components/layout/AlertBag'
-import Aside from '../components/layout/aside'
+import Aside from '../components/layout/Aside'
 
-import styles from '../styles/Home.module.css'
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
+import { Drawer } from '@/components/ui/drawer'
 
 interface Props {
-  items?
+  items?: any
 }
 
 const Home: NextPage<Props> = () => {
@@ -31,47 +26,31 @@ const Home: NextPage<Props> = () => {
         <title>Collectors Choice</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box className={styles.root}>
-        <AlertBag />
-        <AppBar>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={() => asideContext.setIsOpened(!asideContext.isOpened)}
-            >
-              {asideContext.isOpened ? <ChevronLeft /> : <Menu />}
-            </IconButton>
-            <Typography variant="body1" sx={{ flexGrow: 1, fontWeight: 700 }}>
-              {realmContext.activeRealm ?? 'Collectors Choice'}
-            </Typography>
-            <IconButton
-              color="inherit"
-              onClick={() => realmContext.toggleFilterTags()}
-            >
-              <FilterList />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Box className={styles.container}>
-          <Box sx={{ height: 'calc(100vh - var(--header-height))', overflowX: 'scroll' }}>
+      <div className="w-full data-[panel-group-direction=vertical]:flex-col h-screen items-stretch relative min-h-screen">
+        <div className="grid w-full h-full grid-cols-4 sm:grid-cols-12 h-screen">
+          <div className="col-span-4 sm:col-span-2 p-0 border-r h-screen">
             <Drawer
-              variant="permanent"
               open={asideContext.isOpened}
-              style={{ zIndex: 1 }}
-              className={`${styles.aside} ${asideContext.isOpened ? '' : styles.closed}`}
             >
-              <Aside closeMenu={() => asideContext.setIsOpened(false)} />
+              <Aside />
             </Drawer>
-          </Box>
-          <Box className={`${styles.main} ${asideContext.isOpened ? '' : styles.closed}`} component="main">
-            <Box sx={{ height: 'calc(100vh - var(--header-height))', overflowX: 'scroll' }}>
-              {realmContext.realm && realmContext.realmPage === 'config' && <RealmConfig realm={realmContext.realm} tags={realmContext.tags ?? []} />}
-              {realmContext.realm && <RealmView realm={realmContext.realm} tags={realmContext.tags ?? []} />}
-            </Box>
-          </Box>
-        </Box>
-        <footer className={styles.footer} />
-      </Box>
+          </div>
+          <div className={`col-span-4 sm:col-span-4 p-0 border-r h-screen ${asideContext.isOpened ? '' : 'styles.closed'}`}>
+              <div>
+                {realmContext.realm && <RealmView
+                    realm={realmContext.realm}
+                    tags={realmContext.tags ?? []}
+                />}
+              </div>
+          </div>
+          <div className="col-span-4 sm:col-span-6 h-screen">
+            {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} tags={realmContext.tags ?? []}/>}
+            {realmContext.realm && realmContext.realmPage === 'config' && <RealmConfig realm={realmContext.realm} tags={realmContext.tags ?? []} />}
+          </div>
+        </div>
+        <footer className="styles.footer"/>
+        <AlertBag/>
+      </div>
     </>
   )
 }

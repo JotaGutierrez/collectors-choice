@@ -1,8 +1,8 @@
 import Item from '@Core/Item/domain/Item'
-import { Edit } from '@mui/icons-material'
-import { IconButton, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import { TypographyH3 } from '../../atoms/Typography'
+import { Button } from '@/components/ui/button'
 
 interface props {
   rowKey: number;
@@ -25,19 +25,15 @@ const ShortCard = ({ rowKey, item }: props) => {
       </div>
       <div>
         <div>
-          <Typography variant='h3'>
-            {item.name}
-          </Typography>
+          <TypographyH3 text={item.name} className={undefined} />
           <div>
-            <IconButton onClick={toggleItemConfig}>
-              <Edit />
-            </IconButton>
+            <Button onClick={toggleItemConfig}>
+              Edit
+            </Button>
           </div>
         </div>
         <div>
-          <Typography>
-            {item.notes}
-          </Typography>
+          <TypographyH3 text={item.notes} className={undefined} />
         </div>
       </div>
     </div>

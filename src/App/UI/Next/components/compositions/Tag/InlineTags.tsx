@@ -1,10 +1,10 @@
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '@Core/Tag/domain/Tag'
-import { Chip, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
 import useSWR from 'swr'
 import { RealmContext } from '../../../pages/_app'
+import { Badge } from '@/components/ui/badge'
 
 interface props {
   tags: Array<Tag>;
@@ -35,16 +35,15 @@ const InlineTags = ({ tags }: props) => {
   if (tags === undefined) return <div>Loading...</div>
   if (query.realm === '') return <div>Select any realm</div>
 
-  return <Grid container columnSpacing={1}>
-    {Array.isArray(tags) && tags.map((tag, key) => <Grid key={key} item>
-      <Chip
-        variant={realmContext.filter?.indexOf(tag.name) > -1 ? 'filled' : 'outlined'}
+  return <div className={'flex flex-row gap-2 justify-end'}>
+    {Array.isArray(tags) && tags.map((tag, key) =>
+      <Badge
+        key={key}
+        variant={realmContext.filter?.indexOf(tag.name) > -1 ? 'default' : 'outline'}
         onClick={(event) => { event.preventDefault(); toggleFilter(tag.name) }}
-        label={tag.name}
-      />
-    </Grid>
+      >{tag.name}</Badge>
     )}
-  </Grid>
+  </div>
 }
 
 export default InlineTags

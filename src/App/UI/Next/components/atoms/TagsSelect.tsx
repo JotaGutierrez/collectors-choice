@@ -1,7 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
-import { Chip, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { Badge } from '@/components/ui/badge'
 
 interface TagSelectProps {
   item: Item;
@@ -30,14 +30,13 @@ const TagSelect = ({ item, tags }: TagSelectProps) => {
     setSelectedTags(_tags)
   }
 
-  return <Stack direction="row" spacing={1}>
-    {tags.map((tag, key) => <Chip
+  return <div className={'flex flex-row gap-2'}>
+    {tags.map((tag, key) => <Badge
       key={key}
-      label={tag.name}
       onClick={() => toggleTag(tag)}
-      variant={selectedTags.filter(itemTag => tag.name === itemTag.name).length > 0 ? 'filled' : 'outlined'}
-    />)}
-  </Stack>
+      variant={selectedTags.filter(itemTag => tag.name === itemTag.name).length > 0 ? 'default' : 'outline'}
+    >{tag.name}</Badge>)}
+  </div>
 }
 
 export default TagSelect

@@ -1,6 +1,6 @@
-import { Add } from '@mui/icons-material'
-import { Grid, IconButton, TextField } from '@mui/material'
 import { ChangeEventHandler } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 interface props {
   name: string
@@ -9,23 +9,22 @@ interface props {
 }
 
 const InputButton = ({ name, placeholder, onChange }: props) =>
-  <Grid container>
-    <Grid item flexGrow={'grow'}>
-      <TextField
+  <div>
+    <div>
+      <Input
         id={name}
         name={name}
-        fullWidth
         type="text"
         aria-label={placeholder}
         placeholder={placeholder}
         onChange={onChange}
       />
-    </Grid>
-    <Grid item>
-      <IconButton type='submit'>
-        <Add />
-      </IconButton>
-    </Grid>
-  </Grid>
+    </div>
+    <div>
+      <Button type='submit'>
+        Add
+      </Button>
+    </div>
+  </div>
 
 export default InputButton

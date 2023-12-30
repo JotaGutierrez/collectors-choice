@@ -20,7 +20,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@Core/*": ["../../../Core/*"]
+      "@Core/*": ["../../../Core/*"],
+      "@/*": ["@/*"]
     }
   },
   "include": [

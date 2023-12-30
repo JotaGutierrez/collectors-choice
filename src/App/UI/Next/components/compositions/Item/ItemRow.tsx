@@ -1,9 +1,10 @@
 import Item from '@Core/Item/domain/Item'
-import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
-import { Delete } from '@mui/icons-material'
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import { useContext } from 'react'
 import { RealmContext } from '../../../pages/_app'
+import TagSelect from '../../atoms/TagsSelect'
+import { TypographyMuted, TypographyP } from '../../atoms/Typography'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
 interface props {
   rowKey: string;
@@ -13,25 +14,31 @@ interface props {
 const ItemRow = ({ rowKey, item }: props) => {
   const realmContext = useContext(RealmContext)
 
-  return <ListItem
+  return <Card
     key={rowKey}
-    sx={{ backgroundColor: '#ffffff', mb: '2px', padding: '1rem' }}
-    alignItems='flex-start'
-    secondaryAction={
-      <IconButton onClick={event => deleteItem(event, item._id)}>
-        <Delete />
-      </IconButton>
-    }
   >
-    <ListItemAvatar>
-      <Avatar>{Array.from(item.name)[0].toUpperCase()}</Avatar>
-    </ListItemAvatar>
-    <ListItemText
-      primary={item.name}
-      secondary={item.notes?.substring(0, 40)}
-      onClick={() => realmContext.setActiveItem(item)}
-    />
-  </ListItem>
+      <CardContent className={'py-4'} onClick={() => {
+        realmContext.hideRealmConfig()
+        realmContext.setActiveItem(item)
+      }}>
+        <div className={'flex flex-row justify-start items-center'}>
+          <div className="pr-4">
+            <Avatar>
+              <AvatarFallback>{Array.from(item.name)[0].toUpperCase()}</AvatarFallback>
+            </Avatar>
+          </div>
+          <div>
+            <TypographyP text={item.name} className="font-medium" />
+            <TypographyMuted text={item.notes?.substring(0, 40)} className="" />
+          </div>
+        </div>
+      </CardContent>
+      {item.tags.length > 0 &&
+        <CardFooter>
+          <TagSelect tags={item.tags} item={item} />
+        </CardFooter>
+      }
+  </Card>
 }
 
 export default ItemRow

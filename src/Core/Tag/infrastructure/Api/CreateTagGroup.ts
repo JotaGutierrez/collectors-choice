@@ -1,5 +1,4 @@
-const saveTag = async (event) => {
-  event.preventDefault()
+const saveTag = async ({tagName, realm, group}) => {
 
   const res = await fetch('/api/tag/create', {
     method: 'POST',
@@ -7,9 +6,9 @@ const saveTag = async (event) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      name: event.target.name.value,
-      realm: event.target.realm.value,
-      group: event.target.group.value
+      name: tagName,
+      realm: realm,
+      group: group
     })
   })
 
