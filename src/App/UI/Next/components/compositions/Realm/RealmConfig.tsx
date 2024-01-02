@@ -16,9 +16,10 @@ import {
   PlusIcon,
   TrashIcon
 } from '@radix-ui/react-icons'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
+import { RealmContext } from '../../../pages/_app'
 import { TypographyH4, TypographyNav } from '../../atoms/Typography'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader } from '@/components/ui/card'
@@ -41,7 +42,7 @@ const RealmConfig = ({ realm, tags }: props) => {
   const [showTagGroups, setShowTagGroups] = useState(false)
   const [showAddTag, setShowAddTag] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-
+  const realmContext = useContext(RealmContext)
   const [realmNotes, setRealmNotes] = useState(realm.notes)
 
   const [tagName, setTagName] = useState('')
@@ -61,7 +62,7 @@ const RealmConfig = ({ realm, tags }: props) => {
           <div className='flex flex-row items-center p-4'>
             <Button
               color="inherit"
-              onClick={() => null}
+              onClick={() => realmContext.hideRealmConfig()}
               variant="ghost"
             >
               <ChevronLeftIcon/>

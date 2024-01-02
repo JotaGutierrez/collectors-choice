@@ -1,7 +1,7 @@
 import createItem from '@Core/Item/infrastructure/Api/CreateItem'
 import Realm from '@Core/Realm/domain/Realm'
 import Tag from '@Core/Tag/domain/Tag'
-import { ChevronLeftIcon, GearIcon, HamburgerMenuIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
+import { ChevronLeftIcon, GearIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
 import { useContext, useState } from 'react'
 import { AlertBagContext, AsideContext, RealmContext } from '../../../pages/_app'
 import { TypographyH4 } from '../../atoms/Typography'
@@ -62,7 +62,7 @@ const RealmView = ({ realm, tags }: props) => {
             onClick={() => asideContext.setIsOpened(!asideContext.isOpened)}
             variant="ghost"
           >
-            {asideContext.isOpened ? <ChevronLeftIcon /> : <HamburgerMenuIcon /> }
+            <ChevronLeftIcon />
           </Button>
           <TypographyH4 text={realmContext.activeRealm ?? 'Collectors Choice'} className="grow" />
           <Button

@@ -4,8 +4,9 @@ import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
 import saveProperty from '@Core/Item/infrastructure/Api/SaveProperty'
 import Tag from '@Core/Tag/domain/Tag'
 import { ChevronLeftIcon, TrashIcon } from '@radix-ui/react-icons'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Autosave } from 'react-autosave'
+import { RealmContext } from '../../../pages/_app'
 import TagSelect from '../../atoms/TagsSelect'
 import { TypographyH3 } from '../../atoms/Typography'
 import { Button } from '@/components/ui/button'
@@ -15,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {
   const [itemNotes, setItemNotes] = useState(null)
-
+  const realmContext = useContext(RealmContext)
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {
         <div className='flex flex-row items-center p-4'>
           <Button
             color="inherit"
-            onClick={() => null}
+            onClick={() => realmContext.setActiveItem(null)}
             variant="ghost"
           >
             <ChevronLeftIcon />
