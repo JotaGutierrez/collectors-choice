@@ -35,7 +35,7 @@ const ItemForm = ({ activeRealm }: ItemFormProps) => {
   }
 
   return <>
-    <Input name="name" onChange={event => setName(event.target.value)} placeholder="Add item..." />
+    <Input name="name" value={name} onChange={event => setName(event.target.value)} placeholder="Add item..." />
     {
       submitting
         ? <Progress />
