@@ -1,7 +1,6 @@
 import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
 import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
-import saveProperty from '@Core/Item/infrastructure/Api/SaveProperty'
 import Tag from '@Core/Tag/domain/Tag'
 import { ChevronLeftIcon, TrashIcon } from '@radix-ui/react-icons'
 import { useContext, useEffect, useState } from 'react'
@@ -10,14 +9,12 @@ import { RealmContext } from '../../../pages/_app'
 import TagSelect from '../../atoms/TagsSelect'
 import { TypographyH3 } from '../../atoms/Typography'
 import { Button } from '@/components/ui/button'
-import { Select } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 
 const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {
   const [itemNotes, setItemNotes] = useState(null)
   const realmContext = useContext(RealmContext)
-  const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
   useEffect(() => {
     setItemNotes(item.notes)
@@ -56,19 +53,6 @@ const Page = ({ item, tags }: { item: Item, tags: Array<Tag> }) => {
       <Separator className="mb-4 mt-4" />
       <div className="flex w-full items-center space-x-2 p-4 pb-8 justify-end">
         {tags && tags.length > 0 && <TagSelect tags={tags} item={item}/>}
-        {
-          [...Array.from(properties)].map((property, key) => {
-            const selectedTag = (item.tags ?? [{ name: '', group: property }]).find(tag => tag.group === property)
-            return <div key={key}>
-              <Select name="" onChange={event => saveProperty(item, event.target.value, property, tags)}
-                      value={selectedTag ? selectedTag.name : ''}>
-                <option value=""></option>
-                {tags.filter(tag => tag.group === property).map((tag, key) => <option key={key}
-                                                                                      value={tag.name}>{tag.name}</option>)}
-              </Select>
-            </div>
-          })
-        }
       </div>
     </div>
   </>

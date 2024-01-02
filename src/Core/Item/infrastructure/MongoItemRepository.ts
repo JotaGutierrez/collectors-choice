@@ -33,7 +33,6 @@ class MongoItemRepository implements ItemRepository
                     'name': item.name,
                     'notes': item.notes,
                     'tags': item.tags,
-                    'wanted': item.wanted,
                     'realm': item.realm,
                     'itemTagOrders': item.itemTagOrders,
                 },

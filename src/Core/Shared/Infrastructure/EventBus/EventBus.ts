@@ -27,6 +27,7 @@ class EventBus {
       return;
     }
 
+    // @ts-ignore
     Object.values(subscribers).map(callable => callable(arg));
   }
 }

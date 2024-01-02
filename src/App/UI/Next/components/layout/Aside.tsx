@@ -72,7 +72,7 @@ const Aside = () => {
         {
           submitting
             ? <Progress />
-            : <Button onClick={submitForm} name="name" placeholder="Add realm..."><PlusIcon /></Button>
+            : <Button onClick={submitForm} name="name"><PlusIcon /></Button>
         }
       </div>
     </div>

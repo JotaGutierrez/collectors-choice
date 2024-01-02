@@ -149,8 +149,11 @@ const RealmConfig = ({ realm, tags }: props) => {
                   submitting
                     ? <Progress/>
                     : <Button
-                      onClick={() => saveTagGroup(tagGroupName, realm)}
-                      placeholder="Add Tag Group..."
+                      onClick={async () => {
+                        setSubmitting(true)
+                        await saveTagGroup(tagGroupName, realm)
+                        setSubmitting(false)
+                      }}
                     ><PlusIcon/></Button>
                 }
               </div>
@@ -205,8 +208,13 @@ const RealmConfig = ({ realm, tags }: props) => {
                     {
                       submitting
                         ? <Progress/>
-                        : <Button onClick={() => saveTag({ tagName, realm: realm.name, group: '' })}
-                                  placeholder="Add Tag..."><PlusIcon/></Button>
+                        : <Button onClick={async () => {
+                          setSubmitting(true)
+                          await saveTag({ tagName, realm: realm.name, group: '' })
+                          setSubmitting(false)
+                        }}>
+                            <PlusIcon/>
+                        </Button>
                     }
                   </div>
               </>
@@ -216,7 +224,7 @@ const RealmConfig = ({ realm, tags }: props) => {
         <div className={'p-4 snap-top'}>
           <Card>
             <CardHeader>
-              <TypographyNav text={'View Settings'} className={''}></TypographyNav>
+              <TypographyNav text={'View Settings'}></TypographyNav>
               <CardDescription>Choose the default view. You can change it at any time.</CardDescription>
             </CardHeader>
 

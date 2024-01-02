@@ -20,15 +20,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@Core/*": ["../../../Core/*"],
-      "@/*": ["@/*"]
+      "@Core/*": ["./../../../Core/*"],
+      "@/*": ["./@/*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "../../../Core/**/*.ts"
+    "./../../../Core/**/*.ts"
   ],
   "exclude": [
     "node_modules"

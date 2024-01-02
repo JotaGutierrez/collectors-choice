@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { AlertBagContext } from '../../pages/_app'
-import {Button} from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 
 interface notificationProps {
   message: string
 }
 
 const Notification = ({ message }: notificationProps) => {
+  // eslint-disable-next-line no-unused-vars
   const [open, setOpen] = React.useState(true)
 
   return <div>
@@ -15,7 +16,7 @@ const Notification = ({ message }: notificationProps) => {
             aria-label="close"
             color="inherit"
             onClick={() => {
-                setOpen(false)
+              setOpen(false)
             }}
         >
             CloseIcon

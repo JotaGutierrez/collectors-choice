@@ -39,7 +39,7 @@ const ItemForm = ({ activeRealm }: ItemFormProps) => {
     {
       submitting
         ? <Progress />
-        : <Button onClick={registerItem} name="name" placeholder="Add Item..."><PlusIcon /></Button>
+        : <Button onClick={registerItem} name="name"><PlusIcon /></Button>
     }
   </>
 }
