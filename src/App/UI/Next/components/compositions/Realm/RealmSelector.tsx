@@ -14,7 +14,7 @@ const RealmSelector = ({ realm, activateRealm, realmKey }: Props) => {
 
   return <div
     key={realmKey}
-    className={`flex flex-row items-center rounded p-2 hover:bg-slate-100 ${realmContext.activeRealm === realm.name ? 'bg-primary text-white hover:text-foreground' : ''}`}
+    className={`flex flex-row items-center rounded p-2 hover:bg-slate-100 dark:hover:bg-slate-700 ${realmContext.activeRealm === realm.name ? 'bg-primary text-white hover:text-foreground' : ''}`}
   >
     <TypographyNav
       className='grow'

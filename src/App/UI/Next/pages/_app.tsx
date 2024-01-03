@@ -6,6 +6,7 @@ import Item from '../../../../Core/Item/domain/Item'
 import Realm from '../../../../Core/Realm/domain/Realm'
 import fetcher from '../../../../Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '../../../../Core/Tag/domain/Tag'
+import { ThemeProvider } from '../components/theme/ThemeProvider'
 
 interface AlertInterface {
   message: string;
@@ -151,7 +152,14 @@ const MyApp = ({ Component, pageProps }) => {
         hideRealmConfig,
         realmPage
       }}>
-        <Component {...pageProps} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Component {...pageProps} />
+        </ThemeProvider>
       </RealmContext.Provider>
     </AlertBagContext.Provider>
   </AsideContext.Provider>

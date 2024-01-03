@@ -1,13 +1,16 @@
 import Realm from '@Core/Realm/domain/Realm'
 import saveRealm from '@Core/Realm/infrastructure/Api/CreateRealm'
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
-import { PlusIcon } from '@radix-ui/react-icons'
+import { MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/router'
+import { useTheme } from 'next-themes'
 import { Key, useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { RealmContext } from '../../pages/_app'
+import { TypographyH4 } from '../atoms/Typography'
 import RealmSelector from '../compositions/Realm/RealmSelector'
 import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
@@ -16,6 +19,7 @@ const Aside = () => {
   const router = useRouter()
 
   const realmContext = useContext(RealmContext)
+  const { setTheme } = useTheme()
 
   const [name, setName] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -53,7 +57,32 @@ const Aside = () => {
   if (data === undefined) return <div>Loading...</div>
 
   return (
-    <div className="flex flex-col h-full">
+    <div className='flex flex-col w-full h-screen overflow-scroll snap-x'>
+      <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
+        <div className='flex flex-row items-center p-4'>
+          <TypographyH4 text={'Collectors Choice'} className="grow" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme('light')}>
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('dark')}>
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('system')}>
+                System
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
       <div className='grid grid-flow-row grow auto-rows-max text-sm gap-1 p-4'>
         {
           data.map((realm: Realm, key: Key) =>
