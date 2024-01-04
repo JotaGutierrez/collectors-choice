@@ -1,7 +1,6 @@
 import Item from '../domain/Item';
 import ItemRepository from '../domain/ItemRepository';
 import {ObjectId} from '../../../App/UI/Next/node_modules/mongodb';
-import {plainToInstance} from '../../../App/UI/Next/node_modules/class-transformer';
 import Criteria from '../domain/Criteria';
 import EventBus from "../../Shared/Infrastructure/EventBus/EventBus";
 import ItemCreatedEvent from "../domain/ItemCreatedEvent";
@@ -50,14 +49,7 @@ class MongoItemRepository implements ItemRepository
     }
 
     async findById(id: string): Promise<Item> {
-        const data = await this.collection.findOne({_id: new ObjectId(id)});
-        const item = plainToInstance(Item, data);
-        /**
-         * plainToInstance creates a new id. Don't know why
-         * We must preserve the original
-         */
-        item._id = id;
-        return item;
+        return (await this.collection.findOne({_id: new ObjectId(id)})) as Item;
     }
 
     async findByTags(tags: Array<string>) : Promise<Array<Item>> {
@@ -83,7 +75,7 @@ class MongoItemRepository implements ItemRepository
 
     async deleteById(id: string): Promise<any> {
         const item = await this.findById(id);
-        console.log(item)
+
         EventBus.getInstance().dispatch<any>(ItemDeletedEvent, item.realm)
 
         await this.collection.deleteOne({_id: new ObjectId(id)});

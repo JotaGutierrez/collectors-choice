@@ -1,6 +1,5 @@
 
-const deleteItem = async (event, id) => {
-  event.preventDefault()
+const deleteItem = async (id) => {
 
   await fetch('/api/item/delete', {
     method: 'DELETE',

@@ -1,5 +1,6 @@
+import Item from "../../domain/Item";
 
-const saveDescription = async (event, item) =>
+const saveDescription = async (event: any, item: Item) =>
   await fetch('/api/item/patch', {
     method: 'POST',
     headers: {

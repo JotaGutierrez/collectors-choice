@@ -1,11 +1,11 @@
 import '../styles/globals.css'
 import 'reflect-metadata'
+import Item from '@Core/Item/domain/Item'
+import Realm from '@Core/Realm/domain/Realm'
+import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
+import Tag from '@Core/Tag/domain/Tag'
 import { useRouter } from 'next/router'
 import { Key, createContext, useEffect, useState } from 'react'
-import Item from '../../../../Core/Item/domain/Item'
-import Realm from '../../../../Core/Realm/domain/Realm'
-import fetcher from '../../../../Core/Shared/Infrastructure/Http/Fetcher'
-import Tag from '../../../../Core/Tag/domain/Tag'
 import { ThemeProvider } from '../components/theme/ThemeProvider'
 
 interface AlertInterface {
@@ -89,7 +89,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   const setActiveItem = async item => {
     await _setActiveItem(null)
-    await _setActiveItem(item)
+    _setActiveItem(item)
   }
 
   useEffect(() => {
@@ -99,40 +99,22 @@ const MyApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
     const fetchRealm = async () => {
-      await _setActiveItem(null)
-      await setItems(null)
-      await setTags(null)
-      await setFilter(null)
+      _setActiveItem(null)
+      setItems(null)
+      setTags(null)
+      setFilter(null)
 
       const realm = await fetcher('/api/realm/fetchOne', '?name=' + activeRealm)
       setRealm(realm)
 
       const tags = await fetcher('/api/tag/fetch', '?realm=' + activeRealm)
       setTags(tags)
-
-      const _items = await fetcher(
-        '/api/item/fetch',
-        `?${filter && filter !== '' ? `filter=${encodeURIComponent(JSON.stringify(filter))}&` : ''}realm=${activeRealm}`
-      )
-      setItems(_items)
     }
 
     if (activeRealm !== '') {
       fetchRealm()
     }
   }, [activeRealm])
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      const _items = await fetcher(
-        '/api/item/fetch',
-        `?${filter && filter !== '' ? `filter=${encodeURIComponent(JSON.stringify(filter))}&` : ''}realm=${activeRealm}`
-      )
-      setItems(_items)
-    }
-
-    fetchItems()
-  }, [filter])
 
   return <AsideContext.Provider value={{ isOpened, setIsOpened }}>
     <AlertBagContext.Provider value={alerts}>

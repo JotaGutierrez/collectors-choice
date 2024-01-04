@@ -26,12 +26,12 @@ const TagSelect = ({ item, tags }: TagSelectProps) => {
 
   const toggleTag = async tag => {
     const _tags = selectedTags.includes(tag) ? selectedTags.filter(selectedTag => selectedTag.name !== tag.name) : [...selectedTags, tag]
-    saveTags(_tags)
+    await saveTags(_tags)
     setSelectedTags(_tags)
   }
 
   return <div className={'flex flex-row gap-2'}>
-    {tags.map((tag, key) => <Badge
+    {!!tags && tags.map((tag, key) => <Badge
       key={key}
       onClick={() => toggleTag(tag)}
       variant={selectedTags.filter(itemTag => tag.name === itemTag.name).length > 0 ? 'default' : 'outline'}

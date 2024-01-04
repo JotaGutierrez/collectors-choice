@@ -50,7 +50,7 @@ const RealmConfig = ({ realm, tags }: props) => {
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
 
-  const { data, error } = useSWR(['/api/tag_group/fetch', '?realm=' + realm.name], fetcher, { refreshInterval: 1000 })
+  const { data, error } = useSWR(`/api/tag_group/fetch?realm=${realm.name}`, fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
   if (data === undefined) return <div>Loading...</div>

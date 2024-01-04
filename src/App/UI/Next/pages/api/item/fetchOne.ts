@@ -1,12 +1,15 @@
-import Item from '@Core/Item/domain/Item'
 import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
 import { MongoClient } from 'mongodb'
 
 export default async function handler (req, res) {
+  /** @TODO: use middleware to avoid connecting from each controller */
   const client = await MongoClient.connect(process.env.DB_URI)
 
   const itemRepository = new MongoItemRepository(client)
-  const item = await itemRepository.findById(req.body._id)
 
-  res.status(200).json(await itemRepository.update(<Item>{ ...item, notes: req.body.notes }))
+  try {
+    res.status(200).json(await itemRepository.findById(req.query.id))
+  } catch (error) {
+    res.status(200).json(error)
+  }
 }

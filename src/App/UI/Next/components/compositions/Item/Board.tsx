@@ -12,7 +12,7 @@ interface props {
 }
 
 const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
-  /** We need a copy in the state to reflect dnd changes without depending on swr reloading */
+  /** We need a copy in the state to reflect dnd changes without depending on hooks reloading */
   const memoColumns = useMemo(() => {
     const initialColumns = {
       UNSET: items.filter(item => item.tags ? item.tags.filter(tag => tag.group === params.property).length === 0 : true)
