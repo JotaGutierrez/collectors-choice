@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collectors-choice-pod
+  labels:
+    app: node
+spec:
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+        - name: node
+          image: localhost:5000/collectors_choice:latest
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - hostPort: 3000
+              containerPort: 3000

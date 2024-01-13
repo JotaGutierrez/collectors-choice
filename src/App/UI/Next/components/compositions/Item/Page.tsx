@@ -21,14 +21,14 @@ const AutoSaveInput = ({ value, onSave }: {value: string, onSave: any}) => {
   }, [value])
 
   return <>
-  <Textarea
-    rows={10}
-    defaultValue={notes}
-    onChange={e => setNotes(e.target.value)}
-    placeholder={'Add some notes...'}
-  />
-  <Autosave data={notes} onSave={onSave}/>
-</>
+    <Textarea
+      rows={10}
+      defaultValue={notes}
+      onChange={e => setNotes(e.target.value)}
+      placeholder={'Add some notes...'}
+    />
+    <Autosave data={notes} onSave={onSave}/>
+  </>
 }
 
 const Page = ({ _item }: { _item: Item }) => {

@@ -57,10 +57,102 @@ To run backend tests:
 sh ./etc/bash/run-tests.sh
 ```
 
-## Deploy
+# Deploy
 
-WIP
+> Ansible has been dropped in favor of docker/kubernetes.
 
+## Kubernetes cluster
+
+Repository contains yaml files to set up a Kubernetes cluster and make goals to make things easier
+
+You can follow this steps to set up a local deploy environment
+
+### Pre-requisites
+* Local docker
+* minikube
+* local registry
+
+### Deploy on local Kubernetes
+
+> Caution! This does not take care of MongoDB instance
+
+* Run Minikube and load env vars
+```shell
+$ minikube start
+$ eval $(minikube -p minikube docker-env)
+```
+
+* Build and push image to registry
+```shell
+$ make build-local
+$ make push-local
+```
+
+* deploy pod on kubernetes
+```shell
+(first time only) $ make create-local-deployment
+$ make deploy-local
+
+```
+
+* Now, just for local testing:
+```shell
+ kubectl port-forward service/node-service 8080:3000
+```
+
+### Make accessible the App
+#### Nginx ingress
+* install Nginx ingress 
+
+```shell
+$ minikube addons enable ingress
+$ make nginx-ingress
+```
+
+* Ensure load balancer is listening in the proper external IP
+
+>From [Kubernetes bare-metal docs](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
+```yaml
+kind: Service
+...
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+...
+```
+
+* Lastly, add proper entry to /etc/hosts
+```shell
+$ sudo echo $(minikube ip) collectors-choice.local > /etc/hosts
+```
+
+## Deploy on premises
+
+> Sadly, my vps has not enough resources to run kubernetes :(
+> 
+> I had to find another not so fancy solution until I can run a k8s cluster.
+> 
+> Also, I discarded using Helm due to the simplicity of this project. It adds a lot of complexity for just one deploy environment
+### Docker only deploy
+
+* Build local image
+```shell
+make build-local
+docker tag localhost:5000/collectors_choice:latest registry-ip:registry-port/collectors_choice:latest
+```
+
+* push to vps registry
+```shell
+docker login registry-ip:registry-port
+docker push registry-ip:registry-port/collectors_choice:latest
+```
+* on VPS:
+```shell
+docker login registry-ip:registry-port
+docker run -d --name=collectors_choice --restart=unless-stopped -p 3000:3000 registry-ip:registry-port/collectors_choice:latest
+```
+
+now we have app running on 3000
 
 ## Issues
 

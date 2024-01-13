@@ -43,7 +43,7 @@ const Home: NextPage<Props> = () => {
               </div>
           </div>
           <div className={`sm:max-w-5xl h-screen w-screen ${realmContext.activeItem || (realmContext.realm && realmContext.realmPage === 'config') ? 'block' : 'hidden sm:block'}`}>
-            {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} tags={realmContext.tags ?? []} />}
+            {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} />}
             {realmContext.realm && realmContext.realmPage === 'config' && <RealmConfig realm={realmContext.realm} tags={realmContext.tags ?? []} />}
           </div>
         </div>

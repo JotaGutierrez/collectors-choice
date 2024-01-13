@@ -15,3 +15,18 @@ logs:
 
 init: up
 	docker compose run node yarn install
+
+build-local:
+	docker build -f ./etc/docker/node/Dockerfile -t localhost:5000/collectors_choice:latest --target prod  .
+
+push-local:
+	docker push localhost:5000/collectors_choice:latest
+
+create-local-deployment:
+	kubectl create -f ./etc/k8s/node/node.yaml -f ./etc/k8s/node/service.yaml
+
+deploy-local:
+	 kubectl rollout restart deployment --selector=app=node
+
+nginx-ingress:
+	kubectl apply -f ./etc/k8s/nginx/nginx.yaml
