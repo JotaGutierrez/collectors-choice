@@ -138,7 +138,7 @@ $ sudo echo $(minikube ip) collectors-choice.local > /etc/hosts
 * Build local image
 ```shell
 make build-local
-docker tag localhost:5000/collectors_choice:latest registry-ip:registry-port/collectors_choice:latest
+docker tag localhost:5000/collectors_choice:$(git log --format="%H" -n 1) registry-ip:registry-port/collectors_choice:latest
 ```
 
 * push to vps registry
@@ -149,6 +149,7 @@ docker push registry-ip:registry-port/collectors_choice:latest
 * on VPS:
 ```shell
 docker login registry-ip:registry-port
+docker pull registry-ip:registry-port/collectors_choice:latest
 docker run -d --name=collectors_choice --network=app-network --restart=unless-stopped -p 3000:3000 registry-ip:registry-port/collectors_choice:latest
 ```
 

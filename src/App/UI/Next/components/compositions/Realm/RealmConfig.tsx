@@ -15,10 +15,10 @@ import {
   PlusIcon,
   TrashIcon
 } from '@radix-ui/react-icons'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
-import { RealmContext } from '../../../pages/_app'
+import { useRealmContext } from '../../../context/RealmContext'
 import { TypographyH4, TypographyNav } from '../../atoms/Typography'
 import TagInput from '../Tag/TagInput'
 import { Button } from '@/components/ui/button'
@@ -42,7 +42,7 @@ const RealmConfig = ({ realm, tags }: props) => {
   const [showTagGroups, setShowTagGroups] = useState(false)
   const [showAddTag, setShowAddTag] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
   const [realmNotes, setRealmNotes] = useState(realm.notes)
 
   const [tagGroupName, setTagGroupName] = useState('')

@@ -1,46 +1,40 @@
+'use client'
+
 import { NextPage } from 'next'
-
-import Head from 'next/head'
-import { useContext } from 'react'
-
-import { AsideContext, RealmContext } from './_app'
 import ItemRenderer from '../components/compositions/Item/ItemRenderer'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
 import AlertBag from '../components/layout/AlertBag'
+
 import Aside from '../components/layout/Aside'
 
+import { useRealmContext } from '../context/RealmContext'
 import { Drawer } from '@/components/ui/drawer'
 
 interface Props {
   items?: any
 }
 
-const Home: NextPage<Props> = () => {
-  const realmContext = useContext(RealmContext)
-  const asideContext = useContext(AsideContext)
+const Page: NextPage<Props> = () => {
+  const realmContext = useRealmContext()
 
   return (
     <>
-      <Head>
-        <title>Collectors Choice</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className="w-full data-[panel-group-direction=vertical]:flex-col h-dvh items-stretch relative min-h-dvh">
         <div className="sm:flex sm:flex-row w-full h-full h-dvh">
-          <div className={`sm:max-w-xs sm:w-xs p-0 border-r h-dvh w-screen ${asideContext.isOpened ? 'block' : 'hidden sm:block'}`}>
+          <div className={`sm:max-w-xs sm:w-xs p-0 border-r h-dvh w-screen ${realmContext.isOpened ? 'block' : 'hidden sm:block'}`}>
             <Drawer
-              open={asideContext.isOpened}
+              open={realmContext.isOpened}
             >
               <Aside />
             </Drawer>
           </div>
-          <div className={`sm:max-w-xl p-0 border-r h-dvh w-screen ${!asideContext.isOpened && !(realmContext.activeItem || (realmContext.realm && realmContext.realmPage === 'config')) ? 'block' : 'hidden sm:block'}`}>
-              <div>
-                {realmContext.realm && <RealmView
-                    realm={realmContext.realm}
-                />}
-              </div>
+          <div className={`sm:max-w-xl p-0 border-r h-dvh w-screen ${!realmContext.isOpened && !(realmContext.activeItem || (realmContext.realm && realmContext.realmPage === 'config')) ? 'block' : 'hidden sm:block'}`}>
+            <div>
+              {realmContext.realm && <RealmView
+                  realm={realmContext.realm}
+              />}
+            </div>
           </div>
           <div className={`sm:max-w-5xl h-dvh w-screen ${realmContext.activeItem || (realmContext.realm && realmContext.realmPage === 'config') ? 'block' : 'hidden sm:block'}`}>
             {realmContext.activeItem && <ItemRenderer item={realmContext.activeItem} />}
@@ -54,4 +48,4 @@ const Home: NextPage<Props> = () => {
   )
 }
 
-export default Home
+export default Page

@@ -2,10 +2,10 @@ import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
 import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
 import { ChevronLeftIcon, TrashIcon } from '@radix-ui/react-icons'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Autosave } from 'react-autosave'
+import { useRealmContext } from '../../../context/RealmContext'
 import { useItem, useTags } from '../../../hooks/swr'
-import { RealmContext } from '../../../pages/_app'
 import TagSelect from '../../atoms/TagsSelect'
 import { TypographyH3 } from '../../atoms/Typography'
 import { Button } from '@/components/ui/button'
@@ -32,7 +32,7 @@ const AutoSaveInput = ({ value, onSave }: {value: string, onSave: any}) => {
 }
 
 const Page = ({ _item }: { _item: Item }) => {
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
 
   const { item, loadingItem } = useItem(_item._id)
   const { tags, loadingTags } = useTags(_item.realm)

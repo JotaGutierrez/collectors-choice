@@ -1,8 +1,7 @@
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '@Core/Tag/domain/Tag'
-import { useContext } from 'react'
 import useSWR from 'swr'
-import { RealmContext } from '../../../pages/_app'
+import { useRealmContext } from '../../../context/RealmContext'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -11,7 +10,7 @@ interface props {
 }
 
 const InlineTags = ({ tags }: props) => {
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
   const setFilter = realmContext.setFilter
 
   const toggleFilter = tag => {

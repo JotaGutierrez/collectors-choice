@@ -2,9 +2,9 @@ import Realm from '@Core/Realm/domain/Realm'
 import saveRealm from '@Core/Realm/infrastructure/Api/CreateRealm'
 import { MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
 import { useTheme } from 'next-themes'
-import { Key, useContext, useState } from 'react'
+import { Key, useState } from 'react'
+import { useRealmContext } from '../../context/RealmContext'
 import { useRealms } from '../../hooks/swr'
-import { RealmContext } from '../../pages/_app'
 import { TypographyH4 } from '../atoms/Typography'
 import RealmSelector from '../compositions/Realm/RealmSelector'
 import { Button } from '@/components/ui/button'
@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const Aside = () => {
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
 
   const { _realms, loading } = useRealms()
   const { setTheme } = useTheme()

@@ -1,9 +1,10 @@
 import createItem from '@Core/Item/infrastructure/Api/CreateItem'
 import Realm from '@Core/Realm/domain/Realm'
 import { ChevronLeftIcon, GearIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
+import { useAlertBagContext } from '../../../context/AlertBag'
+import { useRealmContext } from '../../../context/RealmContext'
 import { useRealm, useTags } from '../../../hooks/swr'
-import { AlertBagContext, AsideContext, RealmContext } from '../../../pages/_app'
 import { TypographyH4 } from '../../atoms/Typography'
 import BoardView from '../Item/BoardView'
 import GridView from '../Item/GridView'
@@ -20,7 +21,7 @@ interface ItemFormProps {
 }
 
 const ItemForm = ({ activeRealm }: ItemFormProps) => {
-  const alertBag = useContext(AlertBagContext)
+  const alertBag = useAlertBagContext()
   const [name, setName] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -47,8 +48,7 @@ interface props {
 }
 
 const RealmView = ({ realm }: props) => {
-  const realmContext = useContext(RealmContext)
-  const asideContext = useContext(AsideContext)
+  const realmContext = useRealmContext()
 
   const { _realm, loading } = useRealm(realm)
   const { tags, loadingTags } = useTags(realm.name)
@@ -59,7 +59,7 @@ const RealmView = ({ realm }: props) => {
         <div className='flex flex-row items-center p-4'>
           <Button
             color="inherit"
-            onClick={() => asideContext.setIsOpened(!asideContext.isOpened)}
+            onClick={() => realmContext.setIsOpened(!realmContext.isOpened)}
             variant="ghost"
           >
             <ChevronLeftIcon />

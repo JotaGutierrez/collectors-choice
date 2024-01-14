@@ -1,6 +1,6 @@
 import Realm from '@Core/Realm/domain/Realm'
-import { Key, useContext } from 'react'
-import { RealmContext } from '../../../pages/_app'
+import { Key } from 'react'
+import { useRealmContext } from '../../../context/RealmContext'
 import { TypographyNav } from '../../atoms/Typography'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const RealmSelector = ({ realm, activateRealm, realmKey }: Props) => {
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
 
   return <div
     key={realmKey}

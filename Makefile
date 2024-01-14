@@ -17,7 +17,7 @@ init: up
 	docker compose run node yarn install
 
 build-local:
-	docker build -f ./etc/docker/node/Dockerfile -t localhost:5000/collectors_choice:latest --target prod  .
+	docker build -f ./etc/docker/node/Dockerfile -t localhost:5000/collectors_choice:$(git log --format="%H" -n 1) --target prod  .
 
 push-local:
 	docker push localhost:5000/collectors_choice:latest

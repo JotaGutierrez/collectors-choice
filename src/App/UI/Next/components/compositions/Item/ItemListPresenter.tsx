@@ -1,8 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
-import { useContext } from 'react'
+import { useRealmContext } from '../../../context/RealmContext'
 import { useItems } from '../../../hooks/swr'
-import { RealmContext } from '../../../pages/_app'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface itemListPresenterProps {
@@ -15,7 +14,7 @@ interface itemListPresenterProps {
 const ItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams }: itemListPresenterProps) => {
   const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group !== '').map(tag => tag.group)))] : []
 
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
   const { items, loading } = useItems(realmContext.activeRealm, realmContext.filter)
 
   return loading

@@ -1,6 +1,5 @@
 import Item from '@Core/Item/domain/Item'
-import { useContext } from 'react'
-import { RealmContext } from '../../../pages/_app'
+import { useRealmContext } from '../../../context/RealmContext'
 import TagSelect from '../../atoms/TagsSelect'
 import { TypographyMuted, TypographyP } from '../../atoms/Typography'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -12,7 +11,7 @@ interface props {
 }
 
 const ItemRow = ({ rowKey, item }: props) => {
-  const realmContext = useContext(RealmContext)
+  const realmContext = useRealmContext()
 
   return <Card
     key={rowKey}

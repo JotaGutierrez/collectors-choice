@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AlertBagContext } from '../../pages/_app'
+import { useAlertBagContext } from '../../context/AlertBag'
 import { Button } from '@/components/ui/button'
 
 interface notificationProps {
@@ -27,7 +27,7 @@ const Notification = ({ message }: notificationProps) => {
 }
 
 const AlertBag = () => {
-  const alertBag = React.useContext(AlertBagContext)
+  const alertBag = useAlertBagContext()
 
   return <>{(alertBag.alerts && alertBag.alerts.length > 0)
     ? alertBag.alerts.map(alert =>
