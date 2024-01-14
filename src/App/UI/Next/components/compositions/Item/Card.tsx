@@ -52,7 +52,7 @@ const Card = ({ rowKey, item, tags, properties }: props) => {
       </div>
       <div>
         <div>
-          <TagSelect tags={tags} item={item} />
+          <TagSelect tags={tags} item={item} allowAdd={false} />
         </div>
       </div>
       {properties.map((property, key) => {

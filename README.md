@@ -149,7 +149,7 @@ docker push registry-ip:registry-port/collectors_choice:latest
 * on VPS:
 ```shell
 docker login registry-ip:registry-port
-docker run -d --name=collectors_choice --restart=unless-stopped -p 3000:3000 registry-ip:registry-port/collectors_choice:latest
+docker run -d --name=collectors_choice --network=app-network --restart=unless-stopped -p 3000:3000 registry-ip:registry-port/collectors_choice:latest
 ```
 
 now we have app running on 3000
