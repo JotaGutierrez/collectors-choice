@@ -1,17 +1,17 @@
 import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
 import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
-import { ChevronLeftIcon, TrashIcon } from '@radix-ui/react-icons'
-import { useContext, useEffect, useState } from 'react'
-import { Autosave } from 'react-autosave'
-import { useItem, useTags } from '../../../hooks/swr'
-import { RealmContext } from '../../../pages/_app'
+import {ChevronLeftIcon, TrashIcon} from '@radix-ui/react-icons'
+import {useContext, useEffect, useState} from 'react'
+import {Autosave} from 'react-autosave'
+import {useItem, useTags} from '../../../hooks/swr'
+import {RealmContext} from '../../../pages/_app'
 import TagSelect from '../../atoms/TagsSelect'
-import { TypographyH3 } from '../../atoms/Typography'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Textarea } from '@/components/ui/textarea'
+import {TypographyH3} from '../../atoms/Typography'
+import {Button} from '@/components/ui/button'
+import {Separator} from '@/components/ui/separator'
+import {Skeleton} from '@/components/ui/skeleton'
+import {Textarea} from '@/components/ui/textarea'
 
 const AutoSaveInput = ({ value, onSave }: {value: string, onSave: any}) => {
   const [notes, setNotes] = useState(value)
@@ -38,7 +38,7 @@ const Page = ({ _item }: { _item: Item }) => {
   const { tags, loadingTags } = useTags(_item.realm)
 
   return <>
-    <div className='flex flex-col w-full h-screen'>
+    <div className='flex flex-col w-full h-dvh'>
       <div className='border-b'>
         <div className='flex flex-row items-center p-4'>
           {loadingItem

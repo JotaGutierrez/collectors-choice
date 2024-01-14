@@ -16,18 +16,18 @@ import {
   PlusIcon,
   TrashIcon
 } from '@radix-ui/react-icons'
-import { useContext, useState } from 'react'
-import { Autosave } from 'react-autosave'
+import {useContext, useState} from 'react'
+import {Autosave} from 'react-autosave'
 import useSWR from 'swr'
-import { RealmContext } from '../../../pages/_app'
-import { TypographyH4, TypographyNav } from '../../atoms/Typography'
-import { Button } from '@/components/ui/button'
-import { Card, CardDescription, CardHeader } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Textarea } from '@/components/ui/textarea'
+import {RealmContext} from '../../../pages/_app'
+import {TypographyH4, TypographyNav} from '../../atoms/Typography'
+import {Button} from '@/components/ui/button'
+import {Card, CardDescription, CardHeader} from '@/components/ui/card'
+import {Input} from '@/components/ui/input'
+import {Progress} from '@/components/ui/progress'
+import {Separator} from '@/components/ui/separator'
+import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table'
+import {Textarea} from '@/components/ui/textarea'
 
 interface props {
   realm: Realm;
@@ -56,7 +56,7 @@ const RealmConfig = ({ realm, tags }: props) => {
   if (data === undefined) return <div>Loading...</div>
 
   return <>
-    <div className='flex flex-col w-full h-screen overflow-scroll'>
+    <div className='flex flex-col w-full h-dvh overflow-scroll'>
       <div className={'flex flex-col gap-2 snap-x'}>
         <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
           <div className='flex flex-row items-center p-4'>

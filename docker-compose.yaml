@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 services:
   mongo:
     build:
@@ -16,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: ./etc/docker/node/Dockerfile
+      target: dev
     container_name: node-docker
     ports:
       - 3000:3000

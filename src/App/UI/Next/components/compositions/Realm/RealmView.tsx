@@ -1,19 +1,19 @@
 import createItem from '@Core/Item/infrastructure/Api/CreateItem'
 import Realm from '@Core/Realm/domain/Realm'
-import { ChevronLeftIcon, GearIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
-import { useContext, useState } from 'react'
-import { useRealm, useTags } from '../../../hooks/swr'
-import { AlertBagContext, AsideContext, RealmContext } from '../../../pages/_app'
-import { TypographyH4 } from '../../atoms/Typography'
+import {ChevronLeftIcon, GearIcon, MixerHorizontalIcon, PlusIcon} from '@radix-ui/react-icons'
+import {useContext, useState} from 'react'
+import {useRealm, useTags} from '../../../hooks/swr'
+import {AlertBagContext, AsideContext, RealmContext} from '../../../pages/_app'
+import {TypographyH4} from '../../atoms/Typography'
 import BoardView from '../Item/BoardView'
 import GridView from '../Item/GridView'
 import ListView from '../Item/ListView'
 import InlineTags from '../Tag/InlineTags'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
-import { Skeleton } from '@/components/ui/skeleton'
+import {Button} from '@/components/ui/button'
+import {Input} from '@/components/ui/input'
+import {Progress} from '@/components/ui/progress'
+import {Separator} from '@/components/ui/separator'
+import {Skeleton} from '@/components/ui/skeleton'
 
 interface ItemFormProps {
   activeRealm: String;
@@ -54,7 +54,7 @@ const RealmView = ({ realm }: props) => {
   const { tags, loadingTags } = useTags(realm.name)
 
   return <>
-    <div className='flex flex-col w-full h-screen overflow-scroll snap-x'>
+    <div className='flex flex-col w-full h-dvh overflow-scroll snap-x'>
       <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
         <div className='flex flex-row items-center p-4'>
           <Button

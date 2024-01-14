@@ -1,18 +1,18 @@
 import Realm from '@Core/Realm/domain/Realm'
 import saveRealm from '@Core/Realm/infrastructure/Api/CreateRealm'
-import { MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
-import { useTheme } from 'next-themes'
-import { Key, useContext, useState } from 'react'
-import { useRealms } from '../../hooks/swr'
-import { RealmContext } from '../../pages/_app'
-import { TypographyH4 } from '../atoms/Typography'
+import {MoonIcon, PlusIcon, SunIcon} from '@radix-ui/react-icons'
+import {useTheme} from 'next-themes'
+import {Key, useContext, useState} from 'react'
+import {useRealms} from '../../hooks/swr'
+import {RealmContext} from '../../pages/_app'
+import {TypographyH4} from '../atoms/Typography'
 import RealmSelector from '../compositions/Realm/RealmSelector'
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
-import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
-import { Skeleton } from '@/components/ui/skeleton'
+import {Button} from '@/components/ui/button'
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui/dropdown-menu'
+import {Input} from '@/components/ui/input'
+import {Progress} from '@/components/ui/progress'
+import {Separator} from '@/components/ui/separator'
+import {Skeleton} from '@/components/ui/skeleton'
 
 const Aside = () => {
   const realmContext = useContext(RealmContext)
@@ -32,7 +32,7 @@ const Aside = () => {
   }
 
   return (
-    <div className='flex flex-col w-full h-screen overflow-scroll snap-x'>
+    <div className='flex flex-col w-full h-dvh overflow-scroll snap-x'>
       <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
         <div className='flex flex-row items-center p-4'>
           <TypographyH4 text={'Collectors Choice'} className="grow" />
