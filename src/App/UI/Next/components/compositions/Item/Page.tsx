@@ -1,17 +1,17 @@
 import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
 import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
-import {ChevronLeftIcon, TrashIcon} from '@radix-ui/react-icons'
-import {useContext, useEffect, useState} from 'react'
-import {Autosave} from 'react-autosave'
-import {useItem, useTags} from '../../../hooks/swr'
-import {RealmContext} from '../../../pages/_app'
+import { ChevronLeftIcon, TrashIcon } from '@radix-ui/react-icons'
+import { useContext, useEffect, useState } from 'react'
+import { Autosave } from 'react-autosave'
+import { useItem, useTags } from '../../../hooks/swr'
+import { RealmContext } from '../../../pages/_app'
 import TagSelect from '../../atoms/TagsSelect'
-import {TypographyH3} from '../../atoms/Typography'
-import {Button} from '@/components/ui/button'
-import {Separator} from '@/components/ui/separator'
-import {Skeleton} from '@/components/ui/skeleton'
-import {Textarea} from '@/components/ui/textarea'
+import { TypographyH3 } from '../../atoms/Typography'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Textarea } from '@/components/ui/textarea'
 
 const AutoSaveInput = ({ value, onSave }: {value: string, onSave: any}) => {
   const [notes, setNotes] = useState(value)
@@ -27,7 +27,7 @@ const AutoSaveInput = ({ value, onSave }: {value: string, onSave: any}) => {
       onChange={e => setNotes(e.target.value)}
       placeholder={'Add some notes...'}
     />
-    <Autosave data={notes} onSave={onSave}/>
+    <Autosave data={notes} onSave={onSave} saveOnUnmount={true}/>
   </>
 }
 
@@ -65,9 +65,7 @@ const Page = ({ _item }: { _item: Item }) => {
       <div className={'grow p-4'}>
         {loadingItem
           ? <Skeleton/>
-          : <><AutoSaveInput value={item.notes} onSave={(event: any) => {
-            saveDescription(event, item).then(() => null /** invalidate item cache */)
-          }} /></>}
+          : <><AutoSaveInput value={item.notes} onSave={(event: any) => saveDescription(event, item)} /></>}
       </div>
       <Separator className="mb-4 mt-4" />
       <div className="flex w-full items-center space-x-2 p-4 pb-8 justify-end">
