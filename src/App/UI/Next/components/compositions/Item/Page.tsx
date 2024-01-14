@@ -68,10 +68,10 @@ const Page = ({ _item }: { _item: Item }) => {
           : <><AutoSaveInput value={item.notes} onSave={(event: any) => saveDescription(event, item)} /></>}
       </div>
       <Separator className="mb-4 mt-4" />
-      <div className="flex w-full items-center space-x-2 p-4 pb-8 justify-end">
+      <div className="w-dvw sm:w-full overflow-x-auto space-x-2 p-4 pb-8 justify-end">
         {loadingTags || loadingItem
           ? <Skeleton className='w-[100%] h-[4rem] rounded-xs bg-slate-100' />
-          : <TagSelect tags={tags} item={item}/>
+          : <TagSelect tags={tags} item={item} allowAdd={true}/>
         }
       </div>
     </div>

@@ -3,7 +3,6 @@ import saveRealmConfig from '@Core/Realm/infrastructure/Api/SaveRealmConfig'
 import saveRealmNotes from '@Core/Realm/infrastructure/Api/SaveRealmNotes'
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '@Core/Tag/domain/Tag'
-import saveTag from '@Core/Tag/infrastructure/Api/CreateTagGroup'
 import deleteTag from '@Core/Tag/infrastructure/Api/DeleteTag'
 import deleteTagGroup from '@Core/TagGroup/application/DeleteTagGroup'
 import saveTagGroup from '@Core/TagGroup/infrastructure/Api/CreateTagGroup'
@@ -16,18 +15,19 @@ import {
   PlusIcon,
   TrashIcon
 } from '@radix-ui/react-icons'
-import {useContext, useState} from 'react'
-import {Autosave} from 'react-autosave'
+import { useContext, useState } from 'react'
+import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
-import {RealmContext} from '../../../pages/_app'
-import {TypographyH4, TypographyNav} from '../../atoms/Typography'
-import {Button} from '@/components/ui/button'
-import {Card, CardDescription, CardHeader} from '@/components/ui/card'
-import {Input} from '@/components/ui/input'
-import {Progress} from '@/components/ui/progress'
-import {Separator} from '@/components/ui/separator'
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table'
-import {Textarea} from '@/components/ui/textarea'
+import { RealmContext } from '../../../pages/_app'
+import { TypographyH4, TypographyNav } from '../../atoms/Typography'
+import TagInput from '../Tag/TagInput'
+import { Button } from '@/components/ui/button'
+import { Card, CardDescription, CardHeader } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Textarea } from '@/components/ui/textarea'
 
 interface props {
   realm: Realm;
@@ -45,7 +45,6 @@ const RealmConfig = ({ realm, tags }: props) => {
   const realmContext = useContext(RealmContext)
   const [realmNotes, setRealmNotes] = useState(realm.notes)
 
-  const [tagName, setTagName] = useState('')
   const [tagGroupName, setTagGroupName] = useState('')
 
   const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
@@ -176,7 +175,7 @@ const RealmConfig = ({ realm, tags }: props) => {
               <>
                   <div className={'flex flex-col gap-4 mb-4'}>
                       <Table>
-                          <TableCaption>Current Tag Groups</TableCaption>
+                          <TableCaption>Current Tags</TableCaption>
                           <TableHeader>
                               <TableRow>
                                   <TableHead>Tag</TableHead>
@@ -200,22 +199,8 @@ const RealmConfig = ({ realm, tags }: props) => {
                           </TableBody>
                       </Table>
                   </div>
-                  <div className="flex w-full items-center space-x-2">
-                      <Input name="name"
-                             onChange={event => setTagName(event.target.value)}
-                             placeholder="Add Tag..."
-                      />
-                    {
-                      submitting
-                        ? <Progress/>
-                        : <Button onClick={async () => {
-                          setSubmitting(true)
-                          await saveTag({ tagName, realm: realm.name, group: '' })
-                          setSubmitting(false)
-                        }}>
-                            <PlusIcon/>
-                        </Button>
-                    }
+                  <div className={'w-full flex justify-end'}>
+                    <TagInput realm={realm.name} />
                   </div>
               </>
           }
