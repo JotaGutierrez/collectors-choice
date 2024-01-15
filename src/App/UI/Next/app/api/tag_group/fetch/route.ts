@@ -8,5 +8,5 @@ export async function GET (request: Request) {
 
   const { searchParams } = new URL(request.url)
 
-  return Response.json(await tagGroupRepository.findByRealm(searchParams.global('realm')))
+  return Response.json(await tagGroupRepository.findByRealm(searchParams.get('realm')))
 }

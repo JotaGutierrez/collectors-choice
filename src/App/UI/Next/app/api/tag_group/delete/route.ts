@@ -9,7 +9,7 @@ export async function DELETE (request: Request) {
 
   const body = await request.json()
 
-  deleteTagGroup(tagGroupRepository)(body.id)
+  await deleteTagGroup(tagGroupRepository)(body.id)
 
   return Response.json(await tagGroupRepository.findByRealm(body.realm))
 }
