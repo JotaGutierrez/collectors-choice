@@ -1,15 +1,18 @@
 import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
 import { MongoClient } from 'mongodb'
 
-export default async function handler (req, res) {
+export async function PATCH (request: Request) {
   const client = await MongoClient.connect(process.env.DB_URI)
 
   const itemRepository = new MongoItemRepository(client)
-  const item = await itemRepository.findById(req.body.id)
 
-  item.tags = req.body.tags
+  const body = await request.json()
+
+  const item = await itemRepository.findById(body.id)
+
+  item.tags = body.tags
 
   await itemRepository.update(item)
 
-  res.status(200).json(await itemRepository.findAll())
+  return Response.json(await itemRepository.findAll())
 }

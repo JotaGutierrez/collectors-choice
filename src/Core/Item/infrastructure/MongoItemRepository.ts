@@ -25,7 +25,7 @@ class MongoItemRepository implements ItemRepository
     }
 
     async update(item: Item): Promise<Item> {
-        await this.collection.update(
+        await this.collection.updateOne(
             {'_id': item._id},
             {
                 $set: {
