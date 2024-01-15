@@ -1,7 +1,7 @@
 
 const deleteTag = async (id: string) => {
   const res = await fetch('/api/tag/delete', {
-    method: 'POST',
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
