@@ -1,12 +1,14 @@
+import CreateRealm from '@Core/Realm/application/CreateRealm'
 import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
 import { MongoClient } from 'mongodb'
 
-export default async function handler (req, res) {
+export async function POST (request: Request) {
   const client = await MongoClient.connect(process.env.DB_URI)
 
   const realmRepository = new MongoRealmRepository(client)
+  const body = await request.json()
 
-  const realm = await realmRepository.findByName(req.query.name)
+  CreateRealm(realmRepository)(body.name)
 
-  res.status(200).json(realm === null ? {} : realm)
+  return Response.json(await realmRepository.findAll())
 }
