@@ -6,7 +6,7 @@ import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepositor
 import EventBus from '@Core/Shared/Infrastructure/EventBus/EventBus'
 import { MongoClient } from 'mongodb'
 
-export default async function handler (req, res) {
+export async function POST (request: Request) {
   const client = await MongoClient.connect(process.env.DB_URI)
 
   const itemRepository = new MongoItemRepository(client)
@@ -14,10 +14,9 @@ export default async function handler (req, res) {
 
   EventBus.getInstance().subscribe(ItemCreatedEvent, ItemCountIncrement(realmRepository))
 
-  /** @TODO: Use DI from yaml files */
-  const itemCreator = CreateItem(itemRepository)
+  const body = await request.json()
 
-  itemCreator(req.body.name, req.body.realm)
+  CreateItem(itemRepository)(body.name, body.realm)
 
-  res.status(200).json(await itemRepository.findAll())
+  return Response.json(await itemRepository.findAll())
 }

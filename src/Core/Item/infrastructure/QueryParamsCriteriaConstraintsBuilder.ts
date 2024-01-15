@@ -1,4 +1,3 @@
-
 import CriteriaConstraintsBuilder from '../domain/CriteriaConstraintsBuilder';
 
 class QueryParamsCriteriaConstraintsBuilder implements CriteriaConstraintsBuilder
