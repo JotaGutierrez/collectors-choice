@@ -1,6 +1,6 @@
 const saveRealmConfig = async (config, realm) => {
   const res = await fetch('/api/realm/patch', {
-    method: 'Route',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },

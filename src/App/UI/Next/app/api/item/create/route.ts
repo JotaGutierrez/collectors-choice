@@ -16,7 +16,7 @@ export async function POST (request: Request) {
 
   const body = await request.json()
 
-  CreateItem(itemRepository)(body.name, body.realm)
+  CreateItem(itemRepository)(body.name, body.realm, body.owner)
 
   return Response.json(await itemRepository.findAll())
 }

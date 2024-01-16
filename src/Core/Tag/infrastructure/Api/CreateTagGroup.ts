@@ -1,4 +1,4 @@
-const saveTag = async ({tagName, realm, group}) => {
+const saveTag = async ({tagName, realm, owner, group}) => {
 
   const res = await fetch('/api/tag/create', {
     method: 'POST',
@@ -8,6 +8,7 @@ const saveTag = async ({tagName, realm, group}) => {
     body: JSON.stringify({
       name: tagName,
       realm: realm,
+      owner: owner,
       group: group
     })
   })

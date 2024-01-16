@@ -1,4 +1,4 @@
-const createItem = async (name: string, realm: string) => {
+const createItem = async (name: string, realm: string, owner: string) => {
   const res = await fetch('/api/item/create', {
     method: 'POST',
     headers: {
@@ -6,7 +6,8 @@ const createItem = async (name: string, realm: string) => {
     },
     body: JSON.stringify({
       name,
-      realm
+      realm,
+      owner
     })
   })
 

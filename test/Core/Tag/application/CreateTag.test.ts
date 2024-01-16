@@ -1,6 +1,5 @@
-
-import { TagBuilder } from '../domain/TagBuilder';
-import { TagRepositoryMock } from '../__mocks__/TagRepositoryMock';
+import {TagBuilder} from '../domain/TagBuilder';
+import {TagRepositoryMock} from '../__mocks__/TagRepositoryMock';
 import CreateTag from '../../../../src/Core/Tag/application/CreateTag';
 
 describe('TagCreator', () => {
@@ -12,7 +11,7 @@ describe('TagCreator', () => {
 
         const tagCreator = CreateTag(tagRepository);
 
-        tagCreator(tag.name, tag.realm, tag.group);
+        tagCreator(tag.name, tag.realm, tag.owner, tag.group);
 
         tagRepository.assertSaveHasBeenCalledWith(tag);
     });

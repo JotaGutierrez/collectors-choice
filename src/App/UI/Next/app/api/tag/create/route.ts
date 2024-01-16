@@ -9,7 +9,7 @@ export async function POST (request: Request) {
 
   const body = await request.json()
 
-  await CreateTag(tagRepository)(body.name, body.realm, body.group ?? '')
+  await CreateTag(tagRepository)(body.name, body.realm, body.owner, body.group ?? '')
 
   return Response.json(await tagRepository.findAll())
 }

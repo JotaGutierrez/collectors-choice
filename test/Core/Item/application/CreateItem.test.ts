@@ -1,7 +1,6 @@
-
 import CreateItem from '../../../../src/Core/Item/application/CreateItem';
-import { ItemRepositoryMock } from '../__mocks__/ItemRepositoryMock';
-import { ItemBuilder } from '../domain/ItemBuilder';
+import {ItemRepositoryMock} from '../__mocks__/ItemRepositoryMock';
+import {ItemBuilder} from '../domain/ItemBuilder';
 
 describe('ItemCreator', () => {
     it('Creates a new Item', async () => {
@@ -12,7 +11,7 @@ describe('ItemCreator', () => {
 
         const itemCreator = CreateItem(itemRepository);
 
-        itemCreator(item.name, item.realm);
+        itemCreator(item.name, item.realm, item.owner);
 
         itemRepository.assertSaveHasBeenCalledWith(item);
     });

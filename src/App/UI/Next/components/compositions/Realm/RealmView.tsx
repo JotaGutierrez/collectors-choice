@@ -1,6 +1,7 @@
 import createItem from '@Core/Item/infrastructure/Api/CreateItem'
 import Realm from '@Core/Realm/domain/Realm'
 import { ChevronLeftIcon, GearIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useAlertBagContext } from '../../../context/AlertBag'
 import { useRealmContext } from '../../../context/RealmContext'
@@ -22,6 +23,7 @@ interface ItemFormProps {
 
 const ItemForm = ({ activeRealm }: ItemFormProps) => {
   const alertBag = useAlertBagContext()
+  const { data: session } = useSession()
   const [name, setName] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -29,7 +31,7 @@ const ItemForm = ({ activeRealm }: ItemFormProps) => {
     event.preventDefault()
     setSubmitting(true)
 
-    await createItem(name, activeRealm.toString())
+    await createItem(name, activeRealm.toString(), session?.user?.email)
 
     alertBag.pushAlert(`Item guardado: ${name}`)
     setName('')

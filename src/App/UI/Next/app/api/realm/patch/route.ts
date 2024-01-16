@@ -7,7 +7,6 @@ export async function PATCH (request: Request) {
   const realmRepository = new MongoRealmRepository(client)
 
   const req = await request.json()
-  console.log(req)
 
   const realm = await realmRepository.findById(req.realm._id)
 
