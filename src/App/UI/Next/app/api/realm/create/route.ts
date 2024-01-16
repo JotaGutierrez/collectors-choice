@@ -8,7 +8,7 @@ export async function POST (request: Request) {
   const realmRepository = new MongoRealmRepository(client)
   const body = await request.json()
 
-  CreateRealm(realmRepository)(body.name)
+  CreateRealm(realmRepository)(body.name, body.owner)
 
   return Response.json(await realmRepository.findAll())
 }

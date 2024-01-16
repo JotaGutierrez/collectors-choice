@@ -1,6 +1,5 @@
-
-import { RealmBuilder } from '../domain/RealmBuilder';
-import { RealmRepositoryMock } from '../__mocks__/RealmRepositoryMock';
+import {RealmBuilder} from '../domain/RealmBuilder';
+import {RealmRepositoryMock} from '../__mocks__/RealmRepositoryMock';
 import CreateRealm from '../../../../src/Core/Realm/application/CreateRealm';
 
 describe('ItemCreator', () => {
@@ -12,7 +11,7 @@ describe('ItemCreator', () => {
 
         const itemCreator = CreateRealm(itemRepository);
 
-        itemCreator(item.name);
+        itemCreator(item.name, item.owner);
 
         itemRepository.assertSaveHasBeenCalledWith(item);
     });

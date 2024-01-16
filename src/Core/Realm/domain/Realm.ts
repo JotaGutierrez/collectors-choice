@@ -7,10 +7,12 @@ class Realm {
     items: Item[] = [];
     notes: string = "";
     itemCount: number = 0;
-    config: RealmConfig = null;
+    config: RealmConfig|null = null;
+    owner: string;
 
-    constructor(name: string) {
+    constructor(name: string, owner: string) {
         this.name = name;
+        this.owner = owner;
     }
 }
 

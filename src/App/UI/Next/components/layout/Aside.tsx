@@ -1,7 +1,7 @@
 import Realm from '@Core/Realm/domain/Realm'
 import saveRealm from '@Core/Realm/infrastructure/Api/CreateRealm'
 import { ExitIcon, MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 import { Key, useState } from 'react'
 import { useRealmContext } from '../../context/RealmContext'
@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 const Aside = () => {
   const realmContext = useRealmContext()
+  const { data: session } = useSession()
 
   const { _realms, loading } = useRealms()
   const { setTheme } = useTheme()
@@ -27,7 +28,7 @@ const Aside = () => {
   const submitForm = async event => {
     event.preventDefault()
     setSubmitting(true)
-    await saveRealm(name)
+    await saveRealm(name, session?.user?.email)
     setName('')
     setSubmitting(false)
   }
