@@ -1,11 +1,12 @@
 'use client'
 
 import { NextPage } from 'next'
+import { redirect } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import ItemRenderer from '../components/compositions/Item/ItemRenderer'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
 import AlertBag from '../components/layout/AlertBag'
-
 import Aside from '../components/layout/Aside'
 
 import { useRealmContext } from '../context/RealmContext'
@@ -17,6 +18,11 @@ interface Props {
 
 const Page: NextPage<Props> = () => {
   const realmContext = useRealmContext()
+  const { data: session } = useSession()
+
+  if (!session) {
+    return redirect('/login')
+  }
 
   return (
     <>

@@ -1,10 +1,11 @@
-import { MouseEventHandler } from 'react'
+import React, { MouseEventHandler } from 'react'
 
 interface Typography {
   text: string | number;
   className?: string;
   props?: Object;
   onClick?: MouseEventHandler<HTMLHeadingElement>
+  children?: React.ReactNode
 }
 
 const TypographyH1 = ({ text, className, ...props }: Typography) =>
@@ -32,9 +33,10 @@ const TypographyNav = ({ text, className, ...props }: Typography) =>
     {text}
   </h4>
 
-const TypographyP = ({ text, className, ...props }: Typography) =>
+const TypographyP = ({ text, className, children, ...props }: Typography) =>
   <p className={`leading-7 [&:not(:first-child)]:mt-6 ${className}`} {...props}>
     {text}
+    {children}
   </p>
 
 const TypographyLead = ({ text, className, ...props }: Typography) =>

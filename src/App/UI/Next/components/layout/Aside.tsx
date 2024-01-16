@@ -1,6 +1,7 @@
 import Realm from '@Core/Realm/domain/Realm'
 import saveRealm from '@Core/Realm/infrastructure/Api/CreateRealm'
-import { MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
+import { ExitIcon, MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
+import { signOut } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 import { Key, useState } from 'react'
 import { useRealmContext } from '../../context/RealmContext'
@@ -35,6 +36,13 @@ const Aside = () => {
     <div className='flex flex-col w-full h-dvh overflow-scroll snap-x'>
       <div className='border-b snap-top sticky top-0 backdrop-blur-md'>
         <div className='flex flex-row items-center p-4'>
+          <Button
+            color="inherit"
+            onClick={() => signOut()}
+            variant={'ghost'}
+          >
+            <ExitIcon />
+          </Button>
           <TypographyH4 text={'Collectors Choice'} className="grow" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
