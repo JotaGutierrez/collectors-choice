@@ -6,7 +6,7 @@ import { MongoClient } from 'mongodb'
 
 export async function GET (request: Request) {
   /** @TODO: use middleware to avoid connecting from each controller */
-  const client = await MongoClient.connect(process.env.DB_URI)
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const itemRepository = new MongoItemRepository(client)
 
@@ -18,8 +18,10 @@ export async function GET (request: Request) {
   }))
 
   try {
-    return Response.json(await ItemsByCriteria(itemRepository)(cri))
+    const items = await ItemsByCriteria(itemRepository)(cri)
+
+    return new Response(JSON.stringify(items))
   } catch (error) {
-    return Response.json([])
+    return new Response(JSON.stringify({}))
   }
 }

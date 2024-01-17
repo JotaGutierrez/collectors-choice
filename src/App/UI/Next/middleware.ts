@@ -1,6 +1,31 @@
-export { auth as middleware } from 'auth'
+import { auth } from 'auth'
+import { NextApiRequest } from 'next'
+import { NextResponse } from 'next/server'
 
-// Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+export interface User {
+  name: string;
+  email: string;
+  image: string;
+}
+
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)']
+}
+
+export type NextApiRequestWithAuth = NextApiRequest & {
+  userId: string;
+};
+
+export const withUser = (handler: Function) => async (request: Request) => {
+  const { user } = await auth()
+
+  return handler(request, user)
+}
+
+export const middleware = async () => {
+  const { user } = await auth()
+
+  if (!user) {
+    return new NextResponse(null, { status: 403 })
+  }
 }

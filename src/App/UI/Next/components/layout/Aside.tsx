@@ -75,7 +75,7 @@ const Aside = () => {
               key={key}
               realm={realm}
               realmKey={key}
-              activateRealm={realmContext.activateRealm}
+              activateRealm={realmContext?.activateRealm ?? (() => {})}
             />
           )}
       </div>

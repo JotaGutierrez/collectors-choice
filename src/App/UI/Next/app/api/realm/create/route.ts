@@ -1,14 +1,17 @@
 import CreateRealm from '@Core/Realm/application/CreateRealm'
 import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
 import { MongoClient } from 'mongodb'
+import { User, withUser } from '../../../../middleware'
 
-export async function POST (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+export async function handler (request: Request, user: User) {
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const realmRepository = new MongoRealmRepository(client)
   const body = await request.json()
 
-  CreateRealm(realmRepository)(body.name, body.owner)
+  CreateRealm(realmRepository)(body.name, user.email)
 
-  return Response.json(await realmRepository.findAll())
+  return new Response(JSON.stringify(await realmRepository.findAll(user.email)))
 }
+
+export const POST = withUser(handler)

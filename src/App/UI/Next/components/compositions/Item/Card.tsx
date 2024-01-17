@@ -1,7 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
 import { Key, useState } from 'react'
-import TagSelect from '../../atoms/TagsSelect'
+import TagSelect from '../Tag/TagsSelect'
 import { Button } from '@/components/ui/button'
 
 interface props {

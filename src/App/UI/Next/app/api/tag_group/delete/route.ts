@@ -3,7 +3,7 @@ import MongoTagGroupRepository from '@Core/TagGroup/infrastructure/MongoTagGroup
 import { MongoClient } from 'mongodb'
 
 export async function DELETE (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const tagGroupRepository = new MongoTagGroupRepository(client)
 
@@ -11,5 +11,5 @@ export async function DELETE (request: Request) {
 
   await deleteTagGroup(tagGroupRepository)(body.id)
 
-  return Response.json(await tagGroupRepository.findByRealm(body.realm))
+  return new Response(JSON.stringify(await tagGroupRepository.findByRealm(body.realm)))
 }

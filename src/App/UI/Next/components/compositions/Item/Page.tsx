@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react'
 import { Autosave } from 'react-autosave'
 import { useRealmContext } from '../../../context/RealmContext'
 import { useItem, useTags } from '../../../hooks/swr'
-import TagSelect from '../../atoms/TagsSelect'
 import { TypographyH3 } from '../../atoms/Typography'
+import TagSelect from '../Tag/TagsSelect'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -45,7 +45,7 @@ const Page = ({ _item }: { _item: Item }) => {
             ? <Skeleton />
             : <><Button
               color="inherit"
-              onClick={() => realmContext.setActiveItem(null)}
+              onClick={() => realmContext?.setActiveItem(null)}
               variant="ghost"
             >
               <ChevronLeftIcon/>
@@ -54,7 +54,7 @@ const Page = ({ _item }: { _item: Item }) => {
               onClick={event => {
                 event.preventDefault()
                 deleteItem(_item._id)
-                  .then(realmContext.setActiveItem(null))
+                  .then(realmContext?.setActiveItem(null))
               }}
               variant={'ghost'}
             >

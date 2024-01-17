@@ -1,7 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
 import { useEffect, useState } from 'react'
-import TagInput from '../compositions/Tag/TagInput'
+import TagInput from './TagInput'
 import { Badge } from '@/components/ui/badge'
 
 interface TagSelectProps {
@@ -11,7 +11,7 @@ interface TagSelectProps {
 }
 
 const TagSelect = ({ item, tags, allowAdd }: TagSelectProps) => {
-  const [selectedTags, setSelectedTags] = useState([])
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([])
 
   const saveTags = async tags => await fetch('/api/item/setTags', {
     method: 'PATCH',

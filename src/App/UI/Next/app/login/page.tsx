@@ -47,26 +47,26 @@ const Page = () => {
             // Ripped off from next-auth signin page
             Object.values(providers).map(provider => (
               <div key={provider.name} style={{ marginBottom: 0 }}>
-                <Button className={'flex w-full gap-4 border border-input'} variant={'ghost'} onClick={() => signIn(provider().id)} >
-                  {provider().style.logo && (
+                <Button className={'flex w-full gap-4 border border-input'} variant={'ghost'} onClick={() => signIn(provider({}).id)} >
+                  {provider({}).style?.logo && (
                     <img
                       loading="lazy"
                       height={24}
                       width={24}
                       id="provider-logo"
-                      src={'https://authjs.dev/img/providers' + provider().style.logo}
+                      src={'https://authjs.dev/img/providers' + provider({}).style?.logo}
                     />
                   )}
-                  {provider().style.logoDark && (
+                  {provider({}).style?.logoDark && (
                     <img
                       loading="lazy"
                       height={24}
                       width={24}
                       id="provider-logo-dark"
-                      src={'https://authjs.dev/img/providers' + provider().style.logoDark}
+                      src={'https://authjs.dev/img/providers' + provider({}).style?.logoDark}
                     />
                   )}
-                  <span>Sign in with {provider().name}</span>
+                  <span>Sign in with {provider({}).name}</span>
                 </Button>
               </div>
             ))}

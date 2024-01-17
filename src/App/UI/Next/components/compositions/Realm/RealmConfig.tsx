@@ -64,7 +64,7 @@ const RealmConfig = ({ realm, tags }: props) => {
           <div className='flex flex-row items-center p-4'>
             <Button
               color="inherit"
-              onClick={() => realmContext.hideRealmConfig()}
+              onClick={() => realmContext?.hideRealmConfig()}
               variant="ghost"
             >
               <ChevronLeftIcon/>
@@ -153,7 +153,7 @@ const RealmConfig = ({ realm, tags }: props) => {
                     : <Button
                       onClick={async () => {
                         setSubmitting(true)
-                        await saveTagGroup(tagGroupName, realm, session?.user?.email)
+                        await saveTagGroup(tagGroupName, realm, session?.user?.email ?? '')
                         setSubmitting(false)
                       }}
                     ><PlusIcon/></Button>

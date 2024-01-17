@@ -3,7 +3,7 @@ import MongoTagRepository from '@Core/Tag/infrastructure/MongoTagRepository'
 import { MongoClient } from 'mongodb'
 
 export async function DELETE (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const tagRepository = new MongoTagRepository(client)
 
@@ -11,5 +11,5 @@ export async function DELETE (request: Request) {
 
   await DeleteTag(tagRepository)(body.id)
 
-  return Response.json(await tagRepository.findAll())
+  return new Response(JSON.stringify(await tagRepository.findAll()))
 }

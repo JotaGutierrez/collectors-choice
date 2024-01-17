@@ -4,7 +4,7 @@ import MongoTagRepository from '@Core/Tag/infrastructure/MongoTagRepository'
 import { MongoClient } from 'mongodb'
 
 export async function PATCH (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const itemRepository = new MongoItemRepository(client)
 

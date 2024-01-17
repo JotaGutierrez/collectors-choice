@@ -31,9 +31,9 @@ const ItemForm = ({ activeRealm }: ItemFormProps) => {
     event.preventDefault()
     setSubmitting(true)
 
-    await createItem(name, activeRealm.toString(), session?.user?.email)
+    await createItem(name, activeRealm.toString(), session?.user?.email ?? '')
 
-    alertBag.pushAlert(`Item guardado: ${name}`)
+    alertBag?.pushAlert(`Item guardado: ${name}`)
     setName('')
     setSubmitting(false)
   }
@@ -61,7 +61,7 @@ const RealmView = ({ realm }: props) => {
         <div className='flex flex-row items-center p-4'>
           <Button
             color="inherit"
-            onClick={() => realmContext.setIsOpened(!realmContext.isOpened)}
+            onClick={() => realmContext?.setIsOpened(!realmContext.isOpened)}
             variant="ghost"
           >
             <ChevronLeftIcon />
@@ -69,23 +69,23 @@ const RealmView = ({ realm }: props) => {
           <TypographyH4 text={_realm?.name ?? 'Collectors Choice'} className="grow" />
           <Button
             color="inherit"
-            onClick={() => realmContext.toggleFilterTags()}
+            onClick={() => realmContext?.toggleFilterTags()}
             variant={'ghost'}
           >
             <MixerHorizontalIcon />
           </Button>
           <Button
             color="inherit"
-            onClick={ () => realmContext.setActiveItem(null) && realmContext.showRealmConfig(realm.name) }
+            onClick={ () => realmContext?.setActiveItem(null) && realmContext.showRealmConfig(realm.name) }
             variant={'ghost'}
           >
             <GearIcon />
           </Button>
         </div>
-        {realmContext.showFilterTags && loadingTags && <Skeleton className='w-[100%] h-[2rem] rounded-xs bg-slate-100' />}
-        {realmContext.showFilterTags && !!tags && <div className='px-4 pb-4 pt-0'><InlineTags tags={tags}/></div>}
+        {realmContext?.showFilterTags && loadingTags && <Skeleton className='w-[100%] h-[2rem] rounded-xs bg-slate-100' />}
+        {realmContext?.showFilterTags && !!tags && <div className='px-4 pb-4 pt-0'><InlineTags tags={tags}/></div>}
       </div>
-      <div className={`${realmContext.activeItem ? 'closed' : 'open'} grow p-4` }>
+      <div className={`${realmContext?.activeItem ? 'closed' : 'open'} grow p-4` }>
         {loading && <Skeleton className='w-[100%] h-[4rem] rounded-xs bg-slate-100' />}
         {!loading && !_realm.config && <ListView/>}
         {!loading && _realm.config?.view === 'list' && <ListView/>}
@@ -94,7 +94,7 @@ const RealmView = ({ realm }: props) => {
       </div>
       <Separator className="mb-4 mt-4" />
       <div className="flex w-full items-center space-x-2 p-4 pb-8">
-        <ItemForm activeRealm={realmContext.activeRealm} />
+        <ItemForm activeRealm={realmContext?.activeRealm ?? ''} />
       </div>
     </div>
 

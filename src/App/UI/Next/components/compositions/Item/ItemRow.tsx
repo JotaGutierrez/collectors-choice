@@ -1,7 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import { useRealmContext } from '../../../context/RealmContext'
-import TagSelect from '../../atoms/TagsSelect'
 import { TypographyMuted, TypographyP } from '../../atoms/Typography'
+import TagSelect from '../Tag/TagsSelect'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
@@ -17,8 +17,8 @@ const ItemRow = ({ rowKey, item }: props) => {
     key={rowKey}
   >
       <CardContent className={'py-4'} onClick={() => {
-        realmContext.hideRealmConfig()
-        realmContext.setActiveItem(item)
+        realmContext?.hideRealmConfig()
+        realmContext?.setActiveItem(item)
       }}>
         <div className={'flex flex-row justify-start items-center'}>
           <div className="pr-4">

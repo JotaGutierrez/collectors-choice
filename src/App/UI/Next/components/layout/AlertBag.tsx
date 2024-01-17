@@ -29,7 +29,7 @@ const Notification = ({ message }: notificationProps) => {
 const AlertBag = () => {
   const alertBag = useAlertBagContext()
 
-  return <>{(alertBag.alerts && alertBag.alerts.length > 0)
+  return <>{(alertBag?.alerts && alertBag.alerts.length > 0)
     ? alertBag.alerts.map(alert =>
       <div key={alert.id} style={{ position: 'fixed', zIndex: 100, bottom: '10vh', width: '100vw', padding: '2rem', boxSizing: 'border-box' }}>
         <Notification message={alert.message} />

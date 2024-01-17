@@ -1,9 +1,10 @@
 import createTagGroup from '@Core/TagGroup/application/CreateTagGroup'
 import MongoTagGroupRepository from '@Core/TagGroup/infrastructure/MongoTagGroupRepository'
 import { MongoClient } from 'mongodb'
+import { User, withUser } from '../../../../middleware'
 
-export async function POST (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+export async function handler (request: Request, user: User) {
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const tagGroupRepository = new MongoTagGroupRepository(client)
 
@@ -11,7 +12,11 @@ export async function POST (request: Request) {
 
   const body = await request.json()
 
-  await propertyCreator(body.name, body.realm)
+  await propertyCreator(body.name, body.realm, user.email)
 
-  return Response.json(await tagGroupRepository.findByRealm(body.realm))
+  const groups = await tagGroupRepository.findByRealm(body.realm)
+
+  return new Response(JSON.stringify(groups))
 }
+
+export const POST = withUser(handler)

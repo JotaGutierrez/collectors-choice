@@ -39,16 +39,16 @@ class MongoRealmRepository implements RealmRepository
         return realm;
     }
 
-    async findAll(): Promise<Array<Realm>> {
-        return (await this.collection.find().toArray()) as Realm[];
+    async findAll(owner: string): Promise<Array<Realm>> {
+        return (await this.collection.find({owner: owner}).toArray()) as Realm[];
     }
 
     async findById(id: string): Promise<Realm> {
         return (await this.collection.findOne({_id: new ObjectId(id)})) as Realm;
     }
 
-    async findByName(name: string): Promise<Realm> {
-        return (await this.collection.findOne({name: name})) as Realm;
+    async findByName(name: string, owner: string): Promise<Realm> {
+        return (await this.collection.findOne({name: name, owner: owner})) as Realm;
     }
 
     async deleteById(id: string): Promise<any> {

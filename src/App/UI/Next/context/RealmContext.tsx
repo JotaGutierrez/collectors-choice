@@ -8,10 +8,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 interface RealmContextInterface {
   realm?: Realm;
-  tags?: Array<Tag>;
-  filter?: Array<String>;
-  items?: Array<Item>;
-  activeItem?: Item;
+  tags?: Array<Tag>|null;
+  filter?: Array<String>|null;
+  items?: Array<Item>|null;
+  activeItem?: Item|null;
   setActiveItem: Function;
   setFilter: Function;
   activeRealm: string;
@@ -32,12 +32,12 @@ interface Props {
 }
 
 export const RealmContextProvider = ({ children }: Props) => {
-  const [filter, setFilter] = useState()
+  const [filter, setFilter] = useState<|null>()
   const [realmPage, setRealmPage] = useState('')
   const [realm, setRealm] = useState()
-  const [tags, setTags] = useState()
-  const [items, setItems] = useState()
-  const [activeItem, _setActiveItem] = useState()
+  const [tags, setTags] = useState<Tag[]|null>(null)
+  const [items, setItems] = useState<|null>()
+  const [activeItem, _setActiveItem] = useState<|null>()
   const [activeRealm, setActiveRealm] = useState('')
   const [showFilterTags, setShowFilterTags] = useState(false)
 

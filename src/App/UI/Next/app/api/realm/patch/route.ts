@@ -1,8 +1,9 @@
 import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
 import { MongoClient } from 'mongodb'
+import { User, withUser } from '../../../../middleware'
 
-export async function PATCH (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+export async function handler (request: Request, user: User) {
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const realmRepository = new MongoRealmRepository(client)
 
@@ -15,5 +16,7 @@ export async function PATCH (request: Request) {
 
   await realmRepository.update(realm)
 
-  return Response.json(await realmRepository.findAll())
+  return new Response(JSON.stringify(await realmRepository.findAll(user.email)))
 }
+
+export const PATCH = withUser(handler)

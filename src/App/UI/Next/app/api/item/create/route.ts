@@ -7,7 +7,7 @@ import EventBus from '@Core/Shared/Infrastructure/EventBus/EventBus'
 import { MongoClient } from 'mongodb'
 
 export async function POST (request: Request) {
-  const client = await MongoClient.connect(process.env.DB_URI)
+  const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const itemRepository = new MongoItemRepository(client)
   const realmRepository = new MongoRealmRepository(client)
@@ -18,5 +18,7 @@ export async function POST (request: Request) {
 
   CreateItem(itemRepository)(body.name, body.realm, body.owner)
 
-  return Response.json(await itemRepository.findAll())
+  const items = await itemRepository.findAll()
+
+  return new Response(JSON.stringify(items))
 }

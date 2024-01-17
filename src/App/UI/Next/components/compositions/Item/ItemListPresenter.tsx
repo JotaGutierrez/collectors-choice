@@ -15,7 +15,7 @@ const ItemListPresenter = ({ tags, GroupRenderer, ItemRowRenderer, groupParams }
   const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group !== '').map(tag => tag.group)))] : []
 
   const realmContext = useRealmContext()
-  const { items, loading } = useItems(realmContext.activeRealm, realmContext.filter)
+  const { items, loading } = useItems(realmContext?.activeRealm ?? '', realmContext?.filter ?? [])
 
   return loading
     ? <Skeleton />
