@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import authConfig from '../../auth.config'
-import { TypographyH1, TypographyP } from '../../components/atoms/Typography'
+import { TypographyH1, TypographyP } from '../../components/Shared/Typography'
 import { Button } from '@/components/ui/button'
 
 const Page = () => {

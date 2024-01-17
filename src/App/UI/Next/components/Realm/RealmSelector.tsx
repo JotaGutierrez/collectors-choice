@@ -1,7 +1,7 @@
 import Realm from '@Core/Realm/domain/Realm'
 import { Key } from 'react'
-import { useRealmContext } from '../../../context/RealmContext'
-import { TypographyNav } from '../../atoms/Typography'
+import { useRealmContext } from '../../context/RealmContext'
+import { TypographyNav } from '../Shared/Typography'
 
 interface Props {
   realm: Realm,

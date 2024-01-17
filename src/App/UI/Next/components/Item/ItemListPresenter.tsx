@@ -1,7 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
-import { useRealmContext } from '../../../context/RealmContext'
-import { useItems } from '../../../hooks/swr'
+import { useRealmContext } from '../../context/RealmContext'
+import { useItems } from '../../hooks/swr'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface itemListPresenterProps {

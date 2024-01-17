@@ -1,6 +1,6 @@
 import Item from '@Core/Item/domain/Item'
-import { useRealmContext } from '../../../context/RealmContext'
-import { TypographyMuted, TypographyP } from '../../atoms/Typography'
+import { useRealmContext } from '../../context/RealmContext'
+import { TypographyMuted, TypographyP } from '../Shared/Typography'
 import TagSelect from '../Tag/TagsSelect'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'

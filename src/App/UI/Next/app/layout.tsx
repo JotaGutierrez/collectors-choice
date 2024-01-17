@@ -3,8 +3,8 @@ import 'reflect-metadata'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 import { Toaster } from 'sonner'
-import { ThemeProvider } from '../components/theme/ThemeProvider'
 import { RealmContextProvider } from '../context/RealmContext'
+import { ThemeProvider } from '../context/ThemeProvider'
 
 const RootLayout = ({ children }: {children: React.ReactNode}) => {
   return <html lang="en">

@@ -1,7 +1,7 @@
 import Item from '@Core/Item/domain/Item'
 import { useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { TypographyH3 } from '../../atoms/Typography'
+import { TypographyH3 } from '../Shared/Typography'
 import { Button } from '@/components/ui/button'
 
 interface props {

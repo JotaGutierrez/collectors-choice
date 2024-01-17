@@ -73,7 +73,6 @@ class MongoItemRepository implements ItemRepository
     }
 
     async findByCriteria(criteria: Criteria): Promise<Item[]> {
-        console.log(criteria.criteria())
         return (
             await this.collection.find(
                 criteria.criteria()

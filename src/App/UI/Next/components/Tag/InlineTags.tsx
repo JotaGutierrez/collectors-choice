@@ -1,7 +1,7 @@
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
 import Tag from '@Core/Tag/domain/Tag'
 import useSWR from 'swr'
-import { useRealmContext } from '../../../context/RealmContext'
+import { useRealmContext } from '../../context/RealmContext'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 
