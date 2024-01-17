@@ -2,7 +2,7 @@ import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepositor
 import { MongoClient } from 'mongodb'
 import { User, withUser } from '../../../../middleware'
 
-export async function handler (request: Request, user: User) {
+async function handler (request: Request, user: User) {
   const client = await MongoClient.connect(process.env.DB_URI ?? '')
   const { searchParams } = new URL(request.url)
   const name = searchParams.get('name') ?? ''

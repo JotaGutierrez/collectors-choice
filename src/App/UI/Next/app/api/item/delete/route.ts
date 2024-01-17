@@ -4,14 +4,15 @@ import ItemCountDecrement from '@Core/Realm/application/ItemCountDecrement'
 import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
 import EventBus from '@Core/Shared/Infrastructure/EventBus/EventBus'
 import { MongoClient } from 'mongodb'
+import { User, withUser } from '../../../../middleware'
 
-export async function DELETE (request: Request) {
+async function handler (request: Request, user: User) {
   const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const itemRepository = new MongoItemRepository(client)
   const realmRepository = new MongoRealmRepository(client)
 
-  EventBus.getInstance().subscribe(ItemDeletedEvent, ItemCountDecrement(realmRepository))
+  EventBus.getInstance().subscribe(ItemDeletedEvent, ItemCountDecrement(realmRepository, user))
 
   const body = await request.json()
 
@@ -20,15 +21,16 @@ export async function DELETE (request: Request) {
   try {
     const result = await itemRepository.deleteById(id)
 
-    if (result && result.deletedCount) {
-      return new Response()
-    } else if (!result) {
-      return Response.error()
+    if (!result) {
+      return new Response(null, { status: 404 })
     } else if (!result.deletedCount) {
-      return Response.error()
+      return new Response(null, { status: 400 })
     }
   } catch (error) {
-    console.error(error.message)
-    return Response.error()
+    return new Response(null, { status: 500 })
   }
+
+  return new Response()
 }
+
+export const DELETE = withUser(handler)

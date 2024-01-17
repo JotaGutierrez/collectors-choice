@@ -14,5 +14,5 @@ export async function PATCH (request: Request) {
 
   await itemRepository.update(item)
 
-  return Response.json(await itemRepository.findAll())
+  return new Response(JSON.stringify(await itemRepository.findAll()))
 }

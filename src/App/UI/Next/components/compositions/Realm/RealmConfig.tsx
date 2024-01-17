@@ -15,7 +15,6 @@ import {
   PlusIcon,
   TrashIcon
 } from '@radix-ui/react-icons'
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { Autosave } from 'react-autosave'
 import useSWR from 'swr'
@@ -39,8 +38,6 @@ const saveView = async (view: string, property: string|null, realm: Realm) => aw
 
 /** @TODO: Refactor. Split modules */
 const RealmConfig = ({ realm, tags }: props) => {
-  const { data: session } = useSession()
-
   const [showDescription, setShowDescription] = useState(false)
   const [showTagGroups, setShowTagGroups] = useState(false)
   const [showAddTag, setShowAddTag] = useState(false)
@@ -153,7 +150,7 @@ const RealmConfig = ({ realm, tags }: props) => {
                     : <Button
                       onClick={async () => {
                         setSubmitting(true)
-                        await saveTagGroup(tagGroupName, realm, session?.user?.email ?? '')
+                        await saveTagGroup(tagGroupName, realm)
                         setSubmitting(false)
                       }}
                     ><PlusIcon/></Button>

@@ -16,5 +16,5 @@ export async function PATCH (request: Request) {
 
   await setItemProperty(itemRepository)(item, tag, body.index)
 
-  return Response.json(await itemRepository.findAll())
+  return new Response(JSON.stringify(await itemRepository.findAll()))
 }

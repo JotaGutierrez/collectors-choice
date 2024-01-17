@@ -1,5 +1,4 @@
 import { auth } from 'auth'
-import { NextApiRequest } from 'next'
 import { NextResponse } from 'next/server'
 
 export interface User {
@@ -12,17 +11,15 @@ export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico).*)']
 }
 
-export type NextApiRequestWithAuth = NextApiRequest & {
-  userId: string;
-};
-
-export const withUser = (handler: Function) => async (request: Request) => {
+export const withUser = (handler: { (request: Request, user: User): Promise<Response>}) => async (request: Request) => {
+  // @ts-ignore
   const { user } = await auth()
 
   return handler(request, user)
 }
 
 export const middleware = async () => {
+  // @ts-ignore
   const { user } = await auth()
 
   if (!user) {

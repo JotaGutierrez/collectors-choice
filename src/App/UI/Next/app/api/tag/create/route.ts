@@ -3,7 +3,7 @@ import MongoTagRepository from '@Core/Tag/infrastructure/MongoTagRepository'
 import { MongoClient } from 'mongodb'
 import { User, withUser } from '../../../../middleware'
 
-export async function handler (request: Request, user: User) {
+async function handler (request: Request, user: User) {
   const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const tagRepository = new MongoTagRepository(client)
