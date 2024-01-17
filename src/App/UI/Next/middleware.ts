@@ -8,21 +8,28 @@ export interface User {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)']
+  matcher: ['/((?!login|api/auth|_next/static|_next/image|favicon.ico).*)']
 }
 
 export const withUser = (handler: { (request: Request, user: User): Promise<Response>}) => async (request: Request) => {
-  // @ts-ignore
-  const { user } = await auth()
+  const session = await auth()
 
-  return handler(request, user)
+  if (!session?.user) {
+    throw new Error('Invalid session')
+  }
+
+  return handler(request, session?.user as User)
 }
 
-export const middleware = async () => {
-  // @ts-ignore
-  const { user } = await auth()
+export const middleware = async (request: Request) => {
+  const session = await auth()
+  const url = new URL(request.url)
 
-  if (!user) {
+  if (!session?.user) {
+    if (url.pathname === '/') {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+
     return new NextResponse(null, { status: 403 })
   }
 }
