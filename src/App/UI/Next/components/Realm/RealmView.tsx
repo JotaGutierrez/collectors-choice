@@ -26,11 +26,17 @@ const ItemForm = ({ activeRealm }: ItemFormProps) => {
 
   const registerItem = async event => {
     event.preventDefault()
+
+    if (name.length === 0) {
+      toast('Please, insert item name')
+      return false
+    }
+
     setSubmitting(true)
 
     await createItem(name, activeRealm.toString())
 
-    toast(`Item guardado: ${name}`)
+    toast(`Item saved: ${name}`)
     setName('')
     setSubmitting(false)
   }

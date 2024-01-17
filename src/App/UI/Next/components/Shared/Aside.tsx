@@ -28,6 +28,13 @@ const Aside = () => {
 
   const submitForm = async event => {
     event.preventDefault()
+
+    if (name.length === 0) {
+      toast('Please, insert realm name')
+
+      return false
+    }
+
     setSubmitting(true)
     await saveRealm(name, session?.user?.email)
 
