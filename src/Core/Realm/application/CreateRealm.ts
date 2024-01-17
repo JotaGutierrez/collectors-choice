@@ -1,7 +1,16 @@
 import Realm from '../domain/Realm';
 import RealmRepository from '../domain/RealmRepository';
+import RealmConfig from "../domain/RealmConfig";
 
-/** @TODO: Find realm by name to avoid duplicates */
-const CreateRealm = (repository: RealmRepository) => (name: string, owner: string) => repository.create(new Realm(name, owner));
+const CreateRealm = (repository: RealmRepository) => async (name: string, owner: string) => {
+  const realm = await repository.findByName(name, owner)
+
+  if (!realm) {
+    const realm = new Realm(name, owner)
+    realm.config = new RealmConfig({view: 'list', _property: null})
+
+    repository.create(realm)
+  }
+}
 
 export default CreateRealm;

@@ -9,7 +9,7 @@ async function handler (request: Request, user: User) {
   const realmRepository = new MongoRealmRepository(client)
   const body = await request.json()
 
-  CreateRealm(realmRepository)(body.name, user.email)
+  await CreateRealm(realmRepository)(body.name, user.email)
 
   return new Response(JSON.stringify(await realmRepository.findAll(user.email)))
 }
