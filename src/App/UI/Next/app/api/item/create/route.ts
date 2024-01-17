@@ -5,14 +5,15 @@ import ItemCountIncrement from '@Core/Realm/application/ItemCountIncrement'
 import MongoRealmRepository from '@Core/Realm/infrastructure/MongoRealmRepository'
 import EventBus from '@Core/Shared/Infrastructure/EventBus/EventBus'
 import { MongoClient } from 'mongodb'
+import { User, withUser } from '../../../../middleware'
 
-export async function POST (request: Request) {
+async function handler (request: Request, user: User) {
   const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
   const itemRepository = new MongoItemRepository(client)
   const realmRepository = new MongoRealmRepository(client)
 
-  EventBus.getInstance().subscribe(ItemCreatedEvent, ItemCountIncrement(realmRepository))
+  EventBus.getInstance().subscribe(ItemCreatedEvent, ItemCountIncrement(realmRepository, user.email))
 
   const body = await request.json()
 
@@ -22,3 +23,5 @@ export async function POST (request: Request) {
 
   return new Response(JSON.stringify(items))
 }
+
+export const POST = withUser(handler)

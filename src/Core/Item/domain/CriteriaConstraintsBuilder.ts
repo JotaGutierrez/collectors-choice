@@ -1,7 +1,8 @@
 
 interface CriteriaConstraintsBuilder {
-    realm: String,
-    filter: Array<String>,
+    realm: string,
+    tags: Array<string>,
+    _owner: string
 }
 
 export default CriteriaConstraintsBuilder;

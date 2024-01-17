@@ -3,8 +3,9 @@ import MongoCriteria from '@Core/Item/infrastructure/MongoCriteria'
 import MongoItemRepository from '@Core/Item/infrastructure/MongoItemRepository'
 import QueryParamsCriteriaConstraintsBuilder from '@Core/Item/infrastructure/QueryParamsCriteriaConstraintsBuilder'
 import { MongoClient } from 'mongodb'
+import { User, withUser } from '../../../../middleware'
 
-export async function GET (request: Request) {
+async function handler (request: Request, user: User) {
   /** @TODO: use middleware to avoid connecting from each controller */
   const client = await MongoClient.connect(process.env.DB_URI ?? '')
 
@@ -12,16 +13,19 @@ export async function GET (request: Request) {
 
   const { searchParams } = new URL(request.url)
 
-  const cri = new MongoCriteria(new QueryParamsCriteriaConstraintsBuilder({
+  const criteria = new MongoCriteria(new QueryParamsCriteriaConstraintsBuilder({
     realm: searchParams.get('realm'),
-    filter: searchParams.get('filter')
+    filter: searchParams.get('filter'),
+    _owner: user.email
   }))
 
   try {
-    const items = await ItemsByCriteria(itemRepository)(cri)
+    const items = await ItemsByCriteria(itemRepository)(criteria)
 
     return new Response(JSON.stringify(items))
   } catch (error) {
     return new Response(JSON.stringify({}))
   }
 }
+
+export const GET = withUser(handler)

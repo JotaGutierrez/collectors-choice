@@ -1,27 +1,25 @@
-
 import Criteria from '../domain/Criteria';
 import CriteriaConstraintsBuilder from '../domain/CriteriaConstraintsBuilder';
 
 class MongoCriteria implements Criteria
 {
-    realmName: String;
-    filter: Array<String>;
+    realmName: string;
+    tags: Array<string>;
+    _owner: string;
 
-    constructor({ realm, filter }: CriteriaConstraintsBuilder) {
+    constructor({ realm, tags, _owner }: CriteriaConstraintsBuilder) {
         this.realmName = realm;
-        this.filter = filter;
+        this.tags = tags;
+        this._owner = _owner;
     }
 
     criteria() : any {
-        if (this.filter.length > 0) {
-            return {
-                "realm": this.realmName,
-                "tags.name": {"$all": [...this.filter] },
-            }
-        }
+        const tagFilter = this.tags.length > 0 ? {"tags.name": {"$all": [...this.tags] }} : {};
 
         return  {
             "realm": this.realmName,
+            "_owner": this._owner,
+            ...tagFilter
         }
     }
 }

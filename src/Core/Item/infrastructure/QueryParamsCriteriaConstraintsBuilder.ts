@@ -2,13 +2,15 @@ import CriteriaConstraintsBuilder from '../domain/CriteriaConstraintsBuilder';
 
 class QueryParamsCriteriaConstraintsBuilder implements CriteriaConstraintsBuilder
 {
-    realm: String;
-    filter: Array<String>;
+    realm: string;
+    tags: Array<string>;
+    _owner: string;
 
     constructor(queryParams)
     {
-        this.realm = queryParams.realm;
-        this.filter = JSON.parse(queryParams.filter ?? "[]");
+        this.realm = queryParams.realm
+        this.tags = JSON.parse(queryParams.filter ?? "[]")
+        this._owner = queryParams._owner
     }
 }
 

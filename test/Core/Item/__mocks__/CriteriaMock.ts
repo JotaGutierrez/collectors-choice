@@ -1,4 +1,3 @@
-
 import Criteria from '../../../../src/Core/Item/domain/Criteria';
 import CriteriaConstraintsBuilder from '../../../../src/Core/Item/domain/CriteriaConstraintsBuilder';
 
@@ -14,7 +13,7 @@ export class CriteriaMock implements Criteria
     criteria() {
         return {
             reaml: this.params.realm,
-            filter: this.params.filter,
+            filter: this.params.tags,
         };
     }
 }

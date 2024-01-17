@@ -64,15 +64,6 @@ class MongoItemRepository implements ItemRepository
         ).sort({order: -1}).toArray()) as Item[];
     }
 
-    async findByRealmAndTags(realm: string, tags: Array<string>) : Promise<Array<Item>> {
-        return (await this.collection.find(
-            {
-                "realm": realm,
-                "tags.name": {"$all": [...tags] },
-            }
-        ).sort({order: -1}).toArray()) as Item[];
-    }
-
     async deleteById(id: string): Promise<any> {
         const item = await this.findById(id);
 
@@ -82,6 +73,7 @@ class MongoItemRepository implements ItemRepository
     }
 
     async findByCriteria(criteria: Criteria): Promise<Item[]> {
+        console.log(criteria.criteria())
         return (
             await this.collection.find(
                 criteria.criteria()
