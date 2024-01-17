@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react'
 import ItemRenderer from '../components/compositions/Item/ItemRenderer'
 import RealmConfig from '../components/compositions/Realm/RealmConfig'
 import RealmView from '../components/compositions/Realm/RealmView'
-import AlertBag from '../components/layout/AlertBag'
 import Aside from '../components/layout/Aside'
 
 import { useRealmContext } from '../context/RealmContext'
@@ -44,7 +43,6 @@ const Page: NextPage = () => {
           </div>
         </div>
         <footer className="styles.footer"/>
-        <AlertBag/>
       </div>
     </>
   )

@@ -4,6 +4,7 @@ import { ExitIcon, MoonIcon, PlusIcon, SunIcon } from '@radix-ui/react-icons'
 import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 import { Key, useState } from 'react'
+import { toast } from 'sonner'
 import { useRealmContext } from '../../context/RealmContext'
 import { useRealms } from '../../hooks/swr'
 import { TypographyH4 } from '../atoms/Typography'
@@ -29,6 +30,8 @@ const Aside = () => {
     event.preventDefault()
     setSubmitting(true)
     await saveRealm(name, session?.user?.email)
+
+    toast(`Realm created: ${name}`)
     setName('')
     setSubmitting(false)
   }

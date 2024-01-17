@@ -2,7 +2,7 @@ import createItem from '@Core/Item/infrastructure/Api/CreateItem'
 import Realm from '@Core/Realm/domain/Realm'
 import { ChevronLeftIcon, GearIcon, MixerHorizontalIcon, PlusIcon } from '@radix-ui/react-icons'
 import { useState } from 'react'
-import { useAlertBagContext } from '../../../context/AlertBag'
+import { toast } from 'sonner'
 import { useRealmContext } from '../../../context/RealmContext'
 import { useRealm, useTags } from '../../../hooks/swr'
 import { TypographyH4 } from '../../atoms/Typography'
@@ -21,7 +21,6 @@ interface ItemFormProps {
 }
 
 const ItemForm = ({ activeRealm }: ItemFormProps) => {
-  const alertBag = useAlertBagContext()
   const [name, setName] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -31,7 +30,7 @@ const ItemForm = ({ activeRealm }: ItemFormProps) => {
 
     await createItem(name, activeRealm.toString())
 
-    alertBag?.pushAlert(`Item guardado: ${name}`)
+    toast(`Item guardado: ${name}`)
     setName('')
     setSubmitting(false)
   }
