@@ -1,17 +1,17 @@
 import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useEffect, useMemo, useState } from 'react'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface props {
-  properties: Array<string>;
   params: any;
   items: Array<Item>
   ItemRenderer: any;
   tags: Array<Tag>;
 }
 
-const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
+const Board = ({ params, items, ItemRenderer, tags }: props) => {
   /** We need a copy in the state to reflect dnd changes without depending on hooks reloading */
   const memoColumns = useMemo(() => {
     const initialColumns = {
@@ -60,7 +60,8 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
   useEffect(() => setColumns(memoColumns), [memoColumns])
 
   /** @TODO: Refactor */
-  const saveProperty = async (item, value, property, index) =>
+  const saveProperty = async (item: Item, tagId: number, property: string, index: number) => {
+    console.log(item, tagId, property, index)
     await fetch('/api/item/setProperty', {
       method: 'PATCH',
       headers: {
@@ -68,16 +69,16 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
       },
       body: JSON.stringify({
         id: item._id,
+        tagId,
         property,
-        value: tags.find(tag => tag.name === value),
         index
       })
-    }
-    )
+    })
+  }
 
   const onDragEnd = async result => {
     const { destination, source } = result
-
+    console.log(result)
     if (!result.destination) {
       return
     }
@@ -93,7 +94,7 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
     const finish = columns[destination.droppableId]
 
     const property = params.property
-    const value = params.values.filter(tag => tag._id === result.destination.droppableId)[0].name
+    const value = result.destination.droppableId
 
     if (start === finish) {
       const newItems = Array.from(start)
@@ -127,9 +128,9 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
       [source.droppableId]: startItems,
       [destination.droppableId]: finishItems
     }
-
+    console.log()
     /** @TODO: This makes a call for each item. Create a controller for column reordering operation */
-    finishItems.map(async (item, index) => await saveProperty(item, value, property, index))
+    finishItems.map(async (item, index) => await saveProperty(item, destination.droppableId, property, index))
 
     setColumns(newState)
   }
@@ -148,7 +149,14 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
               {...provided.droppableProps}
             >
               {columns.UNSET && columns.UNSET.map((item, itemKey) =>
-                <ItemRenderer key={item._id} rowKey={itemKey} item={item} tags={tags} properties={properties} />
+                <Draggable draggableId={item._id} index={itemKey} key={item._id}>
+                  {provided => <Card
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}>
+                    <CardHeader><CardTitle>{item.name}</CardTitle></CardHeader>
+                  </Card>}
+                </Draggable>
               )}
               {provided.placeholder}
             </div>
@@ -158,7 +166,7 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
       {params.values.map((property, key) =>
         <div key={key}>
           <div className='text-sm font-bold text-gray-400 px-6 py-2 text-left'>{property.name}</div>
-          <Droppable droppableId={property._id}>
+          <Droppable droppableId={property._id.toString()}>
             {provided =>
               <div
                 className="flex gap-2 flex-col bg-slate-100 p-2"
@@ -166,7 +174,14 @@ const Board = ({ properties, params, items, ItemRenderer, tags }: props) => {
                 {...provided.droppableProps}
               >
                 {columns[property._id] && columns[property._id].map((item, itemKey) =>
-                  <ItemRenderer key={item._id} rowKey={itemKey} item={item} tags={tags} properties={properties} />
+                  <Draggable draggableId={item._id} index={itemKey} key={item._id}>
+                    {provided => <Card
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}>
+                      <CardHeader><CardTitle>{item.name}</CardTitle></CardHeader>
+                    </Card>}
+                  </Draggable>
                 )}
                 {provided.placeholder}
               </div>

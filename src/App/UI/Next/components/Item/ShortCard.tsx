@@ -1,8 +1,6 @@
 import Item from '@Core/Item/domain/Item'
-import { useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
-import { TypographyH3 } from '../Shared/Typography'
-import { Button } from '@/components/ui/button'
+import { Draggable } from '@hello-pangea/dnd'
+import { TypographyH3, TypographyH4 } from '../Shared/Typography'
 
 interface props {
   rowKey: number;
@@ -10,10 +8,6 @@ interface props {
 }
 
 const ShortCard = ({ rowKey, item }: props) => {
-  const [showItemConfig, setItemConfig] = useState(false)
-
-  const toggleItemConfig = () => setItemConfig(!showItemConfig)
-
   return <Draggable draggableId={item._id} index={rowKey}>
     {provided => <div
       ref={provided.innerRef}
@@ -25,15 +19,10 @@ const ShortCard = ({ rowKey, item }: props) => {
       </div>
       <div>
         <div>
-          <TypographyH3 text={item.name} className={undefined} />
-          <div>
-            <Button onClick={toggleItemConfig}>
-              Edit
-            </Button>
-          </div>
+          <TypographyH3 text={item.name} />
         </div>
         <div>
-          <TypographyH3 text={item.notes} className={undefined} />
+          <TypographyH4 text={item.notes} />
         </div>
       </div>
     </div>

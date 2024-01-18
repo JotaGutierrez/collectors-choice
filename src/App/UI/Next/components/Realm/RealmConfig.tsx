@@ -1,4 +1,5 @@
 import Realm from '@Core/Realm/domain/Realm'
+import convertRealm from '@Core/Realm/infrastructure/Api/ConvertRealm'
 import saveRealmConfig from '@Core/Realm/infrastructure/Api/SaveRealmConfig'
 import saveRealmNotes from '@Core/Realm/infrastructure/Api/SaveRealmNotes'
 import fetcher from '@Core/Shared/Infrastructure/Http/Fetcher'
@@ -7,6 +8,7 @@ import deleteTag from '@Core/Tag/infrastructure/Api/DeleteTag'
 import deleteTagGroup from '@Core/TagGroup/application/DeleteTagGroup'
 import saveTagGroup from '@Core/TagGroup/infrastructure/Api/CreateTagGroup'
 import {
+  CheckIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   GridIcon,
@@ -22,7 +24,7 @@ import { useRealmContext } from '../../context/RealmContext'
 import { TypographyH4, TypographyNav } from '../Shared/Typography'
 import TagInput from '../Tag/TagInput'
 import { Button } from '@/components/ui/button'
-import { Card, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
@@ -32,6 +34,10 @@ import { Textarea } from '@/components/ui/textarea'
 interface props {
   realm: Realm;
   tags: Array<Tag>;
+}
+
+const convertToTodo = async (realm) => {
+  await convertRealm(realm)
 }
 
 const saveView = async (view: string, property: string|null, realm: Realm) => await saveRealmConfig({ view, property }, realm)
@@ -236,6 +242,47 @@ const RealmConfig = ({ realm, tags }: props) => {
                     </div>
                   </div>
                 )}
+              </div>
+            </CardDescription>
+          </Card>
+        </div>
+        <Separator />
+        <div className={'p-4 snap-top'}>
+          <Card>
+            <CardHeader>
+              <TypographyNav text={'Actions over Collection'}></TypographyNav>
+              <CardDescription>Transform collection in specific types of realm. This configures a predefined property and view</CardDescription>
+            </CardHeader>
+            <CardDescription>
+              <div className={'flex flex-row gap-2 p-4'}>
+                <Card className={'w-[380px]'}>
+                  <CardHeader>
+                    <CardTitle>TODO list</CardTitle>
+                    <CardDescription>This creates a group of tags PENDING/DOING/DONE which mutually exclude</CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                  </CardContent>
+                  <CardFooter>
+                    <Button className="w-full">
+                      <CheckIcon className="mr-2 h-4 w-4"
+                                 onClick={() => convertToTodo(realm)}
+                      /> Transform to TODO list
+                    </Button>
+                  </CardFooter>
+                </Card>
+                <Card className={'w-[380px]'}>
+                  <CardHeader>
+                    <CardTitle>COLLECTOR list</CardTitle>
+                    <CardDescription>This creates a group of tags WANT/HAVE which mutually exclude</CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                  </CardContent>
+                  <CardFooter>
+                    <Button className="w-full" variant={'ghost'}>
+                      <CheckIcon className="mr-2 h-4 w-4" /> Transform to COLLECTOR list
+                    </Button>
+                  </CardFooter>
+                </Card>
               </div>
             </CardDescription>
           </Card>

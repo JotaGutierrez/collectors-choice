@@ -24,7 +24,7 @@ async function handler (request: Request, user: User) {
 
     return new Response(JSON.stringify(items))
   } catch (error) {
-    return new Response(JSON.stringify({}))
+    return new Response(JSON.stringify(error))
   }
 }
 

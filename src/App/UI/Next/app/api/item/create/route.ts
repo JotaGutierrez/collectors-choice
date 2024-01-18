@@ -17,7 +17,7 @@ async function handler (request: Request, user: User) {
 
   const body = await request.json()
 
-  CreateItem(itemRepository)(body.name, body.realm, body.owner)
+  CreateItem(itemRepository)(body.name, body.realm, user.email)
 
   const items = await itemRepository.findAll()
 

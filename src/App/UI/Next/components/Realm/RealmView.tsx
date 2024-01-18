@@ -91,9 +91,9 @@ const RealmView = ({ realm }: props) => {
       <div className={`${realmContext?.activeItem ? 'closed' : 'open'} grow p-4` }>
         {loading && <Skeleton className='w-[100%] h-[4rem] rounded-xs bg-slate-100' />}
         {!loading && !_realm.config && <ListView/>}
-        {!loading && _realm.config?.view === 'list' && <ListView/>}
-        {!loading && _realm.config?.view === 'grid' && <GridView tags={tags}/>}
-        {!loading && _realm.config?.view === 'board' && <BoardView tags={tags} property={_realm.config._property}/>}
+        {!loading && _realm.config?.view === 'list' && <ListView />}
+        {!loading && _realm.config?.view === 'grid' && <GridView />}
+        {!loading && _realm.config?.view === 'board' && <BoardView />}
       </div>
       <Separator className="mb-4 mt-4" />
       <div className="flex w-full items-center space-x-2 p-4 pb-8">

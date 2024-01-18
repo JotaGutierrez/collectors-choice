@@ -9,10 +9,11 @@ export async function PATCH (request: Request) {
   const itemRepository = new MongoItemRepository(client)
 
   const body = await request.json()
+
   const item = await itemRepository.findById(body.id)
 
   const tagRepository = new MongoTagRepository(client)
-  const tag = await tagRepository.findById(body.value._id)
+  const tag = await tagRepository.findById(body.tagId)
 
   await setItemProperty(itemRepository)(item, tag, body.index)
 

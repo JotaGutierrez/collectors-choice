@@ -2,9 +2,6 @@ import Tag from '../../Tag/domain/Tag';
 import ItemTagOrder from './ItemTagOrder';
 
 class Item {
-    get owner(): string {
-        return this._owner;
-    }
     _id: any;
     name: string;
     tags: Tag[] = [];
@@ -22,6 +19,10 @@ class Item {
 
     getId(): string {
         return this._id;
+    }
+
+    get owner(): string {
+        return this._owner;
     }
 
     setTags(tags: Array<Tag>) {
