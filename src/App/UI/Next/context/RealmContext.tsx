@@ -25,7 +25,7 @@ interface RealmContextInterface {
   setIsOpened: Function;
 }
 
-const RealmContext = createContext<RealmContextInterface | null>(null)
+const RealmContext = createContext<RealmContextInterface|null>(null)
 
 interface Props {
   children: React.ReactNode

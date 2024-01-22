@@ -1,17 +1,14 @@
 import Item from '@Core/Item/domain/Item'
-import Tag from '@Core/Tag/domain/Tag'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useEffect, useMemo, useState } from 'react'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface props {
   params: any;
-  items: Array<Item>
-  ItemRenderer: any;
-  tags: Array<Tag>;
+  items: Array<Item>;
 }
 
-const Board = ({ params, items, ItemRenderer, tags }: props) => {
+const Board = ({ params, items }: props) => {
   /** We need a copy in the state to reflect dnd changes without depending on hooks reloading */
   const memoColumns = useMemo(() => {
     const initialColumns = {
@@ -51,7 +48,6 @@ const Board = ({ params, items, ItemRenderer, tags }: props) => {
           return 0
         }
       ))
-
     return initialColumns
   }, [items, params])
 
@@ -61,7 +57,6 @@ const Board = ({ params, items, ItemRenderer, tags }: props) => {
 
   /** @TODO: Refactor */
   const saveProperty = async (item: Item, tagId: number, property: string, index: number) => {
-    console.log(item, tagId, property, index)
     await fetch('/api/item/setProperty', {
       method: 'PATCH',
       headers: {
@@ -78,7 +73,7 @@ const Board = ({ params, items, ItemRenderer, tags }: props) => {
 
   const onDragEnd = async result => {
     const { destination, source } = result
-    console.log(result)
+
     if (!result.destination) {
       return
     }
@@ -109,7 +104,7 @@ const Board = ({ params, items, ItemRenderer, tags }: props) => {
       }
 
       /** @TODO: This makes a call for each item. Create a controller for column reordering operation */
-      newItems.map(async (item, index) => await saveProperty(item, value, property, index))
+      newItems.map(async (item, index) => await saveProperty(item as Item, value, property, index))
 
       setColumns(newColumns)
       return
@@ -128,9 +123,9 @@ const Board = ({ params, items, ItemRenderer, tags }: props) => {
       [source.droppableId]: startItems,
       [destination.droppableId]: finishItems
     }
-    console.log()
+
     /** @TODO: This makes a call for each item. Create a controller for column reordering operation */
-    finishItems.map(async (item, index) => await saveProperty(item, destination.droppableId, property, index))
+    finishItems.map(async (item, index) => await saveProperty(item as Item, destination.droppableId, property, index))
 
     setColumns(newState)
   }

@@ -10,7 +10,7 @@ interface itemListPresenterProps {
 }
 
 const ItemListPresenter = ({ GroupRenderer, ItemRowRenderer, groupParams }: itemListPresenterProps) => {
-  const { tags } = useRealmContext()
+  const { tags } = useRealmContext() || {}
   const properties = Array.isArray(tags) ? [...Array.from(new Set(tags.filter(tag => tag.group !== '').map(tag => tag.group)))] : []
 
   const realmContext = useRealmContext()

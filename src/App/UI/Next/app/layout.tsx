@@ -9,19 +9,19 @@ import { ThemeProvider } from '../context/ThemeProvider'
 const RootLayout = ({ children }: {children: React.ReactNode}) => {
   return <html lang="en">
     <body>
-    <SessionProvider>
-      <RealmContextProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </RealmContextProvider>
-    </SessionProvider>
-    <Toaster />
+      <SessionProvider>
+        <RealmContextProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </RealmContextProvider>
+      </SessionProvider>
+      <Toaster />
     </body>
   </html>
 }
