@@ -22,7 +22,7 @@ COPY ./src/App/UI/Next/package.json ./src/App/UI/Next/yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 
-FROM node:18 AS build
+FROM node:18-alpine AS build
 
 WORKDIR /home/node
 COPY ./src/App ./src/App
@@ -37,15 +37,16 @@ RUN yarn build
 
 FROM build AS prod
 
-ENV NODE_ENV production
-WORKDIR /home/node
+RUN adduser -D nextuser
 
-COPY --from=build . .
+WORKDIR /app
+
+COPY --from=build --chown=nextuser:nextuser /home/node/src/App/UI/Next ./public
+COPY --from=build --chown=nextuser:nextuser /home/node/src/App/UI/Next/.next/standalone ./
+COPY --from=build --chown=nextuser:nextuser /home/node/src/App/UI/Next/.next/static ./.next/static
 
 EXPOSE 3000
 
-ENV PORT 3000
-
-WORKDIR /home/node/src/App/UI/Next
+ENV HOST=0.0.0.0 PORT=3000 NODE_ENV=production
 
 CMD ["node", "server.js"]
