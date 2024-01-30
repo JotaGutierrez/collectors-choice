@@ -234,7 +234,7 @@ const RealmConfig = ({ realm, tags }: props) => {
                     saveView('board', _property, realm)
                   }}>
                     <Button
-                      variant={realm.config?.view === 'board' && realm.config?._property === _property ? 'default' : 'ghost'}>
+                      variant={realm.config?.view === 'board' && realm.config?.property === _property ? 'default' : 'ghost'}>
                       <LayoutIcon/>
                     </Button>
                     <div>

@@ -26,7 +26,7 @@ async function handler (request: Request, user: User) {
   await tagCreator('DOING', realm.name, user.email, 'state')
   await tagCreator('DONE', realm.name, user.email, 'state')
 
-  realm.config = new RealmConfig({ view: 'board', _property: 'state' })
+  realm.config = new RealmConfig({ view: 'board', property: 'state' })
 
   await realmRepository.update(realm)
 

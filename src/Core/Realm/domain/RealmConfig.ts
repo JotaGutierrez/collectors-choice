@@ -1,15 +1,15 @@
 interface RealmConfigInterface {
     view: string;
-    _property: string|null;
+    property: string|null;
 }
 
 class RealmConfig {
     view: string;
-    _property: string|null;
+    property: string|null;
 
-    constructor({view, _property}: RealmConfigInterface) {
+    constructor({view, property}: RealmConfigInterface) {
         this.view = view;
-        this._property = _property;
+        this.property = property;
     }
 }
 

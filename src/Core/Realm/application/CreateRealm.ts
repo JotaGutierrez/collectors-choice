@@ -7,7 +7,7 @@ const CreateRealm = (repository: RealmRepository) => async (name: string, owner:
 
   if (!realm) {
     const realm = new Realm(name, owner)
-    realm.config = new RealmConfig({view: 'list', _property: null})
+    realm.config = new RealmConfig({view: 'list', property: null})
 
     repository.create(realm)
   }
