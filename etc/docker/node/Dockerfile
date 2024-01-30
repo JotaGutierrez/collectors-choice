@@ -35,7 +35,7 @@ COPY --from=install-deps /home/node/src/App/UI/Next/node_modules ./node_modules
 RUN yarn build
 
 
-FROM build AS prod
+FROM node:18-alpine AS prod
 
 RUN adduser -D nextuser
 

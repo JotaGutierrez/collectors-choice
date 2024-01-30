@@ -41,7 +41,7 @@ export const RealmContextProvider = ({ children }: Props) => {
   const [activeRealm, setActiveRealm] = useState('')
   const [showFilterTags, setShowFilterTags] = useState(false)
 
-  const [isOpened, setIsOpened] = useState(false)
+  const [isOpened, setIsOpened] = useState(true)
 
   const toggleFilterTags = () => setShowFilterTags(!showFilterTags)
 
