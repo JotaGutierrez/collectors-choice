@@ -155,10 +155,6 @@ docker run -d --name=collectors_choice --network=app-network --restart=unless-st
 
 now we have app running on 3000
 
-## Issues
-
-- Currently, snappy is not working at Core level.
-
 ## TODO
 
 - Create an API app to mimic what is now doing Next API to isolate Core
