@@ -35,7 +35,7 @@ const TagSelect = ({ item, allowAdd }: TagSelectProps) => {
   }
 
   return <div className={'flex flex-row gap-2'}>
-    {!loadingTags && tags?.map((tag, key) => <Badge
+    {!loadingTags && tags && tags.map((tag, key) => <Badge
       className="w-[fit-content]"
       key={key}
       onClick={() => toggleTag(tag)}

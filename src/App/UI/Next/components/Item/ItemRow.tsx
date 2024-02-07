@@ -34,7 +34,7 @@ const ItemRow = ({ rowKey, item }: props) => {
       </CardContent>
       {!!item?.tags &&
         <CardFooter>
-          <TagSelect tags={item.tags} item={item} allowAdd={false}/>
+          <TagSelect item={item} allowAdd={false}/>
         </CardFooter>
       }
   </Card>
