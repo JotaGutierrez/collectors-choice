@@ -1,14 +1,21 @@
 import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
 import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
-import { ChevronLeftIcon, TrashIcon } from '@radix-ui/react-icons'
+import { ArchiveIcon, ChevronLeftIcon, DotsVerticalIcon, TrashIcon } from '@radix-ui/react-icons'
 import { useEffect, useState } from 'react'
 import { Autosave } from 'react-autosave'
 import { useRealmContext } from '../../context/RealmContext'
-import { useItem, useTags } from '../../hooks/swr'
+import { useItem } from '../../hooks/swr'
 import { TypographyH3 } from '../Shared/Typography'
 import TagSelect from '../Tag/TagsSelect'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Textarea } from '@/components/ui/textarea'
@@ -35,7 +42,6 @@ const Page = ({ _item }: { _item: Item }) => {
   const realmContext = useRealmContext()
 
   const { item, loadingItem } = useItem(_item._id)
-  const { tags, loadingTags } = useTags(_item.realm)
 
   return <>
     <div className='flex flex-col w-full h-dvh'>
@@ -49,17 +55,41 @@ const Page = ({ _item }: { _item: Item }) => {
               variant="ghost"
             >
               <ChevronLeftIcon/>
-            </Button><TypographyH3 text={_item.name} className={'grow'}/><Button
-              color="inherit"
-              onClick={event => {
-                event.preventDefault()
-                deleteItem(_item._id)
-                  .then(realmContext?.setActiveItem(null))
-              }}
-              variant={'ghost'}
-            >
-              <TrashIcon/>
-            </Button></>}
+            </Button><TypographyH3 text={_item.name} className={'grow'}/>
+              <DropdownMenu>
+                <DropdownMenuTrigger><DotsVerticalIcon /></DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    Archive
+                    <DropdownMenuShortcut>
+                      <Button
+                        color="inherit"
+                        onClick={event => event.preventDefault()}
+                        variant={'ghost'}
+                      >
+                        <ArchiveIcon />
+                      </Button>
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Delete
+                    <DropdownMenuShortcut>
+                      <Button
+                        color="inherit"
+                        onClick={event => {
+                          event.preventDefault()
+                          deleteItem(_item._id)
+                            .then(realmContext?.setActiveItem(null))
+                        }}
+                        variant={'ghost'}
+                      >
+                        <TrashIcon/>
+                      </Button>
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              </>}
         </div>
       </div>
       <div className={'grow p-4'}>
@@ -69,9 +99,9 @@ const Page = ({ _item }: { _item: Item }) => {
       </div>
       <Separator className="mb-4 mt-4" />
       <div className="w-dvw sm:w-full overflow-x-auto space-x-2 p-4 pb-8 justify-end">
-        {loadingTags || loadingItem
+        {loadingItem
           ? <Skeleton className='w-[100%] h-[4rem] rounded-xs bg-slate-100' />
-          : <TagSelect tags={tags} item={item} allowAdd={true}/>
+          : <TagSelect item={item} allowAdd={true}/>
         }
       </div>
     </div>

@@ -2,6 +2,7 @@ import Item from '@Core/Item/domain/Item'
 import Tag from '@Core/Tag/domain/Tag'
 import { useEffect, useState } from 'react'
 import TagInput from './TagInput'
+import { useTags } from '../../hooks/swr'
 import { Badge } from '@/components/ui/badge'
 
 interface TagSelectProps {
@@ -10,8 +11,9 @@ interface TagSelectProps {
   allowAdd: boolean;
 }
 
-const TagSelect = ({ item, tags, allowAdd }: TagSelectProps) => {
+const TagSelect = ({ item, allowAdd }: TagSelectProps) => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+  const { tags, loadingTags } = useTags(item.realm)
 
   const saveTags = async tags => await fetch('/api/item/setTags', {
     method: 'PATCH',
@@ -33,7 +35,7 @@ const TagSelect = ({ item, tags, allowAdd }: TagSelectProps) => {
   }
 
   return <div className={'flex flex-row gap-2'}>
-    {!!tags && tags.map((tag, key) => <Badge
+    {!loadingTags && tags.map((tag, key) => <Badge
       className="w-[fit-content]"
       key={key}
       onClick={() => toggleTag(tag)}

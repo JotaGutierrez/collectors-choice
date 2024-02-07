@@ -69,7 +69,7 @@ class MongoItemRepository implements ItemRepository
 
         EventBus.getInstance().dispatch<any>(ItemDeletedEvent, item.realm)
 
-        await this.collection.deleteOne({_id: new ObjectId(id)});
+        return await this.collection.deleteOne({_id: new ObjectId(id)});
     }
 
     async findByCriteria(criteria: Criteria): Promise<Item[]> {
