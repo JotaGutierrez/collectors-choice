@@ -1,5 +1,6 @@
 import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
+import patchItem from '@Core/Item/infrastructure/Api/PatchItem'
 import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
 import { ArchiveIcon, ChevronLeftIcon, DotsVerticalIcon, TrashIcon } from '@radix-ui/react-icons'
 import { useEffect, useState } from 'react'
@@ -64,7 +65,7 @@ const Page = ({ _item }: { _item: Item }) => {
                     <DropdownMenuShortcut>
                       <Button
                         color="inherit"
-                        onClick={event => event.preventDefault()}
+                        onClick={async event => patchItem({ archived: true }, _item)}
                         variant={'ghost'}
                       >
                         <ArchiveIcon />
@@ -76,11 +77,7 @@ const Page = ({ _item }: { _item: Item }) => {
                     <DropdownMenuShortcut>
                       <Button
                         color="inherit"
-                        onClick={event => {
-                          event.preventDefault()
-                          deleteItem(_item._id)
-                            .then(realmContext?.setActiveItem(null))
-                        }}
+                        onClick={event => deleteItem(_item._id).then(realmContext?.setActiveItem(null))}
                         variant={'ghost'}
                       >
                         <TrashIcon/>

@@ -9,6 +9,7 @@ class Item {
     realm: string;
     order: number = 0;
     itemTagOrders: ItemTagOrder[] = [];
+    archived: boolean = false;
     private readonly _owner: string;
 
     constructor(name: string, realm: string, owner: string) {

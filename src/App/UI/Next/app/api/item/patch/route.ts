@@ -10,5 +10,5 @@ export async function PATCH (request: Request) {
   const body = await request.json()
   const item = await itemRepository.findById(body._id)
 
-  return new Response(JSON.stringify(await itemRepository.update(<Item>{ ...item, notes: body.notes })))
+  return new Response(JSON.stringify(await itemRepository.update(<Item>{ ...item, ...body })))
 }

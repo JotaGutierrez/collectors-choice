@@ -34,6 +34,7 @@ class MongoItemRepository implements ItemRepository
                     'tags': item.tags,
                     'realm': item.realm,
                     'itemTagOrders': item.itemTagOrders,
+                    'archived': item.archived
                 },
                 $currentDate: {
                     "lastModified": true
