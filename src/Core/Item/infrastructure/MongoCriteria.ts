@@ -5,11 +5,13 @@ class MongoCriteria implements Criteria
 {
     realmName: string;
     tags: Array<string>;
+    archived: boolean;
     _owner: string;
 
-    constructor({ realm, tags, _owner }: CriteriaConstraintsBuilder) {
+    constructor({ realm, tags, archived, _owner }: CriteriaConstraintsBuilder) {
         this.realmName = realm;
         this.tags = tags;
+        this.archived = archived;
         this._owner = _owner;
     }
 
@@ -19,6 +21,7 @@ class MongoCriteria implements Criteria
         return  {
             "realm": this.realmName,
             "_owner": this._owner,
+            "archived": this.archived,
             ...tagFilter
         }
     }

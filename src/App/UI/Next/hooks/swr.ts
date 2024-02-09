@@ -34,7 +34,11 @@ function useTags (realm: string) {
 }
 
 function useItems (realm: string, filter: Array<String>) {
-  const { data, error, isLoading } = useSWR(`/api/item/fetch?realm=${realm}${filter ? `&filter=${encodeURIComponent(JSON.stringify(filter))}&` : ''}`, fetcher, { refreshInterval: 10000 })
+  const { data, error, isLoading } = useSWR(
+    `/api/item/fetch?realm=${realm}${filter ? `&filter=${encodeURIComponent(JSON.stringify({ tags: filter, archived: false }))}&` : ''}`,
+    fetcher,
+    { refreshInterval: 10000 }
+  )
 
   return {
     items: data,
