@@ -7,7 +7,7 @@ import { RealmContextProvider } from '../context/RealmContext'
 import { ThemeProvider } from '../context/ThemeProvider'
 
 const RootLayout = ({ children }: {children: React.ReactNode}) => {
-  return <html lang="en">
+  return <html lang="en" suppressHydrationWarning={true}>
     <body>
       <SessionProvider>
         <RealmContextProvider>

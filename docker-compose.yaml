@@ -24,3 +24,5 @@ services:
       - ./:/home/node
     depends_on:
       - mongo
+    env_file:
+      - ./src/App/UI/Next/.env.local

@@ -53,8 +53,6 @@ const RealmConfig = ({ realm, tags }: props) => {
 
   const [tagGroupName, setTagGroupName] = useState('')
 
-  const properties = new Set([...tags.filter(tag => tag.group !== '').map(tag => tag.group)])
-
   const { data, error } = useSWR(`/api/tag_group/fetch?realm=${realm.name}`, fetcher, { refreshInterval: 1000 })
 
   if (error) return <div>Failed to load</div>
@@ -129,7 +127,7 @@ const RealmConfig = ({ realm, tags }: props) => {
                           </TableRow>
                       </TableHeader>
                     <TableBody>
-                      {data.map((data, groupKey) =>
+                      {Array.isArray(data) && data.map((data, groupKey) =>
                         <TableRow key={groupKey}>
                           <TableCell className={'font-medium'}>{data.name}</TableCell>
                           <TableCell className={'text-right'}>
@@ -229,16 +227,16 @@ const RealmConfig = ({ realm, tags }: props) => {
                         variant={realm.config?.view === 'grid' ? 'default' : 'ghost'}>
                   <GridIcon/>
                 </Button>
-                {[...Array.from(properties)].map((_property, key) =>
+                {Array.isArray(data) && data.map((property, key) =>
                   <div key={key} onClick={() => {
-                    saveView('board', _property, realm)
+                    saveView('board', property.name, realm)
                   }}>
                     <Button
-                      variant={realm.config?.view === 'board' && realm.config?.property === _property ? 'default' : 'ghost'}>
+                      variant={realm.config?.view === 'board' && realm.config?.property === property.name ? 'default' : 'ghost'}>
                       <LayoutIcon/>
                     </Button>
                     <div>
-                      {_property}
+                      {property.name}
                     </div>
                   </div>
                 )}

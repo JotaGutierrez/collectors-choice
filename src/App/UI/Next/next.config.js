@@ -3,5 +3,9 @@ module.exports = {
   experimental: {
     externalDir: true
   },
-  output: 'standalone'
+  output: 'standalone',
+  compiler: {
+    removeConsole: false
+  },
+  productionBrowserSourceMaps: true
 }
