@@ -1,7 +1,6 @@
 import Item from '@Core/Item/domain/Item'
 import deleteItem from '@Core/Item/infrastructure/Api/DeleteItem'
 import patchItem from '@Core/Item/infrastructure/Api/PatchItem'
-import saveDescription from '@Core/Item/infrastructure/Api/SaveDescription'
 import { ArchiveIcon, ChevronLeftIcon, DotsVerticalIcon, TrashIcon } from '@radix-ui/react-icons'
 import { useEffect, useState } from 'react'
 import { Autosave } from 'react-autosave'
@@ -92,7 +91,7 @@ const Page = ({ _item }: { _item: Item }) => {
       <div className={'grow p-4'}>
         {loadingItem
           ? <Skeleton/>
-          : <><AutoSaveInput value={item.notes} onSave={(event: any) => saveDescription(event, item)} /></>}
+          : <><AutoSaveInput value={item.notes} onSave={(event: any) => patchItem({ notes: event }, _item)} /></>}
       </div>
       <Separator className="mb-4 mt-4" />
       <div className="w-dvw sm:w-full overflow-x-auto space-x-2 p-4 pb-8 justify-end">
