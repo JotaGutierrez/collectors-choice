@@ -15,7 +15,7 @@ const UnboundDelegatedItemListPresenter = ({ GroupRenderer, ItemRowRenderer }: p
     filter
   } = useRealmContext() || {}
   const { items, loading } = useItems(realm?.name ?? '', filter ?? [])
-  const properties = tags ? Array.from(new Set(tags.filter((tag: Tag) => tag.group === realm?.config?.property ?? ''))) : []
+  const properties = Array.isArray(tags) ? Array.from(new Set(tags.filter((tag: Tag) => tag.group === realm?.config?.property ?? ''))) : []
 
   return loading
     ? <Skeleton />
