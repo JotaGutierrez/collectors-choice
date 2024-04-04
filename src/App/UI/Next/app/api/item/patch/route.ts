@@ -8,7 +8,7 @@ export async function PATCH (request: Request) {
   const itemRepository = new MongoItemRepository(client)
 
   const body = await request.json()
-  const item = await itemRepository.findById(body._id)
+  const item = await itemRepository.find(body._id)
 
   return new Response(JSON.stringify(await itemRepository.update(<Item>{ ...item, ...body })))
 }

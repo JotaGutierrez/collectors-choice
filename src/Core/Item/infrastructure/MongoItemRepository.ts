@@ -45,35 +45,23 @@ class MongoItemRepository implements ItemRepository
         return item;
     }
 
-    async findAll(): Promise<Array<Item>> {
+    async queryAll(): Promise<Array<Item>> {
         return (await this.collection.find().sort({order: -1}).toArray()) as Item[];
     }
 
-    async findById(id: string): Promise<Item> {
+    async find(id: string): Promise<Item> {
         return (await this.collection.findOne({_id: new ObjectId(id)})) as Item;
     }
 
-    async findByTags(tags: Array<string>) : Promise<Array<Item>> {
-        return (await this.collection.find(
-            {"tags.name": {"$all": [...tags] }}
-        ).sort({order: -1}).toArray()) as Item[];
-    }
-
-    async findByRealm(realm: string) : Promise<Array<Item>> {
-        return (await this.collection.find(
-            {"realm": realm }
-        ).sort({order: -1}).toArray()) as Item[];
-    }
-
-    async deleteById(id: string): Promise<any> {
-        const item = await this.findById(id);
+    async delete(id: string): Promise<any> {
+        const item = await this.find(id);
 
         EventBus.getInstance().dispatch<any>(ItemDeletedEvent, item.realm)
 
         return await this.collection.deleteOne({_id: new ObjectId(id)});
     }
 
-    async findByCriteria(criteria: Criteria): Promise<Item[]> {
+    async query(criteria: Criteria): Promise<Item[]> {
         return (
             await this.collection.find(
                 criteria.criteria()

@@ -19,7 +19,7 @@ async function handler (request: Request, user: User) {
 
   CreateItem(itemRepository)(body.name, body.realm, user.email)
 
-  const items = await itemRepository.findAll()
+  const items = await itemRepository.queryAll()
 
   return new Response(JSON.stringify(items))
 }

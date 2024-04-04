@@ -4,12 +4,10 @@ import Criteria from './Criteria';
 interface ItemRepository {
     create(item: Item): Item;
     update(item: Item): Promise<Item>;
-    findAll(): Promise<Array<Item>>;
-    findById(id: string): Promise<Item>;
-    findByTags(tags: Array<string>): Promise<Array<Item>>;
-    findByRealm(realm: string) : Promise<Array<Item>>;
-    deleteById(id: string): Promise<any>;
-    findByCriteria(criteria: Criteria): Promise<Array<Item>>;
+    queryAll(): Promise<Array<Item>>;
+    find(id: string): Promise<Item>;
+    delete(id: string): Promise<any>;
+    query(criteria: Criteria): Promise<Array<Item>>;
 }
 
 export default ItemRepository;

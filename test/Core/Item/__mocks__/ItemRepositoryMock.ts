@@ -1,4 +1,3 @@
-
 import Criteria from '../../../../src/Core/Item/domain/Criteria';
 import Item from '../../../../src/Core/Item/domain/Item';
 import ItemRepository from '../../../../src/Core/Item/domain/ItemRepository';
@@ -30,11 +29,11 @@ export class ItemRepositoryMock implements ItemRepository {
         expect(this.mockUpdate).toHaveBeenCalledWith(item);
     }
 
-    findAll(): Promise<Item[]> {
+    queryAll(): Promise<Item[]> {
         throw new Error('Method not implemented.');
     }
 
-    findById(id: string): Promise<Item> {
+    find(id: string): Promise<Item> {
         throw new Error('Method not implemented.');
     }
 
@@ -46,11 +45,11 @@ export class ItemRepositoryMock implements ItemRepository {
         throw new Error('Method not implemented.');
     }
 
-    deleteById(id: string): Promise<any> {
+    delete(id: string): Promise<any> {
         throw new Error('Method not implemented.');
     }
 
-    async findByCriteria(criteria: Criteria): Promise<Item[]> {
+    async query(criteria: Criteria): Promise<Item[]> {
         this.mockFindByCriteria(criteria);
 
         return this.items;

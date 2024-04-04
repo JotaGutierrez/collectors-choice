@@ -8,11 +8,11 @@ export async function PATCH (request: Request) {
 
   const body = await request.json()
 
-  const item = await itemRepository.findById(body.id)
+  const item = await itemRepository.find(body.id)
 
   item.tags = body.tags
 
   await itemRepository.update(item)
 
-  return new Response(JSON.stringify(await itemRepository.findAll()))
+  return new Response(JSON.stringify(await itemRepository.queryAll()))
 }

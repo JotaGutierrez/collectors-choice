@@ -19,7 +19,7 @@ async function handler (request: Request, user: User) {
   const id = body?.id
 
   try {
-    const result = await itemRepository.deleteById(id)
+    const result = await itemRepository.delete(id)
 
     if (!result) {
       return new Response(null, { status: 404 })

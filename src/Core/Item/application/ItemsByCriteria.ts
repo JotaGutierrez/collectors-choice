@@ -2,7 +2,7 @@ import ItemRepository from '../domain/ItemRepository';
 import Criteria from '../domain/Criteria';
 
 const ItemsByCriteria = (itemRepository: ItemRepository) => async (criteria: Criteria) =>
-    await itemRepository.findByCriteria(criteria);
+    await itemRepository.query(criteria);
 
 
 export default ItemsByCriteria;

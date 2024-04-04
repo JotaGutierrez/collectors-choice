@@ -10,7 +10,7 @@ export async function GET (request: Request) {
 
     const { searchParams } = new URL(request.url)
 
-    return new Response(JSON.stringify(await itemRepository.findById(searchParams.get('id') ?? '')))
+    return new Response(JSON.stringify(await itemRepository.find(searchParams.get('id') ?? '')))
   } catch (error) {
     return new Response(JSON.stringify(error))
   }
